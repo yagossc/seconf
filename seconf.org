@@ -1,0 +1,318 @@
+#+TITLE: Emacs Configuration File
+#+AUTHOR: yago
+#+DESCRIPTION: An Org based Emacs configuration.
+#+KEYWORDS: emacs, org, config, init.el
+#+LANGUAGE: en
+#+BABEL: :cache yes
+#+PROPERTY: header-args :tangle yes
+
+* INIT
+
+  In the beggining...
+
+** Bootstrap
+*** Header
+
+    Define the package header as a "head-up" and avoid warnings.
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;;; Package --- Emacs configuration (init.el)
+    ;;; Commentary: try things out
+    ;;; Code:
+
+    #+END_SRC
+
+*** Lexical
+
+    Lexical binding opens up many more opportunities
+    for optimization, so programs using it are likely to run
+    faster in future Emacs versions.
+
+    Lexical binding is also more compatible with concurrency,
+    which was added to Emacs in version 26.1.
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;;; -*- lexical-binding: t -*-
+
+    #+END_SRC
+
+*** Verify
+**** Version
+
+     Verify emacs version.
+
+     #+BEGIN_SRC emacs-lisp
+
+     (when (version< emacs-version "26.3")
+       (error "This requires Emacs 26.3 and above!"))
+
+     #+END_SRC
+
+*** Loaddefs
+
+    Emacs Lisp > Loading > Autoload
+
+    The "autoload" facility lets you register the existence of a function
+    or macro, but put off loading the file that defines it.  The first call
+    to the function automatically loads the proper library, in order to
+    install the real definition and other associated code, then runs the
+    real definition as if it had been loaded all along.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      (require 'loaddefs)
+
+      #+END_SRC
+
+*** Gargabge Collection
+
+    To reduce startup time, we up the gargabage collector's threshold
+    to temporarily prevent it from running, then reset it later by
+    enabling `gcmh-mode'. Not resetting it will cause
+    stuttering/freezes.
+
+**** Customize
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; threshold inital value
+     ;; (gc-cons-percentage 0.5)
+     (setq gc-cons-threshold most-positive-fixnum) ; 2^61 bytes
+
+     #+END_SRC
+
+**** Hooks
+*** Defines
+
+    =aliases=, =variables=, =keymaps= and =binds=.
+
+**** Aliases
+
+     Define some aliases to improve quality of life.
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; yes or no
+     (defalias 'yes-or-no-p 'y-or-n-p)
+
+     #+END_SRC
+
+**** Variables
+
+     Save =file-name-handle-alist=, it will be used to restore
+     its original value.
+
+     #+BEGIN_SRC emacs-lisp
+
+     (defvar saved-file-name-handler-alist
+       file-name-handler-alist
+       "Save `file-name-handler-alist' variable")
+
+     #+END_SRC
+
+**** Keymaps
+
+     The goal here is to create a standard for commands' (functions)
+     access sequences - keybinds or chords.
+
+     For each of the most commonly used commads, a prefix map is
+     created and inserted int the Ctl-x-map prefix.
+
+     It's the author's preference to have a small set of keybinds, so
+     most of the existing ones will be cleaned up.
+
+     #+BEGIN_SRC emacs-lisp
+
+     (defvar seconf-window-map
+       (make-sparse-keymap)
+       "Window commands keymap.")
+
+     (defvar seconf-tags-map
+       (make-sparse-keymap)
+       "Tags (navigation) commands keymap.")
+
+     (defvar seconf-pm-map
+       (make-sparse-keymap)
+       "Project management commands keymap.")
+
+     (defvar seconf-sc-map
+       (make-sparse-keymap)
+       "Syntax check commands keymap.")
+
+     (defvar seconf-completion-map
+       (make-sparse-keymap)
+       "Completion commands keymap.")
+
+     (defvar seconf-docs-map
+       (make-sparse-keymap)
+       "Docs commands keymap.")
+
+     (defvar seconf-files-map
+       (make-sparse-keymap)
+       "Files commands keymap.")
+
+     (defvar seconf-debug-map
+       (make-sparse-keymap)
+       "Debug commands keymap.")
+
+     (defvar seconf-filter-map
+       (make-sparse-keymap)
+       "Filter commands keymap.")
+
+     (defvar seconf-utils-map
+       (make-sparse-keymap)
+       "Utils commands keymap.")
+
+     (defvar seconf-rtags-map
+       (make-sparse-keymap)
+       "Rtag commands keymap.")
+
+     #+END_SRC
+
+     Define maps as prefix commands, this prepares
+     =keymaps= for use as a prefix key's binding.
+
+     #+BEGIN_SRC emacs-lisp
+
+     (dolist (prefix-map '(seconf-tags-map
+                           seconf-pm-map
+                           seconf-sc-map
+                           seconf-docs-map
+                           seconf-files-map
+                           seconf-filter-map
+                           seconf-utils-map
+                           seconf-window-map
+                           seconf-completion-map
+                           seconf-rtags-map))
+       (define-prefix-command prefix-map))
+
+     #+END_SRC
+
+**** Binds
+
+     Bind all newly created prefix maps to ctl-x-map
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; seconf prefix maps
+     (define-key ctl-x-map (kbd "f") 'seconf-files-map) ;; files
+     ;; (define-key ctl-x-map (kbd "") 'seconf-filter-map)
+     (define-key ctl-x-map (kbd "p") 'seconf-pm-map) ; project
+     (define-key ctl-x-map (kbd "t") 'seconf-tags-map) ; tags
+     (define-key ctl-x-map (kbd "c") 'seconf-utils-map) ; commands
+     (define-key ctl-x-map (kbd "e") 'seconf-sc-map) ; errors
+     (define-key ctl-x-map (kbd "l") 'seconf-docs-map) ; library
+     (define-key ctl-x-map (kbd "<tab>") 'seconf-completion-map) ; tab - complete
+
+     #+END_SRC
+
+*** Defer
+
+    Reduce up startup time.
+
+**** Clean
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; clean file-name-handler-alist
+     (setq file-name-handler-alist nil)
+
+     #+END_SRC
+
+**** Hooks
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; restore file-name-handler-alist
+     (add-hook 'emacs-startup-hook
+               (lambda ()
+                 (setq file-name-handler-alist
+                       saved-file-name-handler-alist)))
+
+     #+END_SRC
+
+*** Startup
+**** Customize
+
+     This file parses the command line and gets Emacs running.
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; non-nil inhibits the startup screen
+     ;; this variable is an alias for `inhibit-startup-screen'
+     (customize-set-variable 'inhibit-startup-message t)
+
+     ;; non-nil inhibits the initial startup echo area message
+     (customize-set-variable 'inhibit-startup-echo-area-message nil)
+
+     #+END_SRC
+
+*** Warnings
+
+    Implements the entry points `warn', `lwarn' and `display-warning'.
+
+**** Require
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; (require 'warnings nil t)
+
+     #+END_SRC
+
+**** Customize
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; minimum severity level for displaying the warning buffer
+     (customize-set-variable 'warning-minimum-level :error)
+
+     ;; minimum severity level for logging a warning.
+     (customize-set-variable 'warning-minimum-log-level :warning)
+
+     #+END_SRC
+
+*** Load-path
+
+    Info Section: Emacs Lisp > Loading > Library Search
+
+    When Emacs loads a Lisp library, it searches for the library in a list
+    of directories specified by the variable `load-path'.
+
+    If the environment variable =EMACSLOADPATH= is set, it modifies the
+    above initialization procedure. Emacs initializes `load-path' based on
+    the value of the environment variable.
+
+    The syntax of =EMACSLOADPATH= is the same as used for 'PATH';
+    directories are separated by ':' (or ';', on some operating systems).
+    Here is an example of how to set =EMACSLOADPATH= variable (from a
+    'sh'-style shell).
+
+    #+BEGIN_SRC sh
+
+    export EMACSLOADPATH=$EMACSLOADPATH:~/.emacs.d/lisp:~/.emacs.d/site-lisp
+
+    #+END_SRC
+
+    For each directory in `load-path', Emacs then checks to see if it
+    contains a file `subdirs.el', and if so, loads it. The `subdirs.el'
+    file is created when Emacs is built/installed, and contains code that
+    causes Emacs to add any subdirectories of those directories to
+    `load-path'. Both immediate subdirectories and subdirectories multiple
+    levels down are added. But it excludes subdirectories whose names do
+    not start with a letter or digit, and subdirectories named 'RCS' or
+    'CVS', and subdirectories containing a file named =.nosearch=.
+
+*** Load-prefer
+
+    In noninteractive sessions, prioritize non-byte-compiled source files to
+    prevent the use of stale byte-code to a little time in I/O operations.
+
+    #+BEGIN_SRC emacs-lisp
+
+    (setq load-prefer-newer noninteractive)
+
+    #+END_SRC
