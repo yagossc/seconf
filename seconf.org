@@ -2533,7 +2533,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      ;; add setk-theme-dir to theme load path
+      ;; add seconf-theme-dir to theme load path
       (add-to-list 'custom-theme-load-path
                    (concat user-emacs-directory "themes"))
 
@@ -3865,5 +3865,713 @@
       (add-hook 'window-setup-hook
                 (lambda ()
                   (funcall 'projectile-mode 1)))
+
+      #+END_SRC
+
+** Development
+*** Generic
+
+    Generic programming modes (minor/major).
+
+**** Prog-mode
+
+     Generic programming mode, from which others derive.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'prog-mode nil t)
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (define-key prog-mode-map (kbd "C-M-i") 'complete-at-point-or-indent)
+
+      #+END_SRC
+
+**** Hideshow
+
+     Minor mode to hide and show code and comment blocks.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'hideshow nil t)
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'prog-mode-hook 'hs-minor-mode)
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; ctl-x-map
+      (define-key ctl-x-map (kbd "[") 'hs-toggle-hiding)
+
+      #+END_SRC
+
+**** Conf
+
+     This package is designed to edit many similar varieties of
+     Configuration and initialization files.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'conf-mode nil t)
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (add-to-list 'auto-mode-alist '("\\.compose\\'" . conf-mode))
+                  (add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . conf-mode))))
+
+      #+END_SRC
+
+**** Text
+
+     This package provides the fundamental text mode documented in the
+     Emacs user's manual.
+
+     Major mode for editing text written for humans to read.
+     In this mode, paragraphs are delimited only by blank or white lines.
+     You can thus get the full benefit of adaptive filling
+     (see the variable `adaptive-fill-mode').
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'text-mode nil t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/text/set-company-backends ()
+        "Set `text-mode' company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-ispell :with
+                           company-dabbrev)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'text-mode-hook
+                (lambda ()
+                  ;; turn on auto fill mode
+                  (turn-on-auto-fill)
+
+                  ;; set company backends
+                  (seconf/text/set-company-backends)))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (define-key text-mode-map (kbd "C-c C-g") 'keyboard-quit)
+      (define-key text-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent)
+
+      (define-key text-mode-map (kbd "C-c C-k") 'with-editor-cancel)
+      (define-key text-mode-map (kbd "C-c C-c") 'with-editor-finish)
+
+      #+END_SRC
+
+**** Subword
+
+     This package provides the `subword' minor mode, which merges the
+     old remap-based subword.el (derived from cc-mode code) and
+     cap-words.el, which takes advantage of core Emacs
+     word-motion-customization functionality.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'subword nil t)
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (funcall 'global-subword-mode 1)))
+
+      #+END_SRC
+
+**** Paren
+
+     It will display highlighting on whatever paren matches the one
+     before or after point.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'paren nil t)
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; visualization of matching parens
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (funcall 'show-paren-mode 1)))
+
+      #+END_SRC
+
+**** Make-mode
+
+     Major mode for editing standard Makefiles.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'make-mode nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; if non-nil, automatically clean up continuation lines when saving
+      (customize-set-variable 'makefile-cleanup-continuations t)
+
+      ;; if non-nil, insert a TAB after a target colon
+      (customize-set-variable 'makefile-tab-after-target-colon t)
+
+      #+END_SRC
+
+***** Hooks
+
+**** Cmake-mode
+
+     Provides syntax highlighting and indentation for CMakeLists.txt and
+     *.cmake source files.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'cmake-mode nil t)
+
+      #+END_SRC
+
+*** Lisp
+**** Lisp-mode
+
+     The base major mode for editing Lisp code (used also for Emacs Lisp).
+     This mode is documented in the Emacs manual.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'lisp-mode nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; number of columns to indent the second line of a (def...) form
+      (customize-set-variable 'lisp-body-indent 2)
+
+      #+END_SRC
+
+*** Elisp
+**** Elisp-mode
+
+     The major mode for editing Emacs Lisp code.
+     Tis mode is documented in the Emacs manual.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'elisp-mode nil t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/elisp/set-company-backends ()
+        "Set elisp company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-elisp :with company-capf company-dabbrev-code)
+           (company-dabbrev)
+           (company-files))))
+      ;; (company-yasnippet)
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; enable minor modes
+      (add-hook 'emacs-lisp-mode-hook
+                (lambda()
+                  (funcall 'eldoc-mode 1)))
+
+      (add-hook 'lisp-interaction-mode-hook
+                (lambda()
+                  (funcall 'eldoc-mode 1)))
+
+      ;; set backends (company, flychecker, dash-docs)
+      (add-hook 'emacs-lisp-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf/elisp/set-company-backends)
+
+                  ;; set flycheck checker
+                  ;; (seconf-set-flycheck-checker 'emacs-lisp)
+
+                  ;; activate dash docset (emacs)
+                  (seconf-set-dash-docset "Emacs Lisp")))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; emacs-lisp-mode-map
+      (eval-after-load 'elisp-mode
+        (lambda ()
+          (when (boundp 'emacs-lisp-mode-map)
+            ;; unbind
+            (define-key emacs-lisp-mode-map (kbd "DEL") 'nil)
+            (define-key emacs-lisp-mode-map (kbd "ESC") 'nil)
+            (define-key emacs-lisp-mode-map (kbd "C-x") 'nil)
+            (define-key emacs-lisp-mode-map (kbd "C-M-x") 'nil)
+            (define-key emacs-lisp-mode-map (kbd "C-M-q") 'nil)
+
+            ;; bind
+            (define-key emacs-lisp-mode-map (kbd "C-c C-f") 'eval-defun)
+            (define-key emacs-lisp-mode-map (kbd "C-c C-r") 'eval-region)
+            (define-key emacs-lisp-mode-map (kbd "C-c C-b") 'eval-buffer)
+            (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'emacs-lisp-byte-compile)
+            (define-key emacs-lisp-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+
+      #+END_SRC
+
+*** Go
+**** Go-mode
+
+     The major mode for editing Go files.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'go-mode nil t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/go/set-company-backends ()
+        "Set go company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-yasnippet :with
+                              company-dabbrev
+                              company-dabbrev-code)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'go-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf/go/set-company-backends)
+
+                  ;; set flycheck checker (go lint)
+                  ;; (seconf-set-flycheck-checker 'go-golint)
+
+                  ;; set dash docsets
+                  (seconf-set-dash-docset '"Go")))
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; add (*.go . go-mode) to auto-mode-alist
+      ;; init go-mode when a file with the extersion .go is opened
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)
+                               (customize-set-variable 'gofmt-command "goreturns")
+                               (add-hook 'before-save-hook 'gofmt-before-save))))
+
+      #+END_SRC
+
+*** Sh
+**** Company-shell
+
+     Backend for company mode to complete environment variables, binaries found
+     on your $PATH and fish shell functions.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'company-shell nil t)
+
+      #+END_SRC
+
+**** Sh-script
+
+     Major mode for editing shell scripts. Bourne, C and rc shells as well
+     as various derivatives are supported and easily derived from. Structured
+     statements can be inserted with one command or abbrev. Completion is
+     available for filenames, variables known from the script, the shell and
+     the environment as well as commands.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'sh-script nil t)
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'sh-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf-set-company-backends
+                   '((company-shell :with
+                                    company-shell-env
+                                    company-yasnippet)
+                     (company-dabbrev
+                      company-dabbrev-code)
+                     (company-files)))))
+
+      ;; set flycheck backends
+      ;; (seconf-set-flycheck-checker 'sh-shellcheck)))
+
+      #+END_SRC
+
+**** Fish-mode
+
+     Major mode for editing Fish shell files.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'fish-mode nil t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/fish/set-company-backends ()
+        "Set fish company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-fish-shell :with
+                               company-yasnippet)
+           (company-dabbrev
+            company-dabbrev-code)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'fish-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf/fish/set-company-backends)))
+
+      #+END_SRC
+
+*** Lua
+**** Lua-mode
+
+     Major mode for editing Lua files.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'lua-mode nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; non-nil means display lua-process-buffer after sending a command.
+      (customize-set-variable 'lua-process-buffer t)
+
+      ;; default application to run in Lua process
+      (customize-set-variable 'lua-default-application "lua")
+
+      ;; command switches for lua-default-application
+      (customize-set-variable 'lua-default-command-switches "-i")
+
+      ;; amount by which Lua subexpressions are indented
+      (customize-set-variable 'lua-indent-level 4)
+
+      ;; if non-nil, contents of multiline string will be indented
+      (customize-set-variable 'lua-indent-string-contents t)
+
+      ;; jump to innermost traceback location in *lua* buffer
+      ;; when this variable is non-nil and a traceback occurs
+      ;; when running Lua code in a process, jump immediately
+      ;; to the source code of the innermost traceback location
+      (customize-set-variable 'lua-jump-on-traceback t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/lua/set-company-backends ()
+        "Set lua company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-yasnippet :with
+                              company-dabbrev
+                              company-dabbrev-code)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'lua-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf/lua/set-company-backends)
+
+                  ;; set flycheck checker
+                  ;; (seconf-set-flycheck-checker 'lua)
+
+                  ;; activate dash docset
+                  (seconf-set-dash-docset "Lua")))
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; add auto-mode
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+                  (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))))
+
+      #+END_SRC
+
+*** Python
+**** Python
+
+     Major mode for editing Python files with some fontification and
+     indentation bits extracted from original Dave Love's python.el
+     found in GNU/Emacs.
+
+     Implements Syntax highlighting, Indentation, Movement, Shell
+     interaction, Shell completion, Shell virtualenv support, Shell
+     package support, Shell syntax highlighting, Pdb tracking, Symbol
+     completion, Skeletons, FFAP, Code Check, Eldoc, Imenu.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'python nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; default Python interpreter for shell
+      (customize-set-variable 'python-shell-interpreter "python")
+
+      ;; non-nil means template skeletons will be automagically inserted
+      (customize-set-variable 'python-skeleton-autoinsert t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/python/set-company-backends ()
+        "Set python company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-keywords :with
+                             company-yasnippet
+                             company-dabbrev-code
+                             company-dabbrev)
+           (company-dabbrev)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; enable modes
+      (add-hook 'python-mode-hook
+                (lambda()
+                  ;; enable eldoc mode
+                  (funcall 'eldoc-mode 1)))
+
+      ;; set backends
+      (add-hook 'python-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf/python/set-company-backends)
+
+                  ;; set flycheck checker
+                  ;; (seconf-set-flycheck-checker 'python-pycompile)
+
+                  ;; set dash docsets
+                  (seconf-set-dash-docset '"Python 3")))
+
+      #+END_SRC
+
+*** Mql
+**** Mql-mode
+
+     Major mode for editing Mql files: work in progress!
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'mql-mode nil t)
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'mql-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf-set-company-backends
+                   '((company-etags
+                      company-yasnippet
+                      company-dabbrev
+                      company-dabbrev-code)
+                     (company-files)))
+
+                  ;; select flycheck checker (use gcc)
+                  ;; (seconf-set-flycheck-checker 'c/c++-gcc)
+
+                  ;; activate mql5 docset
+                  (seconf-set-dash-docset '"mql5")))
+
+      #+END_SRC
+
+*** Web
+**** Web-mode
+
+     Web-mode is an emacs major mode for editing web templates aka
+     HTML files embedding parts (CSS/JavaScript) and blocks
+     (pre rendered by client/server side engines).
+
+     Web-mode compatible with many template engines: PHP, JSP, ASP,
+     Django, Twig, Jinja, Mustache, ERB, FreeMarker,
+     Velocity, Cheetah, Smarty, CTemplate, Mustache, Blade, ErlyDTL,
+     Go Template, Dust.js, Google Closure (soy), React/JSX,
+     Angularjs, ejs, Nunjucks, etc.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'web-mode nil t)
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  ;; add files extensions to web-mode
+                  (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+                  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+                  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+                  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+                  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+                  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+                  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+                  ;; resolve warning
+                  (when (boundp 'web-mode-engines-alist)
+                    (add-to-list 'web-mode-engines-alist '(("php" . "\\.phtml\\'"))))))
 
       #+END_SRC
