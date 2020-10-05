@@ -2534,11 +2534,11 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; add seconf-theme-dir to theme load path
-      ;;(add-to-list 'custom-theme-load-path
-      ;;             (concat user-emacs-directory "themes"))
+      (add-to-list 'custom-theme-load-path
+                  (concat user-emacs-directory "themes"))
 
       ;; load theme
-      ;;(load-theme 'seconf t)
+      (load-theme 'seconf t)
 
       #+END_SRC
 
