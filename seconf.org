@@ -2542,6 +2542,120 @@
 
       #+END_SRC
 
+*** Dashboards
+
+    A graphical summary of various pieces of important information,
+    typically used to give an overview of a business.
+
+**** Dashboard
+
+     An extensible Emacs dashboard, with sections for bookmarks,
+     projectile, org-agenda and more.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'dashboard nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; association list of items to show in the startup buffer.
+      (customize-set-variable 'dashboard-items
+                              '((recents . 5)
+                                (projects . 5)
+                                (agenda . 5)
+                                (bookmarks . 5)))
+
+            ;; banners directory
+      ;; (customize-set-variable 'dashboard-banners-directory
+      ;;                         (expand-file-name "banner"  user-emacs-directory))
+
+      ;; specify the startup banner
+      (customize-set-variable 'dashboard-startup-banner 1)
+
+      ;; separator to use between the different pages.
+      (customize-set-variable 'dashboard-page-separator "
+
+      ")
+
+      ;; footer icon
+      (customize-set-variable 'dashboard-footer-icon
+                              #(" " 0 1 (face dashboard-footer)))
+
+      ;; when non nil, a footer will be displayed at the bottom.
+      (customize-set-variable 'dashboard-set-footer nil)
+
+
+      (customize-set-variable
+       'dashboard-footer "As simple as walking.")
+
+      ;; a list of messages, one of which dashboard chooses to display
+      (customize-set-variable 'dashboard-footer-messages nil)
+
+      ;; when non nil, file lists will have icons
+      (customize-set-variable 'dashboard-set-file-icons nil)
+
+      ;; when non nil, heading sections will have icons
+      (customize-set-variable 'dashboard-set-heading-icons nil)
+
+      ;; set initial buffer choice (emacsclient fix)
+      (customize-set-variable 'initial-buffer-choice
+                              (lambda ()
+                                (let ((initial-buffer (get-buffer "*dashboard*")))
+                                  (unless initial-buffer
+                                    (setq initial-buffer (get-buffer "*scratch*")))
+                                  initial-buffer)))
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf-initialize-dashboard ()
+        "Opens or switch to *dashboard* buffer."
+        (interactive)
+        (let ((buffer (get-buffer "*dashboard*")))
+          (unless buffer
+            (setq buffer (generate-new-buffer "*dashboard*")))
+          (funcall 'dashboard-insert-startupify-lists)
+          (funcall 'dashboard-refresh-buffer)))
+
+      (defun seconf-dashboard-insert-footer ()
+        "Insert dashboard-footer message."
+        (read-only-mode 0)
+        (when (boundp 'dashboard-footer)
+          (insert (propertize dashboard-footer 'face 'dashboard-footer)))
+        (insert "\n")
+        (read-only-mode 1))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; insert footer
+      (add-hook 'dashboard-mode-hook
+                (lambda ()
+                  (interactive)
+                  (seconf-dashboard-insert-footer)))
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'after-init-hook 'seconf-initialize-dashboard)
+
+      #+END_SRC
+
 *** Editing
 **** Iedit
 
