@@ -2535,7 +2535,7 @@
 
       ;; add seconf-theme-dir to theme load path
       (add-to-list 'custom-theme-load-path
-                  (concat user-emacs-directory "themes"))
+                   (concat user-emacs-directory "themes"))
 
       ;; load theme
       (load-theme 'seconf t)
@@ -2571,9 +2571,9 @@
                                 (agenda . 5)
                                 (bookmarks . 5)))
 
-            ;; banners directory
-      ;; (customize-set-variable 'dashboard-banners-directory
-      ;;                         (expand-file-name "banner"  user-emacs-directory))
+      ;; banners directory
+      ;;(customize-set-variable 'dashboard-banners-directory
+      ;;                        (expand-file-name "banner"  user-emacs-directory))
 
       ;; specify the startup banner
       (customize-set-variable 'dashboard-startup-banner 1)
@@ -3106,11 +3106,11 @@
 
       #+BEGIN_SRC emacs-lisp
 
-             (eval-after-load 'org
-               (lambda()
-                 (when (boundp 'org-mode-map)
-                  (define-key org-mode-map (kbd "C-M-i") 'seconf-complete-in-buffer-or-indent)
-       )))
+      (eval-after-load 'org
+        (lambda()
+          (when (boundp 'org-mode-map)
+            (define-key org-mode-map (kbd "C-M-i") 'seconf-complete-in-buffer-or-indent)
+            )))
 
       #+END_SRC
 
@@ -3138,9 +3138,9 @@
 
       #+BEGIN_SRC emacs-lisp
 
-            (when (boundp 'markdown-mode-map)
-              (progn
-                (define-key markdown-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent)))
+      (when (boundp 'markdown-mode-map)
+        (progn
+          (define-key markdown-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent)))
 
       #+END_SRC
 
@@ -3471,11 +3471,11 @@
               (t (indent-according-to-mode))))
 
       (defun seconf-complete-in-buffer-or-indent ()
-              "Company (complete anything (in-buffer)) or indent."
-              (interactive)
-              (cond ((looking-at "\\_>")
-                     (funcall 'company-complete-common))
-                    (t (indent-according-to-mode))))
+        "Company (complete anything (in-buffer)) or indent."
+        (interactive)
+        (cond ((looking-at "\\_>")
+               (funcall 'company-complete-common))
+              (t (indent-according-to-mode))))
 
       #+END_SRC
 
