@@ -1559,9 +1559,9 @@
             (define-key icomplete-minibuffer-map (kbd "SPC") nil)
 
             ;; bind
-            (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-force-complete-and-exit)
-            (define-key icomplete-minibuffer-map (kbd "M-SPC") 'icomplete-forward-completions)
-            (define-key icomplete-minibuffer-map (kbd "M-DEL") 'icomplete-backward-completions)
+            (define-key icomplete-minibuffer-map (kbd "C-SPC") 'icomplete-force-complete-and-exit)
+            (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
+            (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
             (define-key icomplete-minibuffer-map (kbd "M-p") 'previous-line-or-history-element)
             (define-key icomplete-minibuffer-map (kbd "M-n") 'next-line-or-history-element)
             (define-key icomplete-minibuffer-map (kbd "M-i") 'minibuffer-insert-top-candidate)
@@ -2342,147 +2342,6 @@
 
       #+END_SRC
 
-**** Term
-
-     Command-interpreter-in-a-buffer package (term mode).
-     The idea is that you can build specific process-in-a-buffer
-     modes on top of term mode -- e.g., lisp, shell, scheme, T, soar, ...
-
-     It seems that ~sh~ shell works better with term.
-
-***** Require
-
-      #+BEGIN_SRC emacs-lisp
-
-      (require 'term nil t)
-
-      #+END_SRC
-
-***** Customize
-
-      #+BEGIN_SRC emacs-lisp
-
-      ;; if non-nil, is file name to use for explicitly requested inferior shell. (reference)
-      (customize-set-variable 'explicit-shell-file-name (getenv "SHELL"))
-      ;; (if (eq system-type "gnu/linux")
-      ;;     "/usr/bin/fish"
-      ;;     "/usr/local/bin/fish"))
-
-      ;; if non-nil, add a ‘/’ to completed directories
-      (customize-set-variable 'term-completion-addsuffix t)
-
-      ;; regexp to recognize prompts in the inferior process
-      ;; (customize-set-variable 'term-prompt-regexp "^\\(>\\|\\(->\\)+\\) *")
-      (customize-set-variable 'term-prompt-regexp ".*:.*>.*? ")
-
-      ;; if non-nil, automatically list possibilities on partial completion.
-      (customize-set-variable 'term-completion-autolist t)
-
-      ;; if true, buffer name equals process name
-      (customize-set-variable 'term-ansi-buffer-base-name t)
-
-      #+END_SRC
-
-***** Functions
-
-      #+BEGIN_SRC emacs-lisp
-
-      (defun seconf/term-send-kill-line ()
-        "Kill line in multi-term mode with the possibility to paste it like in a normal shell."
-        (interactive)
-        (when (fboundp 'term-send-raw-string)
-          (progn
-            (kill-line)
-            (term-send-raw-string "\C-k"))))
-
-      (defun seconf/run-term ()
-        "Runs a term instance and upon buffer creation, interactively rename it."
-        (interactive)
-        (unless (fboundp 'term)
-          (error "Term not available"))
-        (command-execute 'multi-term)
-        (rename-buffer
-         (read-string "Rename term buffer: " nil nil "term") t))
-
-      #+END_SRC
-
-***** Hooks
-
-      #+BEGIN_SRC emacs-lisp
-
-      (add-hook 'term-mode-hook
-                (lambda()
-                  ;; do not display continuation lines.
-                  (setq truncate-lines nil)
-                  (toggle-truncate-lines)
-
-                  ;; disable line numbers mode
-                  (display-line-numbers-mode 0)))
-
-      #+END_SRC
-
-***** Binds
-
-      #+BEGIN_SRC emacs-lisp
-
-      ;; binds (with hook)
-      (add-hook 'term-mode-hook
-                (lambda ()
-                  (when (and (boundp 'term-raw-map)
-                             (boundp 'term-mode-map))
-                    (progn
-                      ;; term-raw-map
-                      (define-key term-raw-map (kbd "C-z") 'term-line-mode)
-
-                      ;; term-mode-map
-                      (define-key term-mode-map (kbd "C-z") 'term-char-mode)))))
-
-      (define-key ctl-x-map (kbd "RET") 'seconf/run-term)
-
-      #+END_SRC
-
-**** Multi-term
-
-     This package is for creating and managing multiple
-     terminal buffers in Emacs.
-
-***** Require
-
-      #+BEGIN_SRC emacs-lisp
-
-      ;; (require 'multi-term nil t)
-
-      #+END_SRC
-
-***** Customize
-
-      #+BEGIN_SRC emacs-lisp
-
-      ;; if this is nil, setup to environment variable of `SHELL'"
-      (customize-set-variable 'multi-term-program nil)
-
-      ;; focus terminal window after you open dedicated window
-      (customize-set-variable 'multi-term-dedicated-select-after-open-p t)
-
-      ;; rename multi-term-dedicated buffer
-      (customize-set-variable 'multi-term-dedicated-buffer-name "dedicated-term")
-
-      ;; customize dedicated term height
-      (customize-set-variable 'multi-term-dedicated-window-height 9)
-
-      ;; the buffer name of term buffer.
-      (customize-set-variable 'multi-term-buffer-name "term")
-
-      #+END_SRC
-
-***** Binds
-
-      #+BEGIN_SRC emacs-lisp
-
-      (define-key ctl-x-map (kbd "C-x") 'multi-term-dedicated-toggle)
-
-      #+END_SRC
-
 *** Managers
 **** Files
 
@@ -2521,6 +2380,165 @@
        (add-hook 'window-setup-hook
                  (lambda ()
                    (funcall 'dired-async-mode 1)))
+
+       #+END_SRC
+
+*** Emulators
+
+    An emulator is hardware or software that enables a computer system
+    (usually called host) to behave like another computer system
+    (usually called guest).
+
+    An emulator typically enables the host system to run software
+    or use peripheral devices designed for the guest system.
+
+**** Terminal
+
+     A terminal emulator is a computer program that emulates a graphic
+     terminal within a display architecture.
+
+***** Term
+
+      Command-interpreter-in-a-buffer package (term mode).
+      The idea is that you can build specific process-in-a-buffer
+      modes on top of term mode -- e.g., lisp, shell, scheme, T, soar, ...
+
+      It seems that ~sh~ shell works better with term.
+
+****** Require
+
+       #+BEGIN_SRC emacs-lisp
+
+       ;; (require 'term nil t)
+
+       #+END_SRC
+
+****** Customize
+
+       #+BEGIN_SRC emacs-lisp
+
+       ;; if non-nil, is file name to use for explicitly requested inferior shell. (reference)
+       (customize-set-variable
+        'explicit-shell-file-name (getenv "SHELL"))
+       ;; (if (eq system-type "gnu/linux")
+       ;;     "/usr/bin/fish"
+       ;;     "/usr/local/bin/fish"))
+
+       ;; if non-nil, add a ‘/’ to completed directories
+       (customize-set-variable 'term-completion-addsuffix t)
+
+       ;; regexp to recognize prompts in the inferior process
+       ;; (customize-set-variable 'term-prompt-regexp "^\\(>\\|\\(->\\)+\\) *")
+       (customize-set-variable 'term-prompt-regexp "^[^#$%>\n]*[#$%>] *")
+
+       ;; if non-nil, automatically list possibilities on partial completion.
+       (customize-set-variable 'term-completion-autolist t)
+
+       ;; if true, buffer name equals process name
+       (customize-set-variable 'term-ansi-buffer-base-name t)
+
+       #+END_SRC
+
+****** Functions
+
+       #+BEGIN_SRC emacs-lisp
+
+       (defun seconf/term-send-kill-line ()
+         "Kill line in multi-term mode with the possibility to paste it like in a normal shell."
+         (interactive)
+         (when (fboundp 'term-send-raw-string)
+           (progn
+             (kill-line)
+             (term-send-raw-string "\C-k"))))
+
+       (defun seconf/run-term ()
+         "Runs a term instance and upon buffer creation, interactively rename it."
+         (interactive)
+         (unless (fboundp 'term)
+           (error "Term not available"))
+         (command-execute 'multi-term)
+         (rename-buffer
+          (read-string "Rame term buffer: " nil nil "term") t))
+
+       #+END_SRC
+
+****** Hooks
+
+       #+BEGIN_SRC emacs-lisp
+
+       (add-hook 'term-mode-hook
+                 (lambda()
+                   ;; do not display continuation lines.
+                   (setq truncate-lines nil)
+                   (toggle-truncate-lines)
+
+                   (when (fboundp 'company-mode)
+                     (company-mode -1))
+
+                   ;; disable line numbers mode
+                   (display-line-numbers-mode 0)))
+
+
+       ;; binds (with hook)
+       (add-hook 'term-mode-hook
+                 (lambda ()
+                   (when (and (boundp 'term-raw-map)
+                              (boundp 'term-mode-map))
+                     ;; term-raw-map
+                     (define-key term-raw-map (kbd "C-z") 'term-line-mode)
+
+                     ;; term-mode-map
+                     (define-key term-mode-map (kbd "C-z") 'term-char-mode))))
+
+       #+END_SRC
+
+****** Binds
+
+       #+BEGIN_SRC emacs-lisp
+
+       (define-key ctl-x-map (kbd "RET") 'seconf/run-term)
+
+       #+END_SRC
+
+***** Multi-term
+
+      This package is for creating and managing multiple
+      terminal buffers in Emacs.
+
+****** Require
+
+       #+BEGIN_SRC emacs-lisp
+
+       ;; (require 'multi-term nil t)
+
+       #+END_SRC
+
+****** Customize
+
+       #+BEGIN_SRC emacs-lisp
+
+       ;; if this is nil, setup to environment variable of `SHELL'"
+       (customize-set-variable 'multi-term-program nil)
+
+       ;; focus terminal window after you open dedicated window
+       (customize-set-variable 'multi-term-dedicated-select-after-open-p t)
+
+       ;; rename multi-term-dedicated buffer
+       (customize-set-variable 'multi-term-dedicated-buffer-name "dedicated-term")
+
+       ;; customize dedicated term height
+       (customize-set-variable 'multi-term-dedicated-window-height 15)
+
+       ;; the buffer name of term buffer.
+       (customize-set-variable 'multi-term-buffer-name "term")
+
+       #+END_SRC
+
+****** Binds
+
+       #+BEGIN_SRC emacs-lisp
+
+       (define-key ctl-x-map (kbd "C-x") 'multi-term-dedicated-toggle)
 
        #+END_SRC
 
@@ -3831,7 +3849,7 @@
       (define-key seconf-pm-map (kbd "p") 'projectile-ag)
       (define-key seconf-pm-map (kbd "t") 'projectile-find-tag)
       (define-key seconf-pm-map (kbd "f") 'projectile-find-file)
-      (define-key seconf-pm-map (kbd "<f5>") 'projectile-compile-project)
+      (define-key seconf-pm-map (kbd "<SPC>") 'projectile-compile-project)
       (define-key seconf-pm-map (kbd "&") 'projectile-run-eshell)
       (define-key seconf-pm-map (kbd "o") 'projectile-switch-project)
       (define-key seconf-pm-map (kbd "r") 'projectile-replace-regexp)
