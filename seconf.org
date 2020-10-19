@@ -4261,6 +4261,18 @@
 
       #+END_SRC
 
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; go-mode-map
+      (eval-after-load 'go-mode
+        (lambda ()
+          (when (boundp 'go-mode-map)
+            (define-key go-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+
+      #+END_SRC
+
 *** Sh
 **** Company-shell
 
