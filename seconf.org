@@ -2420,9 +2420,6 @@
        ;; if non-nil, is file name to use for explicitly requested inferior shell. (reference)
        (customize-set-variable
         'explicit-shell-file-name (getenv "SHELL"))
-       ;; (if (eq system-type "gnu/linux")
-       ;;     "/usr/bin/fish"
-       ;;     "/usr/local/bin/fish"))
 
        ;; if non-nil, add a ‘/’ to completed directories
        (customize-set-variable 'term-completion-addsuffix t)
@@ -4446,6 +4443,17 @@
 
       #+END_SRC
 
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (eval-after-load 'lua-mode
+        (lambda ()
+          (when (boundp 'lua-mode-map)
+            (define-key lua-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+
+      #+END_SRC
+
 *** Python
 **** Python
 
@@ -4598,8 +4606,8 @@
 ** Cleanup
 
    A small set of keybinds provides (IMO) better quality of life, and
-   if needed, exotic commands can be called with
-   =execute-extended-command= know as =M-x= or even better the
+   if needed, exotic commands can be called through
+   =execute-extended-command=, a.k.a. =M-x= or, even better, the
    =minibuffer console=.
 
 **** Esc
