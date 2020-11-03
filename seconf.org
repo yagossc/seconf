@@ -2553,7 +2553,8 @@
                    (concat user-emacs-directory "themes"))
 
       ;; load theme
-      (load-theme 'seconf t)
+      ;; (load-theme 'seconf t)
+      (load-theme 'moebius-glass t)
 
       #+END_SRC
 
@@ -2668,6 +2669,156 @@
       #+BEGIN_SRC emacs-lisp
 
       (add-hook 'after-init-hook 'seconf-initialize-dashboard)
+
+      #+END_SRC
+
+*** Buffers
+**** Ibuffer
+
+     A major mode for viewing open buffers arranged in a list.
+     Ibuffer offers a convenient way of performing many operations on
+     open buffers, adding filters for subset viewing and sorting by
+     various criteria.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'ibuffer nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; the criteria by which to sort the buffers
+      (customize-set-variable 'ibuffer-default-sorting-mode 'filename/process)
+
+      ;; if non-nil, display the current Ibuffer buffer itself
+      (customize-set-variable 'ibuffer-view-ibuffer nil)
+
+      ;; if non-nil, then show the names of filter groups which are empty
+      (customize-set-variable 'ibuffer-show-empty-filter-groups nil)
+
+      ;; an alist of filtering groups to switch between.
+      (customize-set-variable
+       'ibuffer-saved-filter-groups
+       (quote (("default"
+                ("Emacs" (or
+                          (name . "^\\*eldoc for")
+                          (name . "^\\*scratch\\*$")
+                          (name . "^\\*Warnings\\*$")
+                          (name . "^\\*Completions\\*$")
+                          (name . "^\\*Completions\\*$")
+                          (name . "^\\*Messages\\*$")))
+
+                ("Comint" (or
+                           (mode . comint-mode)
+                           (name . "^\\*Async Shell Command\\*$")
+                           (name . "^\\*dashboard\\*$")
+                           (name . "^\\*tramp")
+                           (name . "^\\*make\\*$")))
+
+                ("Custom" (mode . Custom-mode))
+                ("IRC" (mode . rcirc-mode))
+
+                ("Info"  (or
+                          (mode . Info-mode)
+                          (mode . dictionary-mode)
+                          (mode . help-mode)
+                          (mode . apropos-mode)
+                          (mode . Man-mode)))
+
+                ("Tags" (or
+                         (mode . tags-table-mode)
+                         (mode . xref--xref-buffer-mode)))
+
+                ("Compilation" (or
+                                (mode . compilation-mode)
+                                (mode . emacs-lisp-compilation-mode)
+                                (name . "^\\*compilation\\*$")))
+
+                ("Debug"  (or (mode . debugger-mode)
+                              (name . "^\\*debug")))
+
+                ("Flycheck" (or
+                             (mode . flycheck-mode)
+                             (mode . flycheck-error-list-mode)
+                             (name . "^\\*Flycheck error messages\\*$")))
+
+                ("Grep" (or
+                         (mode . ag-mode)
+                         (mode . occur-mode)
+                         (mode . locate-mode)))
+
+                ("Term" (mode . term-mode))
+                ("Shell" (or
+                          (mode . shell-mode)
+                          (mode . eshell-mode)))
+
+                ("Exwm" (mode . exwm-mode))
+
+                ("Emms" (or
+                         (mode . emms-playlist-mode)
+                         (name . "^\\*EMMS-LOG\\*$")))
+
+                ("Eww" (mode . eww-mode))
+                ("Dired" (mode . dired-mode))
+
+                ("Gnus" (or
+                         (mode . message-mode)
+                         (mode . bbdb-mode)
+                         (mode . mail-mode)
+                         (mode . gnus-group-mode)
+                         (mode . gnus-server-mode)
+                         (mode . gnus-summary-mode)
+                         (mode . gnus-article-mode)
+                         (mode . gnus-browse-mode)
+                         (name . "^\\.bbdb$")
+                         (name . "^\\.newsrc-dribble")))
+
+                ("Magit" (or
+                          (mode . magit-mode)
+                          (mode . magit-status-mode)
+                          (mode . magit-diff-mode)
+                          (mode . magit-process-mode)))
+
+                ("Planner" (or
+                            (name . "^\\*Calendar\\*$")
+                            (name . "^diary$")
+                            (mode . muse-mode)))
+
+                ("Dev" (or
+                        (mode . prog-mode)
+                        (mode . c-mode)
+                        (mode . c++-mode)
+                        (mode . emacs-lisp-mode)
+                        (mode . web-mode)
+                        (mode . js-mode)))
+
+                ("IRC" (or
+                        (mode . erc-mode)))))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; hook run upon entry into `ibuffer-mode'
+      (add-hook 'ibuffer-mode-hook
+                '(lambda ()
+                   (ibuffer-auto-mode 1)
+                   (ibuffer-switch-to-saved-filter-groups "default")))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (define-key ctl-x-map (kbd "b") 'ibuffer)
 
       #+END_SRC
 
@@ -4921,5 +5072,13 @@
      #      (define-key esc-map (kbd "<f10>") nil)
 
      #      #+END_SRC
+
+** Load Custom-file
+
+   #+BEGIN_SRC emacs-lisp
+
+   (load custom-file)
+
+   #+END_SRC
 
 * EOF
