@@ -996,6 +996,17 @@
 
       #+END_SRC
 
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (define-key seconf-window-map (kbd "i") 'windmove-up)
+      (define-key seconf-window-map (kbd "k") 'windmove-down)
+      (define-key seconf-window-map (kbd "j") 'windmove-left)
+      (define-key seconf-window-map (kbd "l") 'windmove-right)
+
+      #+END_SRC
+
 **** Page
 
      This package provides the page-oriented movement and
