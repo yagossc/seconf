@@ -2818,7 +2818,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (define-key ctl-x-map (kbd "b") 'ibuffer)
+      (define-key ctl-x-map (kbd "C-b") 'ibuffer)
 
       #+END_SRC
 
@@ -3391,6 +3391,8 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; (require 'dash-docs nil t)
+      ;; You can thank esac-io for this:
+      ;; https://github.com/esac-io/dash-docs
 
       #+END_SRC
 
@@ -3404,10 +3406,10 @@
        (concat (expand-file-name user-emacs-directory) "docsets"))
 
       ;; minimum length to start searching in docsets
-      (customize-set-variable 'dash-docs-min-length 0)
+      ;; (customize-set-variable 'dash-docs-min-length 0)
 
       ;; format of the displayed candidates
-      (customize-set-variable 'dash-docs-candidate-format "%n")
+      (customize-set-variable 'dash-docs-candidate-format "%d %t %n")
 
       #+END_SRC
 
@@ -3427,12 +3429,23 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; seconf-docs-map
-      (define-key seconf-docs-map (kbd "u") 'dash-docs-update-docset)
+      ;; (define-key seconf-docs-map (kbd "u") 'dash-docs-update-docset)
       ;; (define-key seconf-docs-map (kbd "i") 'dash-docs-async-install-docset)
       (define-key seconf-docs-map (kbd "i") 'dash-docs-install-docset)
-      (define-key seconf-docs-map (kbd "l") 'dash-docs-search-docs)
+      (define-key seconf-docs-map (kbd "l") 'dash-docs-find-file)
       (define-key seconf-docs-map (kbd "a") 'dash-docs-activate-docset)
       (define-key seconf-docs-map (kbd "d") 'dash-docs-deactivate-docset)
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; enable dash-docs after emacs startup
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (funcall 'turn-on-dash-docs-mode)))
 
       #+END_SRC
 
@@ -3736,7 +3749,7 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; use a popup menu rather than a minibuffer prompt (no)
-      (customize-set-variable 'imenu-use-popup-menu nil)
+      (customize-set-variable 'imenu-use-popup-menu t)
 
       #+END_SRC
 
