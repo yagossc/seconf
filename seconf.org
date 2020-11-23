@@ -4119,10 +4119,14 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (add-hook 'window-setup-hook
-                (lambda ()
-                  (add-to-list 'auto-mode-alist '("\\.compose\\'" . conf-mode))
-                  (add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . conf-mode))))
+            (add-hook 'window-setup-hook
+                      (lambda ()
+                        (add-to-list 'auto-mode-alist '("\\.compose\\'" . conf-mode))
+                        (add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . conf-mode))
+                        (add-to-list 'auto-mode-alist '("\\Dockerfile\\'" . conf-mode))
+                        (add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
+                        (add-to-list 'auto-mode-alist '("\\.yaml\\'" . conf-mode))
+                        (add-to-list 'auto-mode-alist '("\\.conf\\'" . conf-mode))))
 
       #+END_SRC
 
@@ -4459,6 +4463,23 @@
 
       #+END_SRC
 
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/sh/set-company-backends ()
+        "Set go company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-shell :with
+                          company-shell-env
+                          company-yasnippet)
+           (company-dabbrev
+            company-dabbrev-code)
+           (company-files))))
+
+      #+END_SRC
+
 **** Sh-script
 
      Major mode for editing shell scripts. Bourne, C and rc shells as well
@@ -4482,16 +4503,23 @@
       (add-hook 'sh-mode-hook
                 (lambda ()
                   ;; set company backends
-                  (seconf-set-company-backends
-                   '((company-shell :with
-                                    company-shell-env
-                                    company-yasnippet)
-                     (company-dabbrev
-                      company-dabbrev-code)
-                     (company-files)))))
+                  (seconf/go/set-company-backends)))
 
       ;; set flycheck backends
       ;; (seconf-set-flycheck-checker 'sh-shellcheck)))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; go-mode-map
+      ;; (eval-after-load 'go-mode
+      ;;   (lambda ()
+      ;;     (when (boundp 'go-mode-map)
+      ;;       (define-key go-mode-map (kbd "TAB")
+      ;;         'seconf-complete-in-buffer-or-indent))))
 
       #+END_SRC
 
