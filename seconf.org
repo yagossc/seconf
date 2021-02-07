@@ -2266,7 +2266,7 @@
 
       (add-hook 'window-setup-hook
                 (lambda ()
-                  (funcall 'turn-on-lazy-mode)))
+                  (funcall 'turn-on-lazy-load-mode)))
 
       #+END_SRC
 
