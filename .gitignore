@@ -133,6 +133,5 @@ nsm
 
 # Emacs private/custom elisp files
 cannon
-custom.el
 private.el
 init.el
