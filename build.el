@@ -7,7 +7,7 @@
 (find-file (expand-file-name "seconf.org" user-emacs-directory))
 
 ;; tangle it (only emacs-lisp source code)
-(org-babel-tangle nil nil 'emacs-lisp)
+(org-babel-tangle nil nil "emacs-lisp")
 
 ;; rename: eos to init
 (rename-file
