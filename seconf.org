@@ -3403,7 +3403,7 @@
 
       ;; (require 'dash-docs nil t)
       ;; You can thank esac-io for this:
-      ;; https://github.com/esac-io/dash-docs
+      ;; https://github.com/esac-io/ddoc
 
       #+END_SRC
 
@@ -3413,14 +3413,14 @@
 
       ;; default path for docsets
       (customize-set-variable
-       'dash-docs-docsets-path
+       'ddoc-docsets-path
        (concat (expand-file-name user-emacs-directory) "docsets"))
 
       ;; minimum length to start searching in docsets
       ;; (customize-set-variable 'dash-docs-min-length 0)
 
       ;; format of the displayed candidates
-      (customize-set-variable 'dash-docs-candidate-format "%d %t %n")
+      (customize-set-variable 'ddoc-candidate-format "%d %t %n")
 
       #+END_SRC
 
@@ -3428,10 +3428,10 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (defun seconf-set-dash-docset (docset)
+      (defun seconf-activate-docset (docset)
         "Activate a DOCSET, if available."
-        (when (fboundp 'dash-docs-activate-docset)
-          (funcall 'dash-docs-activate-docset docset)))
+        (when (fboundp 'ddoc-activate-docset)
+          (funcall 'ddoc-activate-docset docset)))
 
       #+END_SRC
 
@@ -3440,12 +3440,12 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; seconf-docs-map
-      ;; (define-key seconf-docs-map (kbd "u") 'dash-docs-update-docset)
-      ;; (define-key seconf-docs-map (kbd "i") 'dash-docs-async-install-docset)
-      (define-key seconf-docs-map (kbd "i") 'dash-docs-install-docset)
-      (define-key seconf-docs-map (kbd "l") 'dash-docs-find-file)
-      (define-key seconf-docs-map (kbd "a") 'dash-docs-activate-docset)
-      (define-key seconf-docs-map (kbd "d") 'dash-docs-deactivate-docset)
+      ;; (define-key seconf-docs-map (kbd "u") 'ddoc-update-docset)
+      ;; (define-key seconf-docs-map (kbd "i") 'ddoc-async-install-docset)
+      (define-key seconf-docs-map (kbd "i") 'ddoc-install-docset)
+      (define-key seconf-docs-map (kbd "a") 'ddoc-activate-docset)
+      (define-key seconf-docs-map (kbd "d") 'ddoc-deactivate-docset)
+      (define-key seconf-docs-map (kbd "l") 'ddoc-find-file)
 
       #+END_SRC
 
@@ -3453,10 +3453,10 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      ;; enable dash-docs after emacs startup
+      ;; enable ddoc after emacs startup
       (add-hook 'window-setup-hook
                 (lambda ()
-                  (funcall 'turn-on-dash-docs-mode)))
+                  (funcall 'turn-on-ddoc-mode)))
 
       #+END_SRC
 
@@ -4351,7 +4351,7 @@
                   ;; (seconf-set-flycheck-checker 'emacs-lisp)
 
                   ;; activate dash docset (emacs)
-                  (seconf-set-dash-docset "Emacs Lisp")))
+                  (seconf-activate-docset "Emacs Lisp")))
 
       #+END_SRC
 
@@ -4421,7 +4421,7 @@
                   (add-hook 'before-save-hook 'gofmt-before-save)
                   (customize-set-variable 'gofmt-command "goreturns")
                   ;; set dash docsets
-                  (seconf-set-dash-docset '"Go")))
+                  (seconf-activate-docset '"Go")))
 
       #+END_SRC
 
@@ -4630,7 +4630,7 @@
                   ;; (seconf-set-flycheck-checker 'lua)
 
                   ;; activate dash docset
-                  (seconf-set-dash-docset "Lua")))
+                  (seconf-activate-docset "Lua")))
 
       #+END_SRC
 
@@ -4726,7 +4726,7 @@
                   ;; (seconf-set-flycheck-checker 'python-pycompile)
 
                   ;; set dash docsets
-                  (seconf-set-dash-docset '"Python 3")))
+                  (seconf-activate-docset '"Python 3")))
 
       #+END_SRC
 
@@ -4739,7 +4739,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      ;; (require 'mql-mode nil t)
+      ;; (require 'mql-mode)
 
       #+END_SRC
 
@@ -4747,7 +4747,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (add-hook 'mql-mode-hook
+      (add-hook 'c-mode-hook
                 (lambda ()
                   ;; set company backends
                   (seconf-set-company-backends
@@ -4755,13 +4755,37 @@
                       company-yasnippet
                       company-dabbrev
                       company-dabbrev-code)
-                     (company-files)))
+                     (company-files)))))
 
                   ;; select flycheck checker (use gcc)
                   ;; (seconf-set-flycheck-checker 'c/c++-gcc)
 
                   ;; activate mql5 docset
-                  (seconf-set-dash-docset '"mql5")))
+                  ;; (seconf-activate-docset '"mql5")))
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; add (*.mq5 . mql-mode) to auto-mode-alist
+      ;; init go-mode when a file with the extersion .go is opened
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (add-to-list 'auto-mode-alist '("\\.mq5$" . c-mode))))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; c-mode-map
+      (eval-after-load 'c-mode
+        (lambda ()
+          (when (boundp 'c-mode-map)
+            (define-key c-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
 
       #+END_SRC
 
