@@ -2246,17 +2246,29 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; non-nil means starts to monitor the directories
-      (customize-set-variable 'lazy-enable-filenotify-flag t)
+      (customize-set-variable 'lazy-load-enable-filenotify-flag t)
 
       ;; non-nil means show debug messages
-      (customize-set-variable 'lazy-debug-messages-flag t)
+      (customize-set-variable 'lazy-load-debug-messages-flag t)
 
-      ;; non-nil means run `lazy-update-autoloads' when emacs is idle
-      (customize-set-variable 'lazy-run-idle-flag nil)
+      ;; non-nil means run `lazy-load-update-autoloads' when emacs is idle
+      (customize-set-variable 'lazy-load-run-idle-flag nil)
 
       ;; idle timer value
-      (customize-set-variable 'lazy-idle-seconds 60) ; 1 minute
+      (customize-set-variable 'lazy-load-idle-seconds 60) ; 1 minute
 
+      ;; interval in seconds, used to trigger the timer callback
+      (customize-set-variable 'lazy-load-timer-interval 15)
+
+      ;; target files and directories
+      (customize-set-variable 'lazy-load-files-alist
+                              (list
+                               ;; lisp directory
+                               (cons "lisp-loaddefs.el"
+                                     (expand-file-name "lisp/" user-emacs-directory))
+                               ;; site-lisp directory
+                               (cons "site-lisp-loaddefs.el"
+                                     (expand-file-name "site-lisp/" user-emacs-directory))))
       #+END_SRC
 
 ***** Enable
