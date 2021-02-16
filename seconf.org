@@ -8,7 +8,7 @@
 
 * INIT
 
-  In the beggining...
+  In the beginning...
 
 ** Bootstrap
 *** Header
@@ -4081,7 +4081,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (define-key prog-mode-map (kbd "C-M-i") 'complete-at-point-or-indent)
+      (define-key prog-mode-map (kbd "<tab>") 'seconf-complete-in-buffer-or-indent)
 
       #+END_SRC
 
@@ -4794,7 +4794,7 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; c-mode-map
-      (eval-after-load 'c-mode
+      (eval-after-load 'cc-mode
         (lambda ()
           (when (boundp 'c-mode-map)
             (define-key c-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
