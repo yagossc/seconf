@@ -4781,11 +4781,12 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      ;; add (*.mq5 . mql-mode) to auto-mode-alist
-      ;; init go-mode when a file with the extersion .go is opened
-      (add-hook 'window-setup-hook
-                (lambda ()
-                  (add-to-list 'auto-mode-alist '("\\.mq5$" . c-mode))))
+            ;; add (*.mq5 . mql-mode) to auto-mode-alist
+            ;; init go-mode when a file with the extersion .go is opened
+            (add-hook 'window-setup-hook
+                      (lambda ()
+                        (add-to-list 'auto-mode-alist '("\\.mq5$" . c-mode))
+                        (add-to-list 'auto-mode-alist '("\\.mqh$" . c-mode))))
 
       #+END_SRC
 
