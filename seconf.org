@@ -4670,7 +4670,7 @@
       #+END_SRC
 
 *** Python
-**** Python
+**** Python-mode
 
      Major mode for editing Python files with some fontification and
      indentation bits extracted from original Dave Love's python.el
@@ -4739,6 +4739,17 @@
 
                   ;; set dash docsets
                   (seconf-activate-docset '"Python 3")))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (eval-after-load 'python-mode
+        (lambda ()
+          (when (boundp 'python-mode-map)
+            (define-key python-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
 
       #+END_SRC
 
