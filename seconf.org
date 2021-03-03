@@ -4770,7 +4770,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (add-hook 'c-mode-hook
+      (add-hook 'mql-mode-hook
                 (lambda ()
                   ;; set company backends
                   (seconf-set-company-backends
@@ -4796,8 +4796,8 @@
             ;; init go-mode when a file with the extersion .go is opened
             (add-hook 'window-setup-hook
                       (lambda ()
-                        (add-to-list 'auto-mode-alist '("\\.mq5$" . c-mode))
-                        (add-to-list 'auto-mode-alist '("\\.mqh$" . c-mode))))
+                        (add-to-list 'auto-mode-alist '("\\.mq5$" . mql-mode))
+                        (add-to-list 'auto-mode-alist '("\\.mqh$" . mql-mode))))
 
       #+END_SRC
 
@@ -4806,10 +4806,10 @@
       #+BEGIN_SRC emacs-lisp
 
       ;; c-mode-map
-      (eval-after-load 'cc-mode
+      (eval-after-load 'mql-mode
         (lambda ()
-          (when (boundp 'c-mode-map)
-            (define-key c-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+          (when (boundp 'mql-mode-map)
+            (define-key mql-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
 
       #+END_SRC
 
