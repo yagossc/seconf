@@ -36,7 +36,7 @@
       (bg-default "#000000") (fg-default "#f0fff0")
 
       (bg-bright  "#cdc5bf") (fg-bright  "#fffff0")
-      (bg-dim     "#262626") (fg-dim     "#969696")
+      (bg-dim     "#363636") (fg-dim     "#969696")
       (bg-shadow  "#333333") (fg-shadow  "#f5f5f5")
 
       ;; basic colors
