@@ -4431,6 +4431,70 @@
 
       #+END_SRC
 
+*** Chicken
+**** Chicken-mode
+
+     The major mode for editing Chicken Scheme code.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require chicken-mode nil t)
+
+      #+END_SRC
+
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/chicken/set-company-backends ()
+        "Set go company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-dabbrev-code :with
+                                 company-dabbrev
+                                 company-yasnippet)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'chicken-mode-hook
+                (lambda ()
+                  ;; set dash docsets
+                  ;; (seconf-activate-docset '"Chicken")
+                  ;; set company backends
+                  (seconf/chicken/set-company-backends)))
+
+      #+END_SRC
+
+***** TODO Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; add (*.scm . chicken-mode) to auto-mode-alist
+      ;; init chicken-mode when a file with the extersion .scm is opened
+      ;; (add-hook 'window-setup-hook
+      ;;           (lambda ()
+      ;;             (add-to-list 'auto-mode-alist '("\\.scm\\'" . chicken-mode))))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (eval-after-load 'chicken-mode
+              (lambda ()
+                (when (boundp 'chicken-op-mode-map)
+                  (define-key chicken-op-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+
+      #+END_SRC
+
 *** Go
 **** Go-mode
 
