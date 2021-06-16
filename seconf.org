@@ -4798,7 +4798,7 @@
 
       #+BEGIN_SRC emacs-lisp
 
-      (eval-after-load 'python-mode
+      (eval-after-load 'python
         (lambda ()
           (when (boundp 'python-mode-map)
             (define-key python-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
