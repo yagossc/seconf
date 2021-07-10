@@ -4785,6 +4785,75 @@
 
       #+END_SRC
 
+*** JavaScript
+**** js-mode
+
+     Major mode for editing JavaScript Files.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require js-mode nil t)
+
+      #+END_SRC
+
+***** Customize
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/js/set-company-backends ()
+        "Set python company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-keywords :with
+                             company-yasnippet
+                             company-dabbrev-code
+                             company-dabbrev)
+           (company-dabbrev)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; set backends
+      (add-hook 'js-mode-hook
+                (lambda ()
+                  ;; set company backends
+                  (seconf/js/set-company-backends)
+
+                  ;; set dash docsets
+                  (seconf-activate-docset '"JavaScript")))
+
+      #+END_SRC
+
+***** Enable
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; add (*.js . js-mode) to auto-mode-alist
+      ;; init js-mode when a file with the extersion .js is opened
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))))
+
+      #+END_SRC
+
+***** Binds
+
+      #+BEGIN_SRC emacs-lisp
+
+      (eval-after-load 'js
+        (lambda ()
+          (when (boundp 'js-mode-map)
+            (define-key js-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+
+      #+END_SRC
+
 *** Python
 **** Python-mode
 
