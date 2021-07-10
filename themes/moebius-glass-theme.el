@@ -33,10 +33,10 @@
 (let ((class '((class color) (min-colors 89)))
       ;; all colors has to have a tuple (background . foreground)
       ;; special colors
-      (bg-default "#000000") (fg-default "#f0fff0")
+      (bg-default "#202020") (fg-default "#f0fff0")
 
       (bg-bright  "#cdc5bf") (fg-bright  "#fffff0")
-      (bg-dim     "#363636") (fg-dim     "#969696")
+      (bg-dim     "#464646") (fg-dim     "#969696")
       (bg-shadow  "#333333") (fg-shadow  "#f5f5f5")
 
       ;; basic colors
