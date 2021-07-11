@@ -2365,6 +2365,82 @@
 
       #+END_SRC
 
+*** Clients
+
+    Network Client is a software that runs on a client computer
+    and allows it to establish connectivity with services
+    running on server computers.
+
+**** Verb
+
+     Verb is a package that allows you to organize and send HTTP
+     requests from Emacs. See the project's README.md file for more
+     details.
+
+***** Require
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (require 'verb nil t)
+
+      #+END_SRC
+
+***** Customize
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; value nil means never show the headers buffer
+      ;; value ‘when-empty’ means automatically show the headers buffer only
+      ;; when the response’s body size is 0
+      ;; any other value means always show the headers buffer
+      (customize-set-variable 'verb-auto-show-headers-buffer nil)
+
+      ;;  timeout (s) for HTTP requests made from a Babel source blocks
+      (customize-set-variable 'verb-babel-timeout 16)
+
+      ;; when set to a non-nil value, enable Lisp completion in code tags
+      (customize-set-variable 'verb-enable-elisp-completion nil)
+
+      ;; when non-nil, log different events in the *Verb Log* buffer
+      (customize-set-variable 'verb-enable-log t)
+
+      #+END_SRC
+
+***** Hooks
+
+      This hook is a bit too disruptive, however, it can be useful
+      when you want to move fast.
+
+      #+BEGIN_SRC emacs-lisp
+
+      ;; (add-hook 'org-ctrl-c-ctrl-c-hook
+      ;;           (lambda ()
+      ;;             (when (and (boundp 'verb-mode) verb-mode)
+      ;;               (funcall 'verb-send-request-on-point 'this-window))))
+
+      #+END_SRC
+
+***** Binds
+
+      This keybind, even residing in the ==verb== section, is more
+      useful than the last assigned command, which was
+      ==org-babel-check-src-block==.
+
+      #+BEGIN_SRC emacs-lisp
+
+      (eval-after-load 'verb
+        (lambda()
+          ;; add a more sane keybind to ob
+          (when (boundp 'org-babel-map)
+            (define-key org-babel-map (kbd "C-c") 'org-babel-execute-src-block))
+
+          ;; add the verb dialect to ob
+          (org-babel-do-load-languages
+           'org-babel-load-languages
+           '((verb . t)))))
+
+      #+END_SRC
+
 *** Managers
 **** Files
 
