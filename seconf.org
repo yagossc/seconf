@@ -4495,6 +4495,57 @@
 
       #+END_SRC
 
+*** Clojure
+**** clojure-mode
+
+     The major mode for editing Clojure code.
+
+***** Require
+***** Functions
+
+      #+BEGIN_SRC emacs-lisp
+
+      (defun seconf/clojure/set-company-backends ()
+        "Set go company backends."
+        (interactive)
+        (seconf-set-company-backends
+         '((company-dabbrev-code :with
+                                 company-dabbrev
+                                 company-yasnippet)
+           (company-files))))
+
+      #+END_SRC
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'clojure-mode-hook
+                (lambda ()
+                  ;; set dash docsets
+                  (seconf-activate-docset '"Clojure")
+                  ;; set company backends
+                  (seconf/clojure/set-company-backends)))
+
+      (eval-after-load 'clojure-mode
+        (lambda ()
+          (when (boundp 'clojure-mode-map)
+            (define-key clojure-mode-map (kbd "TAB") 'seconf-complete-in-buffer-or-indent))))
+
+      #+END_SRC
+
+**** iclj-mode
+
+     A minor mode for fast REPL interactions for Clojure code.
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'clojure-mode-hook #'iclj-mode)
+
+      #+END_SRC
+
 *** Go
 **** Go-mode
 
