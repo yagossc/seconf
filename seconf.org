@@ -2434,6 +2434,12 @@
           (when (boundp 'org-babel-map)
             (define-key org-babel-map (kbd "C-c") 'org-babel-execute-src-block))
 
+          ;; don't ask for confirmation when executing verb code blocks
+          (customize-set-variable 'org-confirm-babel-evaluate
+                                  (lambda (language code-block)
+                                    (if (string= language "verb")
+                                        nil t)))
+
           ;; add the verb dialect to ob
           (org-babel-do-load-languages
            'org-babel-load-languages
