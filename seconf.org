@@ -2642,6 +2642,10 @@
 
        (define-key ctl-x-map (kbd "C-x") 'multi-term-dedicated-toggle)
 
+       (define-key ctl-x-map (kbd "x") (lambda()
+                                                (interactive)
+                                                (customize-set-variable 'multi-term-dedicated-window-height 15)))
+
        #+END_SRC
 
 *** Apparence
