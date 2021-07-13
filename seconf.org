@@ -2404,6 +2404,9 @@
       ;; when non-nil, log different events in the *Verb Log* buffer
       (customize-set-variable 'verb-enable-log t)
 
+      ;; stop creating new HTTP Response Buffers
+      (customize-set-variable 'verb-auto-kill-response-buffers t)
+
       #+END_SRC
 
 ***** Hooks
