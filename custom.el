@@ -7,7 +7,9 @@
  '(company-dabbrev-downcase nil)
  '(company-dabbrev-ignore-case t)
  '(company-etags-ignore-case t)
- '(menu-bar-mode nil))
+ '(menu-bar-mode nil)
+ '(tool-bar-mode nil)
+ '(scroll-bar-mode nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
