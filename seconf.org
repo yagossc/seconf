@@ -5078,6 +5078,25 @@
 
       #+END_SRC
 
+**** IPython
+
+     For now, this section holds only information needed to edit
+     ipython source code blocks in an org file, alongside
+     ==ob-ipython==.
+
+***** Hooks
+
+      #+BEGIN_SRC emacs-lisp
+
+      (eval-after-load 'ob-ipython
+        (lambda()
+          ;; add the verb dialect to ob
+          (org-babel-do-load-languages
+           'org-babel-load-languages
+           '((ipython . t)))))
+
+      #+END_SRC
+
 *** Mql
 **** Mql-mode
 
