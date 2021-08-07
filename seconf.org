@@ -2765,8 +2765,8 @@
         (let ((buffer (get-buffer "*dashboard*")))
           (unless buffer
             (setq buffer (generate-new-buffer "*dashboard*")))
-          (funcall 'dashboard-insert-startupify-lists)
-          (funcall 'dashboard-refresh-buffer)))
+          (funcall 'dashboard-insert-startupify-lists)))
+          ;; (funcall 'dashboard-refresh-buffer)))
 
       (defun seconf-dashboard-insert-footer ()
         "Insert dashboard-footer message."
@@ -3402,7 +3402,7 @@
         (lambda()
           (when (boundp 'org-mode-map)
             (define-key org-mode-map (kbd "C-M-i") 'seconf-complete-in-buffer-or-indent)
-            )))
+            (define-key org-mode-map (kbd "C-c C-x C-v") 'org-display-inline-images))))
 
       #+END_SRC
 
