@@ -355,8 +355,7 @@
      #+BEGIN_SRC emacs-lisp
 
      (add-hook 'window-setup-hook
-               (lambda ()
-                 (funcall 'gcmh-mode 1)))
+               (funcall 'gcmh-mode 1))
 
      #+END_SRC
 
@@ -422,13 +421,11 @@
 
       ;; column number display in the mode line
       (add-hook 'window-setup-hook
-                (lambda ()
-                  (funcall 'column-number-mode 1)))
+                (funcall 'column-number-mode 1))
 
       ;; buffer size display in the mode line
       (add-hook 'window-setup-hook
-                (lambda ()
-                  (funcall 'size-indication-mode 1)))
+                (funcall 'size-indication-mode 1))
 
       #+END_SRC
 
@@ -877,8 +874,7 @@
 
      ;; enable window divider
      (add-hook 'window-setup-hook
-               (lambda ()
-                 (funcall 'window-divider-mode)))
+                 (funcall 'window-divider-mode))
 
      ;; disable blink cursor
      (add-hook 'window-setup-hook
@@ -1096,8 +1092,7 @@
 
        ;; enable highlight line
        (add-hook 'window-setup-hook
-                 (lambda ()
-                   (funcall 'global-hl-line-mode 1)))
+                 (funcall 'global-hl-line-mode))
 
        #+END_SRC
 
@@ -1600,8 +1595,7 @@
 
       ;; enable globally
       (add-hook 'window-setup-hook
-                (lambda ()
-                  (funcall 'icomplete-mode 1)))
+                (funcall 'icomplete-mode 1))
 
       #+END_SRC
 
@@ -2678,7 +2672,9 @@
 
       ;; load theme
       ;; (load-theme 'seconf t)
-      (load-theme 'moebius-glass t)
+      ;; (load-theme 'moebius-glass t)
+      ;; (load-theme 'melancholy t)
+      (load-theme 'dracula t)
 
       #+END_SRC
 
@@ -2932,9 +2928,9 @@
 
       ;; hook run upon entry into `ibuffer-mode'
       (add-hook 'ibuffer-mode-hook
-                '(lambda ()
-                   (ibuffer-auto-mode 1)
-                   (ibuffer-switch-to-saved-filter-groups "default")))
+                (lambda ()
+                  (ibuffer-auto-mode 1)
+                  (ibuffer-switch-to-saved-filter-groups "default")))
 
       #+END_SRC
 
@@ -4686,7 +4682,8 @@
                   ;; set flycheck checker (go lint)
                   ;; (seconf-set-flycheck-checker 'go-golint)
                   (add-hook 'before-save-hook 'gofmt-before-save)
-                  (customize-set-variable 'gofmt-command "goreturns")
+                  (customize-set-variable 'gofmt-command "goimports")
+                  ;; (customize-set-variable 'gofmt-command "goreturns")
                   ;; set dash docsets
                   (seconf-activate-docset '"Go")))
 
