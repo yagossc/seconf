@@ -1,0 +1,70 @@
+#+TITLE: Emacs Configuration File
+#+AUTHOR: yago
+#+DESCRIPTION: An Org based Emacs configuration.
+#+KEYWORDS: emacs, org, config, init.el
+#+LANGUAGE: en
+#+BABEL: :cache yes
+#+PROPERTY: header-args :tangle yes
+
+* Init
+
+  In the beginning...
+
+* Global Key Binds
+
+  Here are some very useful general purpose keybinds for both
+  navigating and editing buffers in Emacs.
+
+  The depencies here are:
+  1. lex-buffer.el (3rd party);
+  2. browse-kill-ring.el (3rd party);
+  3. simple.el;
+  4. window.el;
+
+     #+BEGIN_SRC emacs-lisp
+
+     ;; line movement
+     (global-set-key (kbd "C-a") 'back-to-indent-or-line) ;; lex-buffer.el
+     (global-set-key (kbd "C-e") 'move-end-of-line)
+
+     ;; word movement
+     (global-set-key (kbd "C-<left>") 'backward-word)
+     (global-set-key (kbd "C-<right>") 'forward-whitespace)
+
+     ;; scroll movement
+     (global-set-key (kbd "C-M-v") 'scroll-other-window)
+     (global-set-key (kbd "C-M-y") 'scroll-other-window-down)
+
+     ;; edit
+     (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
+     (global-set-key (kbd "M-i") 'indent-region-or-buffer)
+     (global-set-key (kbd "M-j") 'duplicate-line-or-region) ;; lex-buffer.el
+     (global-set-key (kbd "M-n") 'transpose-lines-up) ;; lex-buffer.el
+     (global-set-key (kbd "M-p") 'transpose-lines-down) ;; lex-buffer.el
+     (global-set-key (kbd "M-l") 'downcase-word)
+     (global-set-key (kbd "C-w") 'kill-region-or-backward-word) ;; lex-buffer.el
+
+     ;; kill
+     (define-key ctl-x-map (kbd "k") 'kill-buffer)
+
+     ;; keyboard quit. might remove this. not really used.
+     (global-set-key (kbd "M-ESC") 'keyboard-escape-quit)
+
+     ;; in buffer completion
+     ;; (global-set-key (kbd "C-M-i") 'complete-or-indent)
+
+     #+END_SRC
+
+* What's missing
+** TODO Finish Custom Lex library
+
+   For now, only =lex-buffer.el= is required;
+
+** TODO Lazy loading
+
+   Adapt to new el-lazy.
+
+** TODO Git submodules
+
+   Organize third party libraries as git submodules forked in my own
+   github.
