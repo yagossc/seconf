@@ -16,7 +16,7 @@
   navigating and editing buffers in Emacs.
 
   The depencies here are:
-  1. lex-buffer.el (3rd party);
+  1. handy-buffer.el (3rd party);
   2. browse-kill-ring.el (3rd party);
   3. simple.el;
   4. window.el;
@@ -24,7 +24,7 @@
      #+BEGIN_SRC emacs-lisp
 
      ;; line movement
-     (global-set-key (kbd "C-a") 'back-to-indent-or-line) ;; lex-buffer.el
+     (global-set-key (kbd "C-a") 'back-to-indent-or-line) ;; handy-buffer.el
      (global-set-key (kbd "C-e") 'move-end-of-line)
 
      ;; word movement
@@ -37,12 +37,15 @@
 
      ;; edit
      (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
-     (global-set-key (kbd "M-i") 'indent-region-or-buffer)
-     (global-set-key (kbd "M-j") 'duplicate-line-or-region) ;; lex-buffer.el
-     (global-set-key (kbd "M-n") 'transpose-lines-up) ;; lex-buffer.el
-     (global-set-key (kbd "M-p") 'transpose-lines-down) ;; lex-buffer.el
+     (global-set-key (kbd "M-i") 'indent-region-or-buffer) ;; handy-buffer.el
+     (global-set-key (kbd "M-j") 'duplicate-line-or-region) ;; handy-buffer.el
+     (global-set-key (kbd "M-n") 'transpose-lines-up) ;; handy-buffer.el
+     (global-set-key (kbd "M-p") 'transpose-lines-down) ;; handy-buffer.el
      (global-set-key (kbd "M-l") 'downcase-word)
-     (global-set-key (kbd "C-w") 'kill-region-or-backward-word) ;; lex-buffer.el
+     (global-set-key (kbd "C-w") 'kill-region-or-backward-word) ;; handy-buffer.el
+
+     ;; search
+     (global-set-key (kbd "M-s M-o") 'list-occurrences-at-point)
 
      ;; kill
      (define-key ctl-x-map (kbd "k") 'kill-buffer)
@@ -59,6 +62,8 @@
 ** TODO Finish Custom Lex library
 
    For now, only =lex-buffer.el= is required;
+   This is now called =handy-buffer.el= and it's available at:
+   https://github.com/yagossc/el-handy/
 
 ** TODO Lazy loading
 
