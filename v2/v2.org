@@ -148,13 +148,14 @@
      #+END_SRC
 
 * What's missing
-** TODO Finish Custom Lex library
+** DONE Finish Custom Lex library
 
    For now, only =lex-buffer.el= is required;
    This is now called =handy-buffer.el= and it's available at:
    https://github.com/yagossc/el-handy/
 
-** TODO Lazy loading
+** TODO Check other Lex dependencies
+** DONE Lazy loading
 
    Adapt to new el-lazy.
 
