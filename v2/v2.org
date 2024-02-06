@@ -12,8 +12,6 @@
   In the beginning...
   #+END_QUOTE
 
-  Things to do upon emacs startup.
-
 ** Loading/Library Search
 
    From Emacs' Info file, section =16.3 Library Search=:
@@ -113,7 +111,7 @@
      #+BEGIN_SRC emacs-lisp
 
      ;; line movement
-     (global-set-key (kbd "C-a") 'back-to-indent-or-line) ;; handy-buffer.el
+     (global-set-key (kbd "C-a") 'handy-buffer/back-to-indent-or-line) ;; handy-buffer.el
      (global-set-key (kbd "C-e") 'move-end-of-line)
 
      ;; word movement
@@ -126,15 +124,15 @@
 
      ;; edit
      (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
-     (global-set-key (kbd "M-i") 'indent-region-or-buffer) ;; handy-buffer.el
-     (global-set-key (kbd "M-j") 'duplicate-line-or-region) ;; handy-buffer.el
-     (global-set-key (kbd "M-n") 'transpose-lines-up) ;; handy-buffer.el
-     (global-set-key (kbd "M-p") 'transpose-lines-down) ;; handy-buffer.el
+     (global-set-key (kbd "M-i") 'handy-buffer/indent-region-or-buffer) ;; handy-buffer.el
+     (global-set-key (kbd "M-j") 'handy-buffer/duplicate-line-or-region) ;; handy-buffer.el
+     (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
+     (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
      (global-set-key (kbd "M-l") 'downcase-word)
-     (global-set-key (kbd "C-w") 'kill-region-or-backward-word) ;; handy-buffer.el
+     (global-set-key (kbd "C-w") 'handy-buffer/kill-region-or-backward-word) ;; handy-buffer.el
 
      ;; search
-     (global-set-key (kbd "M-s M-o") 'list-occurrences-at-point)
+     (global-set-key (kbd "M-s M-o") 'handy-buffer/list-occurrences-at-point) ;; handy-buffer
 
      ;; kill
      (define-key ctl-x-map (kbd "k") 'kill-buffer)
