@@ -269,3 +269,40 @@
    (safe-funcall 'menu-bar-mode 0)
 
    #+END_SRC
+
+** TODO Completion
+
+   This could get its own section
+
+** TODO Terminals
+
+   This could get its own section
+
+** TODO Org mode
+
+   This could get its own section
+
+** TODO Documentation
+
+   Here there could be configurations for =man=, =woman= and
+   =dash-docs=.
+
+*** TODO Dash Docs for
+
+** TODO Project Management
+
+   Here goes magit and projectile and that's it.
+
+*** TODO Magit
+*** TODO Projectile
+
+** TODO Programming
+
+   Here goes the editing code specifics.
+
+*** TODO General
+*** TODO Language Specific
+
+** TODO Cleanup
+
+   For removing key-binds from minor modes, etc.
