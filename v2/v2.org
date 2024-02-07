@@ -139,7 +139,7 @@
      (let ((dir (expand-file-name "lisp/" user-emacs-directory))
            (outputfile "lisp-loaddefs.el"))
        (loaddefs-generate
-        (cl-remove-if-not #'file-directory-p (directory-files dir t "^[^.]"))
+        (cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
         (expand-file-name outputfile dir) nil nil nil generate-full)
        (when generate-full
          (message "Fully generated new lisp-loaddefs.el file"))))
@@ -214,6 +214,41 @@
      ;; (global-set-key (kbd "C-M-i") 'complete-or-indent)
 
      #+END_SRC
+
+* Project Management
+
+  We'll use two libraries for project management and this choice
+  assumes we use =git= for the majority our projects.
+
+** Projectile
+
+   Might not be needed. Emacs has a =project= library at its core now,
+   that has basically all projectile features we need.
+
+* Version Control (i.e.: Magit)
+
+  Magit is a true git porcelain. So, we're simply going to bind a key
+  to invoke Magit from a project:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (define-key ctl-x-map (kbd "j") 'magit-status)
+
+  #+END_SRC
+
+  Magit has a couple of external denpencies:
+
+  - =compat=, =dash=, =transient= and =with-editor=.
+
+  And adding the following key-binds to =text-mode-map= is useful when
+  editing commit messages.
+
+  #+BEGIN_SRC emacs-lisp
+
+  (define-key text-mode-map (kbd "C-c C-k") 'with-editor-cancel)
+  (define-key text-mode-map (kbd "C-c C-c") 'with-editor-finish)
+
+  #+END_SRC
 
 * What's missing
 ** DONE Finish Custom Lex library
