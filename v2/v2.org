@@ -242,3 +242,16 @@
 *** TODO Create if doesn't exist: ~/.emacs.d/ symbolic link
 *** TODO Create if doesn't exist: ~/.emacs.d/lisp
 *** TODO Create if doesn't exist: ~/.emacs.d/lisp/subdirs.le
+
+** TODO Create needed sections
+
+   As of now, it seems to make sense to have the 3 sections:
+   - Frames;
+   - Windows;
+   - Buffers;
+
+   And add to them all the global "generic" configurations (hooks,
+   macros, variable customizations, etc.
+
+   Also maybe a "Display" or "Screen" section for things like the
+   menubar, highlight line, etc.
