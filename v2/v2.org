@@ -255,3 +255,7 @@
 
    Also maybe a "Display" or "Screen" section for things like the
    menubar, highlight line, etc.
+
+** TODO Minibuffer
+
+   This takes its own section
