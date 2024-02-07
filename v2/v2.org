@@ -259,3 +259,13 @@
 ** TODO Minibuffer
 
    This takes its own section
+
+** TODO Custom file
+
+   The =custom.el= is a good place for calls like
+
+   #+BEGIN_SRC emacs-lisp :tangle no
+
+   (safe-funcall 'menu-bar-mode 0)
+
+   #+END_SRC
