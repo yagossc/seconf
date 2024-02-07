@@ -234,3 +234,11 @@
 
    Organize third party libraries as git submodules forked in my own
    github.
+
+** TODO Install script
+
+   This should contain the following:
+
+*** TODO Create if doesn't exist: ~/.emacs.d/ symbolic link
+*** TODO Create if doesn't exist: ~/.emacs.d/lisp
+*** TODO Create if doesn't exist: ~/.emacs.d/lisp/subdirs.le
