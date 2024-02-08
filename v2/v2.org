@@ -113,7 +113,7 @@
 
    #+END_SRC
 
-   We now need our custom libraries' symbols, so we'll generate a
+   We now need our custom libraries' symbols. So we'll generate a
    =lisp-loaddefs.el= file inside our =load-path= entry, i.e., inside
    of =~/.emacs.d/lisp=.
 
@@ -134,7 +134,7 @@
    (defun seconf/generate-loaddefs (&optional generate-full)
      "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
    If called interactively, regenerate all the loaddefs files anew, instead of just
-   updating them with the new/changed autoloads."
+   updating it (if needed)."
      (interactive "p")
      (let ((dir (expand-file-name "lisp/" user-emacs-directory))
            (outputfile "lisp-loaddefs.el"))
@@ -178,42 +178,42 @@
   3. simple.el;
   4. window.el;
 
-     #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
-     ;; line movement
-     (global-set-key (kbd "C-a") 'handy-buffer/back-to-indent-or-line) ;; handy-buffer.el
-     (global-set-key (kbd "C-e") 'move-end-of-line)
+  ;; line movement
+  (global-set-key (kbd "C-a") 'handy-buffer/back-to-indent-or-line) ;; handy-buffer.el
+  (global-set-key (kbd "C-e") 'move-end-of-line)
 
-     ;; word movement
-     (global-set-key (kbd "C-<left>") 'backward-word)
-     (global-set-key (kbd "C-<right>") 'forward-whitespace)
+  ;; word movement
+  (global-set-key (kbd "C-<left>") 'backward-word)
+  (global-set-key (kbd "C-<right>") 'forward-whitespace)
 
-     ;; scroll movement
-     (global-set-key (kbd "C-M-v") 'scroll-other-window)
-     (global-set-key (kbd "C-M-y") 'scroll-other-window-down)
+  ;; scroll movement
+  (global-set-key (kbd "C-M-v") 'scroll-other-window)
+  (global-set-key (kbd "C-M-y") 'scroll-other-window-down)
 
-     ;; edit
-     (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
-     (global-set-key (kbd "M-i") 'handy-buffer/indent-region-or-buffer) ;; handy-buffer.el
-     (global-set-key (kbd "M-j") 'handy-buffer/duplicate-line-or-region) ;; handy-buffer.el
-     (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
-     (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
-     (global-set-key (kbd "M-l") 'downcase-word)
-     (global-set-key (kbd "C-w") 'handy-buffer/kill-region-or-backward-word) ;; handy-buffer.el
+  ;; edit
+  (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
+  (global-set-key (kbd "M-i") 'handy-buffer/indent-region-or-buffer) ;; handy-buffer.el
+  (global-set-key (kbd "M-j") 'handy-buffer/duplicate-line-or-region) ;; handy-buffer.el
+  (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
+  (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
+  (global-set-key (kbd "M-l") 'downcase-word)
+  (global-set-key (kbd "C-w") 'handy-buffer/kill-region-or-backward-word) ;; handy-buffer.el
 
-     ;; search
-     (global-set-key (kbd "M-s M-o") 'handy-buffer/list-occurrences-at-point) ;; handy-buffer
+  ;; search
+  (global-set-key (kbd "M-s M-o") 'handy-buffer/list-occurrences-at-point) ;; handy-buffer
 
-     ;; kill
-     (define-key ctl-x-map (kbd "k") 'kill-buffer)
+  ;; kill
+  (define-key ctl-x-map (kbd "k") 'kill-buffer)
 
-     ;; keyboard quit. might remove this. not really used.
-     (global-set-key (kbd "M-ESC") 'keyboard-escape-quit)
+  ;; keyboard quit. might remove this. not really used.
+  (global-set-key (kbd "M-ESC") 'keyboard-escape-quit)
 
-     ;; in buffer completion
-     ;; (global-set-key (kbd "C-M-i") 'complete-or-indent)
+  ;; in buffer completion
+  ;; (global-set-key (kbd "C-M-i") 'complete-or-indent)
 
-     #+END_SRC
+  #+END_SRC
 
 * Project Management
 
@@ -328,7 +328,7 @@
 
    Here goes magit and projectile and that's it.
 
-*** TODO Magit
+*** DONE Magit
 *** TODO Projectile
 
 ** TODO Programming
