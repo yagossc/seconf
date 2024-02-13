@@ -282,6 +282,19 @@
 
   #+END_SRC
 
+* Customizations
+
+  Disabling all "bars" in order to have a "clean screen":
+
+  #+BEGIN_SRC emacs-lisp
+
+  (custom-set-variables
+   '(menu-bar-mode nil)
+   '(scroll-bar-mode nil)
+   '(tool-bar-mode nil))
+
+  #+END_SRC
+
 * What's missing
 ** DONE Finish Custom Lex library
 
