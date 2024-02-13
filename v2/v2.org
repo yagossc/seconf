@@ -215,6 +215,38 @@
 
   #+END_SRC
 
+* Dealing with Directories (dired)
+
+  =dired= is the main tool for dealing with directories inside Emacs.
+  Here are some really minor tweaks for an improved usage.
+
+  Avoid creating a bunch of buffers from the directories accessed from
+  =dired=:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; enable dired-find-alternate-file
+  (add-hook 'window-setup-hook
+            (lambda ()
+              (put 'dired-find-alternate-file 'disabled nil)))
+
+  #+END_SRC
+
+  And add some key-binds to improve usability:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; dired-mode-map
+  (eval-after-load 'dired
+    (lambda ()
+      (when (boundp 'dired-mode-map)
+        (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+        (define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
+
+  #+END_SRC
+
+
+* Dealing with Buffers
 * Project Management
 
   We'll use two libraries for project management and this choice
@@ -225,7 +257,7 @@
    Might not be needed. Emacs has a =project= library at its core now,
    that has basically all projectile features we need.
 
-* Version Control (i.e.: Magit)
+* Version Control (magit)
 
   Magit is a true git porcelain. So, we're simply going to bind a key
   to invoke Magit from a project:
