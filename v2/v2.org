@@ -40,9 +40,8 @@
    This is important because we don't use a package manager for the
    chosen external libraries. We handle our dependencies by adding our
    =~/.emacs.d/lisp= directory (containing the external libraries) to
-   Emacs' =load-path= by using the =EMACSLOADPATH= environment
-   variable. Therefore, the following snippet is present in our
-   =.xinitrc= file:
+   Emacs' =load-path= using the =EMACSLOADPATH= environment variable.
+   Therefore, the following snippet is present in our =.xinitrc= file:
 
    #+BEGIN_SRC sh
 
@@ -83,6 +82,10 @@
        (normal-top-level-add-subdirs-to-load-path))
 
    #+END_SRC
+
+   /NOTE: One can also read more about Emacs' startup at the Info/
+   /section "Startup Summary"./
+   /Refer to: =C-h= =i= =g= (elisp)Startup Summary RET/
 
    The use of a "custom load-path directory" is tied to the use of the
    =autload= funcionality described in the next section.
@@ -167,6 +170,65 @@
 
    #+END_SRC
 
+** History and Cache
+
+   For many functionalities that go through the minibuffer, having a
+   list of =previously used candidates= depends on having a set
+   =history variable= (that can also be viewed as a cached list of
+   candidates). Among these variables we have things such as:
+   =extended-command-history=, =file-name-history=,
+   =minibuffer-history=, =buffer-name-history=,
+   =shell-command-history= and many others.
+
+   Needles to say, this is a "must have" feature to be enabled.
+
+   Therefore, we can use =savehist= to populate these variables and
+   additionally persist this "history" in a file.
+
+   The target directory here is going to be called =cache= in lack of
+   a better name.
+
+   Hence, our code here is going to:
+
+   1. "Create if it doesn't exist" the =~/.emacs.d/cache= directory;
+   2. Configure some settings from =savehist=;
+   3. Enable =savehist mode=.
+
+   #+BEGIN_SRC emacs-lisp
+
+   (let ((cache-dir (expand-file-name "cache/" user-emacs-directory)))
+     (unless (file-exists-p cache-dir)
+       (make-directory cache-dir)))
+
+   #+END_SRC
+
+   Now, configure =savehist=:
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; file name where minibuffer history is saved to and loaded from.
+   (customize-set-variable
+    'savehist-file (concat user-emacs-directory "cache/history"))
+
+   ;; if non-nil, save all recorded minibuffer histories.
+   (customize-set-variable 'savehist-save-minibuffer-history t)
+
+   ;; maximum length of history lists before truncation takes place
+   (customize-set-variable 'history-length 1024)
+
+   #+END_SRC
+
+   And finally, enable =savehist mode=:
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; enable savehist mode
+   (add-hook 'window-setup-hook
+             (lambda ()
+               (funcall 'savehist-mode 1)))
+
+   #+END_SRC
+
 * Global Key Binds
 
   Here are some very useful general purpose keybinds for both
@@ -244,7 +306,6 @@
         (define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
 
   #+END_SRC
-
 
 * Dealing with Buffers
 * Project Management
