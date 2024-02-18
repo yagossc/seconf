@@ -132,20 +132,19 @@
 
    #+BEGIN_SRC emacs-lisp
 
-   (require 'cl-seq)
+     (require 'cl-seq)
 
-   (defun seconf/generate-loaddefs (&optional generate-full)
-     "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
-   If called interactively, regenerate all the loaddefs files anew, instead of just
-   updating it (if needed)."
-     (interactive "p")
-     (let ((dir (expand-file-name "lisp/" user-emacs-directory))
-           (outputfile "lisp-loaddefs.el"))
-       (loaddefs-generate
-        (cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
-        (expand-file-name outputfile dir) nil nil nil generate-full)
-       (when generate-full
-         (message "Fully generated new lisp-loaddefs.el file"))))
+     (defun seconf/generate-loaddefs (&optional generate-full)
+       "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
+     If called interactively, regenerate all loaddefs."
+       (interactive "p")
+       (let ((dir (expand-file-name "lisp/" user-emacs-directory))
+         (outputfile "lisp-loaddefs.el"))
+     (loaddefs-generate
+      (cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
+      (expand-file-name outputfile dir) nil nil nil generate-full)
+     (when generate-full
+       (message "Fully generated new lisp-loaddefs.el file"))))
 
    #+END_SRC
 
@@ -308,6 +307,148 @@
   #+END_SRC
 
 * Dealing with Buffers
+
+  This is a large (and probably chaotic) section for everything we
+  consider to be "dealing with buffers". Hence, there might be some
+  functions and variables mentioned here that are =technically=
+  "dealing with windows", however, since the "side effects feel like"
+  they're being applied to the buffer being displayed, we'll keep
+  these functions and variables here.
+
+** Manipulating Buffers
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; kill buffer and window
+   (define-key ctl-x-map (kbd "C-k") 'kill-buffer-and-window)
+
+   #+END_SRC
+
+** Editing Buffers
+
+** Navigating through Buffers
+
+   Here are some general purpose binds/commands for navigating through
+   buffers.
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; next and previous buffer (on current window)
+   (define-key ctl-x-map (kbd "C-,") 'previous-buffer)
+   (define-key ctl-x-map (kbd "C-.") 'next-buffer)
+
+   #+END_SRC
+
+   The following are specific libraries/subsections related to buffer
+   navigation.
+
+*** Ibuffer
+
+    Ibuffer is a major mode for viewing buffers arranged as a list.
+    This lib provides a convenient way of performing many operations
+    on opened buffers as well as many ways of manipulating the
+    arranged list, i.e., filtering subsets of list elements,
+    aggregating related buffers, etc.
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; the criteria by which to sort the buffers
+    (customize-set-variable 'ibuffer-default-sorting-mode 'filename/process)
+
+    ;; if non-nil, display the current Ibuffer buffer itself
+    (customize-set-variable 'ibuffer-view-ibuffer nil)
+
+    ;; if non-nil, then show the names of filter groups which are empty
+    (customize-set-variable 'ibuffer-show-empty-filter-groups nil)
+
+    #+END_SRC
+
+    As mentioned, Ibuffer accepts an association list as instruction
+    on how to filter/separate displayed opened buffers.
+
+    #+BEGIN_SRC emacs-lisp
+    (customize-set-variable
+     'ibuffer-saved-filter-groups
+     (quote (("default"
+              ("Emacs" (or
+                        (name . "^\\*eldoc for")
+                        (name . "^\\*scratch\\*$")
+                        (name . "^\\*Warnings\\*$")
+                        (name . "^\\*Completions\\*$")
+                        (name . "^\\*Completions\\*$")
+                        (name . "^\\*Messages\\*$")))
+
+              ("Comint" (or
+                         (mode . comint-mode)
+                         (name . "^\\*dashboard\\*$")
+                         (name . "^\\*tramp")
+                         (name . "^\\*make\\*$")))
+
+              ("Custom" (mode . Custom-mode))
+
+              ("Info"  (or
+                        (mode . Info-mode)
+                        (mode . dictionary-mode)
+                        (mode . help-mode)
+                        (mode . apropos-mode)
+                        (mode . Man-mode)))
+
+              ("Tags" (or
+                       (mode . tags-table-mode)
+                       (mode . xref--xref-buffer-mode)))
+
+              ("Compilation" (or
+                              (mode . compilation-mode)
+                              (mode . emacs-lisp-compilation-mode)
+                              (name . "^\\*compilation\\*$")))
+
+              ("Debug"  (or (mode . debugger-mode)
+                            (name . "^\\*debug")))
+
+              ("Grep" (or
+                       (mode . ag-mode)
+                       (mode . occur-mode)))
+
+              ("Term" (mode . term-mode))
+              ("Shell" (or
+                        (mode . shell-mode)
+                        (mode . eshell-mode)))
+
+              ("Eww" (mode . eww-mode))
+              ("Dired" (mode . dired-mode))
+
+              ("Magit" (or
+                        (mode . magit-mode)
+                        (mode . magit-status-mode)
+                        (mode . magit-diff-mode)
+                        (mode . magit-process-mode)))))))
+    #+END_SRC
+
+    Now, let's add a some calls to =ibuffer-mode-hook= to tell it how
+    to behave upon its entry:
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; hook run upon entry into `ibuffer-mode'
+    (add-hook 'ibuffer-mode-hook
+              (lambda ()
+                (ibuffer-auto-mode 1)
+                (ibuffer-switch-to-saved-filter-groups "default")))
+
+    #+END_SRC
+
+    And, ~finally~, let's add a key bind so we can quickly call it:
+
+    #+BEGIN_SRC emacs-lisp
+
+    (define-key ctl-x-map (kbd "C-b") 'ibuffer)
+
+    #+END_SRC
+
+
+** Navigating inside Buffers
+
+* Dealing with Windows
 * Project Management
 
   We'll use two libraries for project management and this choice
