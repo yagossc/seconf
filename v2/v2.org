@@ -140,12 +140,12 @@
    If called interactively, regenerate all loaddefs."
      (interactive "p")
      (let ((dir (expand-file-name "lisp/" user-emacs-directory))
-	   (outputfile "lisp-loaddefs.el"))
+           (outputfile "lisp-loaddefs.el"))
        (loaddefs-generate
-	(cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
-	(expand-file-name outputfile dir) nil nil nil generate-full)
+        (cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
+        (expand-file-name outputfile dir) nil nil nil generate-full)
        (when generate-full
-	 (message "Fully generated new lisp-loaddefs.el file"))))
+         (message "Fully generated new lisp-loaddefs.el file"))))
 
    #+END_SRC
 
@@ -155,8 +155,8 @@
    #+BEGIN_SRC emacs-lisp
 
    (add-hook 'window-setup-hook
-	     (lambda ()
-	       (seconf/generate-loaddefs)))
+             (lambda ()
+               (seconf/generate-loaddefs)))
 
    #+END_SRC
 
@@ -225,8 +225,8 @@
 
    ;; enable savehist mode
    (add-hook 'window-setup-hook
-	     (lambda ()
-	       (funcall 'savehist-mode 1)))
+             (lambda ()
+               (funcall 'savehist-mode 1)))
 
    #+END_SRC
 
@@ -291,8 +291,8 @@
 
   ;; enable dired-find-alternate-file
   (add-hook 'window-setup-hook
-	    (lambda ()
-	      (put 'dired-find-alternate-file 'disabled nil)))
+            (lambda ()
+              (put 'dired-find-alternate-file 'disabled nil)))
 
   #+END_SRC
 
@@ -304,8 +304,8 @@
   (eval-after-load 'dired
     (lambda ()
       (when (boundp 'dired-mode-map)
-	(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-	(define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
+        (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+        (define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
 
   #+END_SRC
 
@@ -374,58 +374,61 @@
     (customize-set-variable
      'ibuffer-saved-filter-groups
      (quote (("default"
-	      ("Emacs" (or
-			(name . "^\\*eldoc for")
-			(name . "^\\*scratch\\*$")
-			(name . "^\\*Warnings\\*$")
-			(name . "^\\*Completions\\*$")
-			(name . "^\\*Completions\\*$")
-			(name . "^\\*Messages\\*$")))
+              ("Emacs" (or
+                        (name . "^\\*eldoc for")
+                        (name . "^\\*scratch\\*$")
+                        (name . "^\\*Warnings\\*$")
+                        (name . "^\\*Completions\\*$")
+                        (name . "^\\*Completions\\*$")
+                        (name . "^\\*Messages\\*$")))
 
-	      ("Comint" (or
-			 (mode . comint-mode)
-			 (name . "^\\*dashboard\\*$")
-			 (name . "^\\*tramp")
-			 (name . "^\\*make\\*$")))
+              ("Comint" (or
+                         (mode . comint-mode)
+                         (name . "^\\*dashboard\\*$")
+                         (name . "^\\*tramp")
+                         (name . "^\\*make\\*$")))
 
-	      ("Custom" (mode . Custom-mode))
+              ("Custom" (mode . Custom-mode))
 
-	      ("Info"  (or
-			(mode . Info-mode)
-			(mode . dictionary-mode)
-			(mode . help-mode)
-			(mode . apropos-mode)
-			(mode . Man-mode)))
+              ("Info"  (or
+                        (mode . Info-mode)
+                        (mode . dictionary-mode)
+                        (mode . help-mode)
+                        (mode . apropos-mode)
+                        (mode . Man-mode)))
 
-	      ("Tags" (or
-		       (mode . tags-table-mode)
-		       (mode . xref--xref-buffer-mode)))
+              ("Tags" (or
+                       (mode . tags-table-mode)
+                       (mode . xref--xref-buffer-mode)))
 
-	      ("Compilation" (or
-			      (mode . compilation-mode)
-			      (mode . emacs-lisp-compilation-mode)
-			      (name . "^\\*compilation\\*$")))
+              ("Compilation" (or
+                              (mode . compilation-mode)
+                              (mode . emacs-lisp-compilation-mode)
+                              (name . "^\\*compilation\\*$")))
 
-	      ("Debug"  (or (mode . debugger-mode)
-			    (name . "^\\*debug")))
+              ("Debug"  (or (mode . debugger-mode)
+                            (name . "^\\*debug")))
 
-	      ("Grep" (or
-		       (mode . ag-mode)
-		       (mode . occur-mode)))
+              ("Org" (or (mode . org-mode)
+                         (name . "\\.org")))
 
-	      ("Term" (mode . term-mode))
-	      ("Shell" (or
-			(mode . shell-mode)
-			(mode . eshell-mode)))
+              ("Grep" (or
+                       (mode . ag-mode)
+                       (mode . occur-mode)))
 
-	      ("Eww" (mode . eww-mode))
-	      ("Dired" (mode . dired-mode))
+              ("Term" (mode . term-mode))
+              ("Shell" (or
+                        (mode . shell-mode)
+                        (mode . eshell-mode)))
 
-	      ("Magit" (or
-			(mode . magit-mode)
-			(mode . magit-status-mode)
-			(mode . magit-diff-mode)
-			(mode . magit-process-mode)))))))
+              ("Eww" (mode . eww-mode))
+              ("Dired" (mode . dired-mode))
+
+              ("Magit" (or
+                        (mode . magit-mode)
+                        (mode . magit-status-mode)
+                        (mode . magit-diff-mode)
+                        (mode . magit-process-mode)))))))
 
     #+END_SRC
 
@@ -436,9 +439,9 @@
 
     ;; hook run upon entry into `ibuffer-mode'
     (add-hook 'ibuffer-mode-hook
-	      (lambda ()
-		(ibuffer-auto-mode 1)
-		(ibuffer-switch-to-saved-filter-groups "default")))
+              (lambda ()
+                (ibuffer-auto-mode 1)
+                (ibuffer-switch-to-saved-filter-groups "default")))
 
     #+END_SRC
 
@@ -525,6 +528,7 @@
 
   ;; non-nil means adapt indentation to outline node level.
   (customize-set-variable 'org-adapt-indentation t)
+
   #+END_SRC
 
   And, as seen in this file, Org allows for code block
@@ -535,16 +539,16 @@
   #+BEGIN_SRC emacs-lisp
 
   (add-hook 'org-mode-hook
-	    (lambda ()
-	      ;; do not truncate lines
-	      (setq truncate-lines nil)
+            (lambda ()
+              ;; do not truncate lines
+              (setq truncate-lines nil)
 
-	      ;; languages which can be evaluated in Org buffers.
-	      (org-babel-do-load-languages
-	       'org-babel-load-languages
-	       '((emacs-lisp . t)
-		 (shell . t)
-		 (python . t)))))
+              ;; languages which can be evaluated in Org buffers.
+              (org-babel-do-load-languages
+               'org-babel-load-languages
+               '((emacs-lisp . t)
+                 (shell . t)
+                 (python . t)))))
 
   #+END_SRC
 
@@ -602,6 +606,11 @@
    Also maybe a "Display" or "Screen" section for things like the
    menubar, highlight line, etc.
 
+** TODO Theme
+
+   - Fiddle with darcula theme until good enough;
+   - Remove unused customizations;
+
 ** TODO Minibuffer
 
    This takes its own section
@@ -624,7 +633,7 @@
 
    This could get its own section
 
-** TODO Org mode
+** DONE Org mode
 
    This could get its own section
 
