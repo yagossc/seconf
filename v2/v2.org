@@ -126,25 +126,26 @@
       all definitions marked with the magic =;;;###autoload= comment;
    3. Add those symbols to our =lisp-loaddefs.el=.
 
+
    As an extra credit, our function will allow =interactive= calls, in
    which case the =lisp=loaddefs.el= file will be entirely
    "regenerated".
 
    #+BEGIN_SRC emacs-lisp
 
-     (require 'cl-seq)
+   (require 'cl-seq)
 
-     (defun seconf/generate-loaddefs (&optional generate-full)
-       "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
-     If called interactively, regenerate all loaddefs."
-       (interactive "p")
-       (let ((dir (expand-file-name "lisp/" user-emacs-directory))
-         (outputfile "lisp-loaddefs.el"))
-     (loaddefs-generate
-      (cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
-      (expand-file-name outputfile dir) nil nil nil generate-full)
-     (when generate-full
-       (message "Fully generated new lisp-loaddefs.el file"))))
+   (defun seconf/generate-loaddefs (&optional generate-full)
+     "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
+   If called interactively, regenerate all loaddefs."
+     (interactive "p")
+     (let ((dir (expand-file-name "lisp/" user-emacs-directory))
+	   (outputfile "lisp-loaddefs.el"))
+       (loaddefs-generate
+	(cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
+	(expand-file-name outputfile dir) nil nil nil generate-full)
+       (when generate-full
+	 (message "Fully generated new lisp-loaddefs.el file"))))
 
    #+END_SRC
 
@@ -154,8 +155,8 @@
    #+BEGIN_SRC emacs-lisp
 
    (add-hook 'window-setup-hook
-             (lambda ()
-               (seconf/generate-loaddefs)))
+	     (lambda ()
+	       (seconf/generate-loaddefs)))
 
    #+END_SRC
 
@@ -193,6 +194,7 @@
    2. Configure some settings from =savehist=;
    3. Enable =savehist mode=.
 
+
    #+BEGIN_SRC emacs-lisp
 
    (let ((cache-dir (expand-file-name "cache/" user-emacs-directory)))
@@ -223,8 +225,8 @@
 
    ;; enable savehist mode
    (add-hook 'window-setup-hook
-             (lambda ()
-               (funcall 'savehist-mode 1)))
+	     (lambda ()
+	       (funcall 'savehist-mode 1)))
 
    #+END_SRC
 
@@ -238,6 +240,7 @@
   2. browse-kill-ring.el (3rd party);
   3. simple.el;
   4. window.el;
+
 
   #+BEGIN_SRC emacs-lisp
 
@@ -288,8 +291,8 @@
 
   ;; enable dired-find-alternate-file
   (add-hook 'window-setup-hook
-            (lambda ()
-              (put 'dired-find-alternate-file 'disabled nil)))
+	    (lambda ()
+	      (put 'dired-find-alternate-file 'disabled nil)))
 
   #+END_SRC
 
@@ -301,8 +304,8 @@
   (eval-after-load 'dired
     (lambda ()
       (when (boundp 'dired-mode-map)
-        (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-        (define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
+	(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+	(define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
 
   #+END_SRC
 
@@ -367,61 +370,63 @@
     on how to filter/separate displayed opened buffers.
 
     #+BEGIN_SRC emacs-lisp
+
     (customize-set-variable
      'ibuffer-saved-filter-groups
      (quote (("default"
-              ("Emacs" (or
-                        (name . "^\\*eldoc for")
-                        (name . "^\\*scratch\\*$")
-                        (name . "^\\*Warnings\\*$")
-                        (name . "^\\*Completions\\*$")
-                        (name . "^\\*Completions\\*$")
-                        (name . "^\\*Messages\\*$")))
+	      ("Emacs" (or
+			(name . "^\\*eldoc for")
+			(name . "^\\*scratch\\*$")
+			(name . "^\\*Warnings\\*$")
+			(name . "^\\*Completions\\*$")
+			(name . "^\\*Completions\\*$")
+			(name . "^\\*Messages\\*$")))
 
-              ("Comint" (or
-                         (mode . comint-mode)
-                         (name . "^\\*dashboard\\*$")
-                         (name . "^\\*tramp")
-                         (name . "^\\*make\\*$")))
+	      ("Comint" (or
+			 (mode . comint-mode)
+			 (name . "^\\*dashboard\\*$")
+			 (name . "^\\*tramp")
+			 (name . "^\\*make\\*$")))
 
-              ("Custom" (mode . Custom-mode))
+	      ("Custom" (mode . Custom-mode))
 
-              ("Info"  (or
-                        (mode . Info-mode)
-                        (mode . dictionary-mode)
-                        (mode . help-mode)
-                        (mode . apropos-mode)
-                        (mode . Man-mode)))
+	      ("Info"  (or
+			(mode . Info-mode)
+			(mode . dictionary-mode)
+			(mode . help-mode)
+			(mode . apropos-mode)
+			(mode . Man-mode)))
 
-              ("Tags" (or
-                       (mode . tags-table-mode)
-                       (mode . xref--xref-buffer-mode)))
+	      ("Tags" (or
+		       (mode . tags-table-mode)
+		       (mode . xref--xref-buffer-mode)))
 
-              ("Compilation" (or
-                              (mode . compilation-mode)
-                              (mode . emacs-lisp-compilation-mode)
-                              (name . "^\\*compilation\\*$")))
+	      ("Compilation" (or
+			      (mode . compilation-mode)
+			      (mode . emacs-lisp-compilation-mode)
+			      (name . "^\\*compilation\\*$")))
 
-              ("Debug"  (or (mode . debugger-mode)
-                            (name . "^\\*debug")))
+	      ("Debug"  (or (mode . debugger-mode)
+			    (name . "^\\*debug")))
 
-              ("Grep" (or
-                       (mode . ag-mode)
-                       (mode . occur-mode)))
+	      ("Grep" (or
+		       (mode . ag-mode)
+		       (mode . occur-mode)))
 
-              ("Term" (mode . term-mode))
-              ("Shell" (or
-                        (mode . shell-mode)
-                        (mode . eshell-mode)))
+	      ("Term" (mode . term-mode))
+	      ("Shell" (or
+			(mode . shell-mode)
+			(mode . eshell-mode)))
 
-              ("Eww" (mode . eww-mode))
-              ("Dired" (mode . dired-mode))
+	      ("Eww" (mode . eww-mode))
+	      ("Dired" (mode . dired-mode))
 
-              ("Magit" (or
-                        (mode . magit-mode)
-                        (mode . magit-status-mode)
-                        (mode . magit-diff-mode)
-                        (mode . magit-process-mode)))))))
+	      ("Magit" (or
+			(mode . magit-mode)
+			(mode . magit-status-mode)
+			(mode . magit-diff-mode)
+			(mode . magit-process-mode)))))))
+
     #+END_SRC
 
     Now, let's add a some calls to =ibuffer-mode-hook= to tell it how
@@ -431,9 +436,9 @@
 
     ;; hook run upon entry into `ibuffer-mode'
     (add-hook 'ibuffer-mode-hook
-              (lambda ()
-                (ibuffer-auto-mode 1)
-                (ibuffer-switch-to-saved-filter-groups "default")))
+	      (lambda ()
+		(ibuffer-auto-mode 1)
+		(ibuffer-switch-to-saved-filter-groups "default")))
 
     #+END_SRC
 
@@ -474,13 +479,72 @@
 
   - =compat=, =dash=, =transient= and =with-editor=.
 
-  And adding the following key-binds to =text-mode-map= is useful when
-  editing commit messages.
+    And adding the following key-binds to =text-mode-map= is useful when
+    editing commit messages.
+
+    #+BEGIN_SRC emacs-lisp
+
+    (define-key text-mode-map (kbd "C-c C-k") 'with-editor-cancel)
+    (define-key text-mode-map (kbd "C-c C-c") 'with-editor-finish)
+
+    #+END_SRC
+
+* Org Mode
+
+  #+BEGIN_QUOTE
+  Org Mode is an authoring tool and a TODO lists manager for GNU Emacs.
+  It relies on a lightweight plain-text markup language used in files with
+  the ‘.org’ extension.
+  #+END_QUOTE
+
+  Org is amazing and makes so many things (like this configuration
+  file) possible.
+
+  Here are some simple configurations:
 
   #+BEGIN_SRC emacs-lisp
 
-  (define-key text-mode-map (kbd "C-c C-k") 'with-editor-cancel)
-  (define-key text-mode-map (kbd "C-c C-c") 'with-editor-finish)
+  ;; when non-nil, fontify code in code blocks
+  (customize-set-variable 'org-src-fontify-natively t)
+
+  ;; if non-nil, the effect of TAB in a code block is as if it were
+  ;; issued in the language major mode buffer
+  (customize-set-variable 'org-src-tab-acts-natively t)
+
+  ;; indentation for the content of a source code block.
+  (customize-set-variable 'org-edit-src-content-indentation 0)
+
+  ;; confirm before evaluation
+  (customize-set-variable 'org-confirm-babel-evaluate t)
+
+  ;; how the source code edit buffer should be displayed
+  (customize-set-variable 'org-src-window-setup 'current-window)
+
+  ;; non-nil means C-a and C-e behave specially in headlines and items
+  (customize-set-variable 'org-special-ctrl-a/e t)
+
+  ;; non-nil means adapt indentation to outline node level.
+  (customize-set-variable 'org-adapt-indentation t)
+  #+END_SRC
+
+  And, as seen in this file, Org allows for code block
+  execution/evaluation and to inform Org of the languages we wish to
+  use, we have to add entries to the =org-babel-load-languages=
+  variable:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'org-mode-hook
+	    (lambda ()
+	      ;; do not truncate lines
+	      (setq truncate-lines nil)
+
+	      ;; languages which can be evaluated in Org buffers.
+	      (org-babel-do-load-languages
+	       'org-babel-load-languages
+	       '((emacs-lisp . t)
+		 (shell . t)
+		 (python . t)))))
 
   #+END_SRC
 
