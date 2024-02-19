@@ -592,9 +592,40 @@
 
    This should contain the following:
 
-*** TODO Create if doesn't exist: ~/.emacs.d/ symbolic link
-*** TODO Create if doesn't exist: ~/.emacs.d/lisp
-*** TODO Create if doesn't exist: ~/.emacs.d/lisp/subdirs.le
+*** DONE Create if doesn't exist: "~/.emacs.d" symbolic link
+
+    #+BEGIN_SRC sh
+
+    _src_dir=$(pwd)
+
+    echo $_src_dir
+
+    if [ -e ~/.emacs.d ]
+    then
+        echo "[INFO] ~/.emacs.d symbolic link already exists"
+    else
+        ln -s $_src_dir ~/.emacs.d
+    fi
+
+    #+END_SRC
+
+*** DONE Create if doesn't exist: ~/.emacs.d/lisp
+
+    #+BEGIN_SRC sh
+
+    if [ -e ~/.emacs.d/lisp ]
+    then
+        echo "[INFO] ~/.emacs.d/lisp dir already exists"
+    else
+        mkdir ~/.emacs.d/lisp
+    fi
+
+    #+END_SRC
+
+*** TODO Create if doesn't exist: ~/.emacs.d/lisp/subdirs.el
+
+    It might make more sense for this to be part of the =init.el= and
+    not an =install.sh= script.
 
 ** TODO Create needed sections
 
