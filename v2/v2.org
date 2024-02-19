@@ -453,7 +453,6 @@
 
     #+END_SRC
 
-
 ** Navigating inside Buffers
 
 * Dealing with Windows
@@ -469,6 +468,9 @@
 
 * Version Control (magit)
 
+  /Note: Please refer to [[https://magit.vc/manual/magit/Installing-from-the-Git-Repository.html][this manual]] for Magit's installation and/
+  /proper =loaddefs= generation./
+
   Magit is a true git porcelain. So, we're simply going to bind a key
   to invoke Magit from a project:
 
@@ -482,15 +484,15 @@
 
   - =compat=, =dash=, =transient= and =with-editor=.
 
-    And adding the following key-binds to =text-mode-map= is useful when
-    editing commit messages.
+  And adding the following key-binds to =text-mode-map= is useful when
+  editing commit messages.
 
-    #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
-    (define-key text-mode-map (kbd "C-c C-k") 'with-editor-cancel)
-    (define-key text-mode-map (kbd "C-c C-c") 'with-editor-finish)
+  (define-key text-mode-map (kbd "C-c C-k") 'with-editor-cancel)
+  (define-key text-mode-map (kbd "C-c C-c") 'with-editor-finish)
 
-    #+END_SRC
+  #+END_SRC
 
 * Org Mode
 
@@ -527,6 +529,7 @@
   (customize-set-variable 'org-special-ctrl-a/e t)
 
   ;; non-nil means adapt indentation to outline node level.
+  ;; important: without this org messes up the file indentation.
   (customize-set-variable 'org-adapt-indentation t)
 
   #+END_SRC
