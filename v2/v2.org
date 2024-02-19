@@ -230,52 +230,60 @@
 
    #+END_SRC
 
-* Global Key Binds
+* System-wide Configurations
 
-  Here are some very useful general purpose keybinds for both
-  navigating and editing buffers in Emacs.
-
-  The depencies here are:
-  1. handy-buffer.el (3rd party);
-  2. browse-kill-ring.el (3rd party);
-  3. simple.el;
-  4. window.el;
-
+  Here are some very useful general purpose variables being set,
+  keybinds being definde, aliases, etc.
 
   #+BEGIN_SRC emacs-lisp
 
-  ;; line movement
-  (global-set-key (kbd "C-a") 'handy-buffer/back-to-indent-or-line) ;; handy-buffer.el
-  (global-set-key (kbd "C-e") 'move-end-of-line)
+  ;; yes or no
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; word movement
-  (global-set-key (kbd "C-<left>") 'backward-word)
-  (global-set-key (kbd "C-<right>") 'forward-whitespace)
+  #+END_SRC
 
-  ;; scroll movement
-  (global-set-key (kbd "C-M-v") 'scroll-other-window)
-  (global-set-key (kbd "C-M-y") 'scroll-other-window-down)
+  #+BEGIN_SRC emacs-lisp
 
-  ;; edit
-  (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
-  (global-set-key (kbd "M-i") 'handy-buffer/indent-region-or-buffer) ;; handy-buffer.el
-  (global-set-key (kbd "M-j") 'handy-buffer/duplicate-line-or-region) ;; handy-buffer.el
-  (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
-  (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
-  (global-set-key (kbd "M-l") 'downcase-word)
-  (global-set-key (kbd "C-w") 'handy-buffer/kill-region-or-backward-word) ;; handy-buffer.el
+  ;; column number display in the mode line
+  (add-hook 'window-setup-hook
+            (funcall 'column-number-mode 1))
 
-  ;; search
-  (global-set-key (kbd "M-s M-o") 'handy-buffer/list-occurrences-at-point) ;; handy-buffer
+  ;; buffer size display in the mode line
+  (add-hook 'window-setup-hook
+            (funcall 'size-indication-mode 1))
 
-  ;; kill
-  (define-key ctl-x-map (kbd "k") 'kill-buffer)
+  #+END_SRC
 
-  ;; keyboard quit. might remove this. not really used.
-  (global-set-key (kbd "M-ESC") 'keyboard-escape-quit)
+  #+BEGIN_QUOTE
+  Toggle line highlighting in all buffers (Global Hl-Line mode).
+  #+END_QUOTE
 
-  ;; in buffer completion
-  ;; (global-set-key (kbd "C-M-i") 'complete-or-indent)
+  #+BEGIN_SRC emacs-lisp
+
+  ;; enable highlight line
+  (add-hook 'window-setup-hook
+            (funcall 'global-hl-line-mode))
+
+  #+END_SRC
+
+  Configure/set coding-system (UTF8) everywhere.
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; coding system to use with system messages
+  (customize-set-variable 'locale-coding-system 'utf-8)
+
+  ;; coding system to be used for encoding the buffer contents on saving
+  (customize-set-variable 'buffer-file-coding-system 'utf-8)
+
+  ;; add coding-system at the front of the priority list for automatic detection
+  (prefer-coding-system 'utf-8)
+
+  ;; set coding system (UFT8)
+  (set-language-environment "UTF-8")
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
 
   #+END_SRC
 
@@ -325,9 +333,35 @@
    ;; kill buffer and window
    (define-key ctl-x-map (kbd "C-k") 'kill-buffer-and-window)
 
+   ;; keyboard quit. might remove this. not sure if really used.
+   (global-set-key (kbd "M-ESC") 'keyboard-escape-quit)
+
    #+END_SRC
 
 ** Editing Buffers
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; line movement
+   (global-set-key (kbd "C-a") 'handy-buffer/back-to-indent-or-line) ;; handy-buffer.el
+   (global-set-key (kbd "C-e") 'move-end-of-line)
+
+   ;; copy/paste
+   (global-set-key (kbd "M-y") 'browse-kill-ring) ;; browse-kill-ring.el
+
+   ;; indentation
+   (global-set-key (kbd "M-i") 'handy-buffer/indent-region-or-buffer) ;; handy-buffer.el
+
+   ;; line manipulation
+   (global-set-key (kbd "M-j") 'handy-buffer/duplicate-line-or-region) ;; handy-buffer.el
+   (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
+   (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
+
+   ;; word/region manipulation
+   (global-set-key (kbd "M-l") 'downcase-word)
+   (global-set-key (kbd "C-w") 'handy-buffer/kill-region-or-backward-word) ;; handy-buffer.el
+
+   #+END_SRC
 
 ** Navigating through Buffers
 
@@ -454,6 +488,17 @@
     #+END_SRC
 
 ** Navigating inside Buffers
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; scroll movement
+   (global-set-key (kbd "C-M-v") 'scroll-other-window)
+   (global-set-key (kbd "C-M-y") 'scroll-other-window-down)
+
+   ;; search
+   (global-set-key (kbd "M-s M-o") 'handy-buffer/list-occurrences-at-point) ;; handy-buffer
+
+   #+END_SRC
 
 * Dealing with Windows
 * Project Management
@@ -626,6 +671,11 @@
 
     It might make more sense for this to be part of the =init.el= and
     not an =install.sh= script.
+
+*** TODO Magit particular installation steps
+
+    This includes manually adding some directories to =LOADPATH= and
+    running =make=. See the instructions [[https://magit.vc/manual/magit/Installing-from-the-Git-Repository.html][here]].
 
 ** TODO Create needed sections
 
