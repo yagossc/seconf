@@ -287,6 +287,19 @@
 
   #+END_SRC
 
+  Disable ugly startup screen:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; non-nil inhibits the startup screen
+  ;; this variable is an alias for `inhibit-startup-screen'
+  (customize-set-variable 'inhibit-startup-message t)
+
+  ;; non-nil inhibits the initial startup echo area message
+  (customize-set-variable 'inhibit-startup-echo-area-message nil)
+
+  #+END_SRC
+
 * Dealing with Directories (dired)
 
   =dired= is the main tool for dealing with directories inside Emacs.
@@ -511,6 +524,9 @@
    Might not be needed. Emacs has a =project= library at its core now,
    that has basically all projectile features we need.
 
+   Yep, =projectile= is now deprecated (in this configuration file). In its
+   place, we'll have Emacs' internal =project.el=.
+
 * Version Control (magit)
 
   /Note: Please refer to [[https://magit.vc/manual/magit/Installing-from-the-Git-Repository.html][this manual]] for Magit's installation and/
@@ -728,12 +744,12 @@
 
 *** TODO Dash Docs for
 
-** TODO Project Management
+** DONE Project Management
 
    Here goes magit and projectile and that's it.
 
 *** DONE Magit
-*** TODO Projectile
+*** DONE Projectile
 
 ** TODO Programming
 
