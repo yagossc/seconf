@@ -376,6 +376,40 @@
 
    #+END_SRC
 
+*** Whitespace
+
+    #+BEGIN_QUOTE
+    This package is a minor mode to visualize and clean
+    blanks (TAB, (HARD) SPACE and NEWLINE).
+    #+END_QUOTE
+
+    This is really useful in keeping files clean from "blank" lines
+    containing only spaces or tabs, which is the reason for this hook
+    entry:
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; clean whitespace and newlines before buffer save
+    (add-hook 'before-save-hook #'whitespace-cleanup)
+
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; specify which kind of blank is visualized
+    ;; empty was removed
+    (customize-set-variable
+     'whitespace-style
+     '(face
+       tabs spaces trailing lines
+       space-before-tab newline indentation
+       space-after-tab space-mark tab-mark
+       newline-mark missing-newline-at-eof))
+
+    #+END_SRC
+
+
+
 ** Navigating through Buffers
 
    Here are some general purpose binds/commands for navigating through
