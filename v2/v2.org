@@ -408,6 +408,21 @@
 
     #+END_SRC
 
+*** Delsel
+
+    This package makes it possible to replace or delete the
+    active/selected region, which is a popular behavior in personal
+    computer text editors.
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; delete selection-mode
+    (add-hook 'window-setup-hook
+              (lambda ()
+                (funcall 'delete-selection-mode 1)))
+
+    #+END_SRC
+
 ** Navigating through Buffers
 
    Here are some general purpose binds/commands for navigating through
@@ -746,7 +761,7 @@
     This includes manually adding some directories to =LOADPATH= and
     running =make=. See the instructions [[https://magit.vc/manual/magit/Installing-from-the-Git-Repository.html][here]].
 
-** TODO Create needed sections
+** DONE Create needed sections
 
    As of now, it seems to make sense to have the 3 sections:
    - Frames;
