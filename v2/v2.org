@@ -351,6 +351,29 @@
 
    #+END_SRC
 
+   These next key binds/lambdas are technically related to frames,
+   however, the goal and side effect here are to quickly (and
+   globally) increase/decrease font size, so we'll leave it here in
+   "Managing Buffers".
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; handy binds for quickly increasing/decreasing font size
+   ;; while taking into account i3wm keybinds.
+   (global-set-key (kbd "s-+")
+                   (lambda ()
+                     (interactive)
+                     (let ((old-face-attribute (face-attribute 'default :height)))
+                       (set-face-attribute 'default nil :height (+ old-face-attribute 10)))))
+
+   (global-set-key (kbd "s-=")
+                   (lambda ()
+                     (interactive)
+                     (let ((old-face-attribute (face-attribute 'default :height)))
+                       (set-face-attribute 'default nil :height (- old-face-attribute 10)))))
+
+   #+END_SRC
+
 ** Editing Buffers
 
    #+BEGIN_SRC emacs-lisp
