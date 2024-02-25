@@ -584,6 +584,49 @@
    #+END_SRC
 
 * Dealing with Windows
+
+  Viewing windows simply as Emacs' containers of buffers. Here are
+  some handy binds for switching between windows and manipulating
+  windows, i.e., maximize, minimize and balance windows sizes.
+
+  First, let's create a keymap to hold the windows related binds.
+
+  #+BEGIN_SRC emacs-lisp
+
+  (defvar seconf-window-map
+    (make-sparse-keymap)
+    "Window commands keymap.")
+
+  #+END_SRC
+
+  Next, we'll tell Emacs this keymap will be a =prefix key’s binding=
+  and add it to the =ctl-x-map= under =w=:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (define-prefix-command 'seconf-window-map)
+
+  (define-key ctl-x-map (kbd "w") 'seconf-window-map)
+
+  #+END_SRC
+
+  Finally, let's add the actual key binds:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; Manipulate windows
+  (define-key seconf-window-map (kbd "1") 'maximize-window)
+  (define-key seconf-window-map (kbd "q") 'minimize-window)
+  (define-key seconf-window-map (kbd "w") 'balance-windows)
+
+  ;; Navigate between windows
+  (define-key seconf-window-map (kbd "i") 'windmove-up)
+  (define-key seconf-window-map (kbd "k") 'windmove-down)
+  (define-key seconf-window-map (kbd "j") 'windmove-left)
+  (define-key seconf-window-map (kbd "l") 'windmove-right)
+
+  #+END_SRC
+
 * Project Management
 
   We'll use two libraries for project management and this choice
