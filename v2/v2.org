@@ -339,7 +339,7 @@
   they're being applied to the buffer being displayed, we'll keep
   these functions and variables here.
 
-** Manipulating Buffers
+** Managing Buffers
 
    #+BEGIN_SRC emacs-lisp
 
@@ -407,8 +407,6 @@
        newline-mark missing-newline-at-eof))
 
     #+END_SRC
-
-
 
 ** Navigating through Buffers
 
@@ -650,7 +648,28 @@
 
   #+END_SRC
 
-* Customizations
+  Finally, as Org is also (and mainly) text, we'll do a small but very
+  important tweak to =text-mode= to ensure text is well suited for
+  humans to read. Particularly speaking of lines that are too long,
+  we'll use =auto-fill-mode= to keep this nice sized paragraphs you're
+  probably seen while reading this file:
+
+  #+BEGIN_QUOTE
+  When Auto Fill mode is enabled, inserting a space at a column
+  beyond ‘current-fill-column’ automatically breaks the line at a
+  previous space.
+  #+END_QUOTE
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'text-mode-hook
+            ;; turn on auto fill mode
+            (lambda ()
+              (turn-on-auto-fill)))
+
+  #+END_SRC
+
+* General Customizations
 
   Disabling all "bars" in order to have a "clean screen":
 
