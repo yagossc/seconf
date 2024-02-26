@@ -300,6 +300,26 @@
 
   #+END_SRC
 
+  Focus =help buffer=:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; always select the help window
+  (customize-set-variable 'help-window-select t)
+
+  #+END_SRC
+
+  Enable use of =C-j= as =Enter= in =help-mode=:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (eval-after-load 'help-mode
+    (lambda ()
+      (when (boundp 'help-mode-map)
+        (define-key help-mode-map (kbd "C-j") 'push-button))))
+
+  #+END_SRC
+
 * Dealing with Directories (dired)
 
   =dired= is the main tool for dealing with directories inside Emacs.
