@@ -140,12 +140,12 @@
    If called interactively, regenerate all loaddefs."
      (interactive "p")
      (let ((dir (expand-file-name "lisp/" user-emacs-directory))
-           (outputfile "lisp-loaddefs.el"))
+	   (outputfile "lisp-loaddefs.el"))
        (loaddefs-generate
-        (cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
-        (expand-file-name outputfile dir) nil nil nil generate-full)
+	(cl-remove-if-not #'file-directory-p (directory-files-recursively dir "^[^.]" t))
+	(expand-file-name outputfile dir) nil nil nil generate-full)
        (when generate-full
-         (message "Fully generated new lisp-loaddefs.el file"))))
+	 (message "Fully generated new lisp-loaddefs.el file"))))
 
    #+END_SRC
 
@@ -155,8 +155,8 @@
    #+BEGIN_SRC emacs-lisp
 
    (add-hook 'window-setup-hook
-             (lambda ()
-               (seconf/generate-loaddefs)))
+	     (lambda ()
+	       (seconf/generate-loaddefs)))
 
    #+END_SRC
 
@@ -225,15 +225,15 @@
 
    ;; enable savehist mode
    (add-hook 'window-setup-hook
-             (lambda ()
-               (funcall 'savehist-mode 1)))
+	     (lambda ()
+	       (funcall 'savehist-mode 1)))
 
    #+END_SRC
 
-* System-wide Configurations
+* Grab bag of system-wide configurations
 
   Here are some very useful general purpose variables being set,
-  keybinds being definde, aliases, etc.
+  keybinds being defined, aliases, etc.
 
   #+BEGIN_SRC emacs-lisp
 
@@ -246,11 +246,11 @@
 
   ;; column number display in the mode line
   (add-hook 'window-setup-hook
-            (funcall 'column-number-mode 1))
+	    (funcall 'column-number-mode 1))
 
   ;; buffer size display in the mode line
   (add-hook 'window-setup-hook
-            (funcall 'size-indication-mode 1))
+	    (funcall 'size-indication-mode 1))
 
   #+END_SRC
 
@@ -262,7 +262,7 @@
 
   ;; enable highlight line
   (add-hook 'window-setup-hook
-            (funcall 'global-hl-line-mode))
+	    (funcall 'global-hl-line-mode))
 
   #+END_SRC
 
@@ -316,7 +316,7 @@
   (eval-after-load 'help-mode
     (lambda ()
       (when (boundp 'help-mode-map)
-        (define-key help-mode-map (kbd "C-j") 'push-button))))
+	(define-key help-mode-map (kbd "C-j") 'push-button))))
 
   #+END_SRC
 
@@ -332,8 +332,8 @@
 
   ;; enable dired-find-alternate-file
   (add-hook 'window-setup-hook
-            (lambda ()
-              (put 'dired-find-alternate-file 'disabled nil)))
+	    (lambda ()
+	      (put 'dired-find-alternate-file 'disabled nil)))
 
   #+END_SRC
 
@@ -345,8 +345,8 @@
   (eval-after-load 'dired
     (lambda ()
       (when (boundp 'dired-mode-map)
-        (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-        (define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
+	(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+	(define-key dired-mode-map (kbd "C-j") 'dired-find-alternate-file))))
 
   #+END_SRC
 
@@ -381,16 +381,16 @@
    ;; handy binds for quickly increasing/decreasing font size
    ;; while taking into account i3wm keybinds.
    (global-set-key (kbd "s-+")
-                   (lambda ()
-                     (interactive)
-                     (let ((old-face-attribute (face-attribute 'default :height)))
-                       (set-face-attribute 'default nil :height (+ old-face-attribute 10)))))
+		   (lambda ()
+		     (interactive)
+		     (let ((old-face-attribute (face-attribute 'default :height)))
+		       (set-face-attribute 'default nil :height (+ old-face-attribute 10)))))
 
    (global-set-key (kbd "s-=")
-                   (lambda ()
-                     (interactive)
-                     (let ((old-face-attribute (face-attribute 'default :height)))
-                       (set-face-attribute 'default nil :height (- old-face-attribute 10)))))
+		   (lambda ()
+		     (interactive)
+		     (let ((old-face-attribute (face-attribute 'default :height)))
+		       (set-face-attribute 'default nil :height (- old-face-attribute 10)))))
 
    #+END_SRC
 
@@ -461,8 +461,8 @@
 
     ;; delete selection-mode
     (add-hook 'window-setup-hook
-              (lambda ()
-                (funcall 'delete-selection-mode 1)))
+	      (lambda ()
+		(funcall 'delete-selection-mode 1)))
 
     #+END_SRC
 
@@ -511,61 +511,61 @@
     (customize-set-variable
      'ibuffer-saved-filter-groups
      (quote (("default"
-              ("Emacs" (or
-                        (name . "^\\*eldoc for")
-                        (name . "^\\*scratch\\*$")
-                        (name . "^\\*Warnings\\*$")
-                        (name . "^\\*Completions\\*$")
-                        (name . "^\\*Completions\\*$")
-                        (name . "^\\*Messages\\*$")))
+	      ("Emacs" (or
+			(name . "^\\*eldoc for")
+			(name . "^\\*scratch\\*$")
+			(name . "^\\*Warnings\\*$")
+			(name . "^\\*Completions\\*$")
+			(name . "^\\*Completions\\*$")
+			(name . "^\\*Messages\\*$")))
 
-              ("Comint" (or
-                         (mode . comint-mode)
-                         (name . "^\\*dashboard\\*$")
-                         (name . "^\\*tramp")
-                         (name . "^\\*make\\*$")))
+	      ("Comint" (or
+			 (mode . comint-mode)
+			 (name . "^\\*dashboard\\*$")
+			 (name . "^\\*tramp")
+			 (name . "^\\*make\\*$")))
 
-              ("Custom" (mode . Custom-mode))
+	      ("Custom" (mode . Custom-mode))
 
-              ("Info"  (or
-                        (mode . Info-mode)
-                        (mode . dictionary-mode)
-                        (mode . help-mode)
-                        (mode . apropos-mode)
-                        (mode . Man-mode)))
+	      ("Info"  (or
+			(mode . Info-mode)
+			(mode . dictionary-mode)
+			(mode . help-mode)
+			(mode . apropos-mode)
+			(mode . Man-mode)))
 
-              ("Tags" (or
-                       (mode . tags-table-mode)
-                       (mode . xref--xref-buffer-mode)))
+	      ("Tags" (or
+		       (mode . tags-table-mode)
+		       (mode . xref--xref-buffer-mode)))
 
-              ("Compilation" (or
-                              (mode . compilation-mode)
-                              (mode . emacs-lisp-compilation-mode)
-                              (name . "^\\*compilation\\*$")))
+	      ("Compilation" (or
+			      (mode . compilation-mode)
+			      (mode . emacs-lisp-compilation-mode)
+			      (name . "^\\*compilation\\*$")))
 
-              ("Debug"  (or (mode . debugger-mode)
-                            (name . "^\\*debug")))
+	      ("Debug"  (or (mode . debugger-mode)
+			    (name . "^\\*debug")))
 
-              ("Org" (or (mode . org-mode)
-                         (name . "\\.org")))
+	      ("Org" (or (mode . org-mode)
+			 (name . "\\.org")))
 
-              ("Grep" (or
-                       (mode . ag-mode)
-                       (mode . occur-mode)))
+	      ("Grep" (or
+		       (mode . ag-mode)
+		       (mode . occur-mode)))
 
-              ("Term" (mode . term-mode))
-              ("Shell" (or
-                        (mode . shell-mode)
-                        (mode . eshell-mode)))
+	      ("Term" (mode . term-mode))
+	      ("Shell" (or
+			(mode . shell-mode)
+			(mode . eshell-mode)))
 
-              ("Eww" (mode . eww-mode))
-              ("Dired" (mode . dired-mode))
+	      ("Eww" (mode . eww-mode))
+	      ("Dired" (mode . dired-mode))
 
-              ("Magit" (or
-                        (mode . magit-mode)
-                        (mode . magit-status-mode)
-                        (mode . magit-diff-mode)
-                        (mode . magit-process-mode)))))))
+	      ("Magit" (or
+			(mode . magit-mode)
+			(mode . magit-status-mode)
+			(mode . magit-diff-mode)
+			(mode . magit-process-mode)))))))
 
     #+END_SRC
 
@@ -576,9 +576,9 @@
 
     ;; hook run upon entry into `ibuffer-mode'
     (add-hook 'ibuffer-mode-hook
-              (lambda ()
-                (ibuffer-auto-mode 1)
-                (ibuffer-switch-to-saved-filter-groups "default")))
+	      (lambda ()
+		(ibuffer-auto-mode 1)
+		(ibuffer-switch-to-saved-filter-groups "default")))
 
     #+END_SRC
 
@@ -646,6 +646,161 @@
   (define-key seconf-window-map (kbd "l") 'windmove-right)
 
   #+END_SRC
+
+* Minibuffer
+
+  #+BEGIN_QUOTE
+  The “minibuffer” is where Emacs commands read complicated arguments,
+  such as file names, buffer names, Emacs command names, or Lisp
+  expressions.  We call it the “minibuffer” because it’s a special-purpose
+  buffer with a small amount of screen space.  You can use the usual Emacs
+  editing commands in the minibuffer to edit the argument text.
+  #+END_QUOTE
+
+  Needles to say, this is an important section. Let's configure a
+  bunch of things related to =completion= in the minibuffer:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; if non-nil, 'read-answer' accepts single-character answers
+  (customize-set-variable 'read-answer-short t)
+
+  ;; non-nil means completion ignores case when reading a buffer name
+  (customize-set-variable 'read-buffer-completion-ignore-case t)
+
+  ;; non-nil means when reading a file name completion ignores case
+  (customize-set-variable 'read-file-name-completion-ignore-case t)
+
+  ;; number of completion candidates below which cycling is used
+  (customize-set-variable 'completion-cycle-threshold nil)
+
+  ;; treat the SPC or - inserted by `minibuffer-complete-word as delimiters
+  (customize-set-variable 'completion-pcm-complete-word-inserts-delimiters t)
+
+  ;; a string of characters treated as word delimiters for completion
+  ;; (customize-set-variable 'completion-pcm-word-delimiters "-_./:| ")
+
+  ;; non-nil means show help message in *Completions* buffer
+  (customize-set-variable 'completion-show-help nil)
+
+  ;; non-nil means automatically provide help for invalid completion input
+  (customize-set-variable 'completion-auto-help 'lazy)
+
+  ;; list of completion styles to use: see 'completion-styles-alist variable
+  (customize-set-variable 'completion-styles
+			  '(basic partial-completion emacs22 flex))
+  ;; '(basic partial-completion substring flex))
+
+  ;; list of category-specific user overrides for completion styles.
+  (customize-set-variable 'completion-category-overrides nil)
+  ;; '((file (styles initials basic))
+  ;;   (buffer (styles initials basic))
+  ;;   (info-menu (styles basic))))
+
+  ;; define the appearance and sorting of completions
+  (customize-set-variable 'completions-format 'horizontal)
+
+  ;; how to resize mini-windows (the minibuffer and the echo area)
+  ;; a value of t means resize them to fit the text displayed in them
+  (customize-set-variable 'resize-mini-windows nil)
+
+  ;; if non-nil, shorten "(default ...)" to "[...]" in minibuffer prompts
+  (customize-set-variable 'minibuffer-eldef-shorten-default t)
+
+  ;; non-nil means to delete duplicates in history
+  (customize-set-variable 'history-delete-duplicates t)
+
+  ;; non-nil means to allow minibuffer commands while in the minibuffer
+  ;; (customize-set-variable 'enable-recursive-minibuffers nil)
+
+  #+END_SRC
+
+  And let's also add a key bind to call for completions when in
+  =minibuffer=:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (define-key minibuffer-local-map (kbd "<tab>") 'minibuffer-complete)
+
+  #+END_SRC
+
+* Icomplete
+
+  #+BEGIN_QUOTE
+  Icomplete global minor mode provides a convenient way to quickly select
+  an element among the possible completions in a minibuffer.  When
+  enabled, typing in the minibuffer continuously displays a list of
+  possible completions that match the string you have typed.
+  #+END_QUOTE
+
+  From =Info= section =20.7.2 Fast minibuffer selection=. Here are a
+  bunch of usage configurations for =Icomplete=.
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; pending-completions number over which to apply `icomplete-compute-delay
+  (customize-set-variable 'icomplete-delay-completions-threshold 128)
+
+  ;; maximum number of initial chars to apply `icomplete-compute-delay
+  (customize-set-variable 'icomplete-max-delay-chars 0.3)
+
+  ;; completions-computation stall, used only with large-number completions
+  (customize-set-variable 'icomplete-compute-delay 0.1)
+
+  ;; when non-nil, show completions when first prompting for input
+  (customize-set-variable 'icomplete-show-matches-on-no-input t)
+
+  ;; when non-nil, hide common prefix from completion candidates
+  (customize-set-variable 'icomplete-hide-common-prefix nil)
+
+  ;; maximum number of lines to use in the minibuffer
+  (customize-set-variable 'icomplete-prospects-height 1)
+
+  ;; string used by Icomplete to separate alternatives in the minibuffer
+  (customize-set-variable 'icomplete-separator (propertize " · " 'face 'shadow))
+
+  ;; specialized completion tables with which `icomplete should operate,
+  ;; if this is t, `icomplete operates on all tables
+  (customize-set-variable 'icomplete-with-completion-tables t)
+
+  ;; if non-nil, also use icomplete when completing in non-mini buffers
+  (customize-set-variable 'icomplete-in-buffer nil)
+
+  #+END_SRC
+
+  Now let's add some =very useful= binds in making =icomplete= in the
+  =minibuffer= have a fast and realiable usage:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (eval-after-load 'icomplete
+    (lambda ()
+      (when (boundp 'icomplete-minibuffer-map)
+
+	(define-key icomplete-minibuffer-map (kbd "C-SPC") 'icomplete-force-complete-and-exit)
+	(define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
+	(define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
+	(define-key icomplete-minibuffer-map (kbd "M-p") 'previous-line-or-history-element)
+	(define-key icomplete-minibuffer-map (kbd "M-n") 'next-line-or-history-element)
+
+	;; TODO: third party functions
+	;; (define-key icomplete-minibuffer-map (kbd "M-i") 'handy/minibuffer-insert-completion-at-point)
+	;; (define-key icomplete-minibuffer-map (kbd "M-k") 'handy/minibuffer-kill-current-completion)
+	;; (define-key icomplete-minibuffer-map (kbd "M-h") 'handy/minibuffer-describe-current-completion)
+	)))
+
+  #+END_SRC
+
+  Finally, let's enable =icomplete-mode= globally:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'window-setup-hook
+	    (lambda ()
+	      (funcall 'icomplete-mode 1)))
+
+  #+END_SRC
+
 
 * Project Management
 
@@ -736,16 +891,16 @@
   #+BEGIN_SRC emacs-lisp
 
   (add-hook 'org-mode-hook
-            (lambda ()
-              ;; do not truncate lines
-              (setq truncate-lines nil)
+	    (lambda ()
+	      ;; do not truncate lines
+	      (setq truncate-lines nil)
 
-              ;; languages which can be evaluated in Org buffers.
-              (org-babel-do-load-languages
-               'org-babel-load-languages
-               '((emacs-lisp . t)
-                 (shell . t)
-                 (python . t)))))
+	      ;; languages which can be evaluated in Org buffers.
+	      (org-babel-do-load-languages
+	       'org-babel-load-languages
+	       '((emacs-lisp . t)
+		 (shell . t)
+		 (python . t)))))
 
   #+END_SRC
 
@@ -764,9 +919,8 @@
   #+BEGIN_SRC emacs-lisp
 
   (add-hook 'text-mode-hook
-            ;; turn on auto fill mode
-            (lambda ()
-              (turn-on-auto-fill)))
+	    (lambda ()
+	      (turn-on-auto-fill)))
 
   #+END_SRC
 
@@ -791,6 +945,10 @@
    https://github.com/yagossc/el-handy/
 
 ** TODO Check other Lex dependencies
+
+   - There's dependency in =lex-minibuffer= for a few useful functions
+   regarding minibuffer completion.
+
 ** DONE Lazy loading
 
    Adapt to new el-lazy.
@@ -817,9 +975,9 @@
 
     if [ -e ~/.emacs.d ]
     then
-        echo "[INFO] ~/.emacs.d symbolic link already exists"
+	echo "[INFO] ~/.emacs.d symbolic link already exists"
     else
-        ln -s $_src_dir ~/.emacs.d
+	ln -s $_src_dir ~/.emacs.d
     fi
 
     #+END_SRC
@@ -830,9 +988,9 @@
 
     if [ -e ~/.emacs.d/lisp ]
     then
-        echo "[INFO] ~/.emacs.d/lisp dir already exists"
+	echo "[INFO] ~/.emacs.d/lisp dir already exists"
     else
-        mkdir ~/.emacs.d/lisp
+	mkdir ~/.emacs.d/lisp
     fi
 
     #+END_SRC
@@ -865,7 +1023,7 @@
    - Fiddle with darcula theme until good enough;
    - Remove unused customizations;
 
-** TODO Minibuffer
+** DONE Minibuffer
 
    This takes its own section
 
