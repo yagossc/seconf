@@ -802,16 +802,14 @@ In the beginning...
 
 * Project Management
 
-  We'll use two libraries for project management and this choice
-  assumes we use =git= for the majority our projects.
+  Initially, we used =projectile= for this, however, it might no
+  longer be needed. Emacs has a =project= library at its core now,
+  that has basically all projectile features we need.
 
-** Projectile
-
-   Might not be needed. Emacs has a =project= library at its core now,
-   that has basically all projectile features we need.
-
-   Yep, =projectile= is now deprecated (in this configuration file). In its
-   place, we'll have Emacs' internal =project.el=.
+  After confirmation, =projectile= is now deprecated (in this
+  configuration file). In its place, we'll have Emacs' internal
+  =project.el=. It came with a few different binds and flows, but all
+  the functionality is there.
 
 * Version Control (magit)
 
@@ -1066,7 +1064,12 @@ In the beginning...
    Here goes the editing code specifics.
 
 *** TODO General
+
+    Prog-mode stuff maybe?
+
 *** TODO Language Specific
+
+    Idea: include other files.
 
 ** TODO Cleanup
 
