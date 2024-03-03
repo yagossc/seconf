@@ -811,6 +811,15 @@ In the beginning...
   =project.el=. It came with a few different binds and flows, but all
   the functionality is there.
 
+  Some helpful binds:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (define-key project-prefix-map (kbd "o") 'project-switch-project)
+  (define-key project-prefix-map (kbd "p") 'ag-project)
+
+  #+END_SRC
+
 * Version Control (magit)
 
   /Note: Please refer to [[https://magit.vc/manual/magit/Installing-from-the-Git-Repository.html][this manual]] for Magit's installation and/
