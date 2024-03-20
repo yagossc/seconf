@@ -492,6 +492,18 @@ In the beginning...
 
     #+END_SRC
 
+*** Comments (newcomment)
+
+    This library contains functions and variables for commenting and
+    uncommenting source code.
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; global-map
+    (global-set-key (kbd "M-c") 'comment-or-uncomment-region)
+
+    #+END_SRC
+
 ** Navigating through Buffers
 
    Here are some general purpose binds/commands for navigating through
