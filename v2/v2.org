@@ -415,8 +415,8 @@ In the beginning...
 
    ;; line manipulation
    (global-set-key (kbd "M-j") 'handy-buffer/duplicate-line-or-region) ;; handy-buffer.el
-   (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
-   (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
+   (global-set-key (kbd "M-p") 'handy-buffer/transpose-lines-up) ;; handy-buffer.el
+   (global-set-key (kbd "M-n") 'handy-buffer/transpose-lines-down) ;; handy-buffer.el
 
    ;; word/region manipulation
    (global-set-key (kbd "M-l") 'downcase-word)
