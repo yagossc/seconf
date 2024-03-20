@@ -1118,6 +1118,19 @@ In the beginning...
 
     Idea: include other files.
 
+    This can, indeed, be done. It's "hackish", but it works fine. It
+    goes like this:
+
+    - In the main .org file, =#+INCLUDE= all other needed .org files;
+    - In the main .org file, give it a =#+EXPORT_FILE_NAME=;
+    - In the =build.el= script, add the call
+      =(org-org-export-to-org)=, which will export the main .org file
+      to $export_file_name (including the contents of all #INCLUDE
+      files);
+    - Tangle normally;
+    - Done.
+
+
 ** TODO Cleanup
 
    For removing key-binds from minor modes, etc.
