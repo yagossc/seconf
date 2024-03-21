@@ -1057,6 +1057,47 @@ In the beginning...
 
   #+END_SRC
 
+* Terminals
+
+  For now, we'll be using =term.el= with two clever binds, but first,
+  let's write a function that runs a terminal and asks for its name:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (defun seconf/run-term ()
+    (interactive)
+    (term (getenv "SHELL"))
+    (rename-buffer
+     (read-string "Rame term buffer: " nil nil "term") t))
+
+  #+END_SRC
+
+  Note that the =SHELL= variable must be set. Now let's bind this
+  function to a comfortable key combination (imo):
+
+  #+BEGIN_SRC emacs-lisp
+
+  (define-key ctl-x-map (kbd "RET") 'seconf/run-term)
+
+  #+END_SRC
+
+  Also, in order for us to properly navigate through the terminal
+  buffer:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (when (and (boundp 'term-raw-map)
+                         (boundp 'term-mode-map))
+                ;; term-raw-map
+                (define-key term-raw-map (kbd "C-z") 'term-line-mode)
+
+                ;; term-mode-map
+                (define-key term-mode-map (kbd "C-z") 'term-char-mode))))
+
+  #+END_SRC
+
 * General Customizations
 
   Disabling all "bars" in order to have a "clean screen":
@@ -1189,7 +1230,18 @@ In the beginning...
 
 ** TODO Terminals
 
-   This could get its own section
+   This could get its own section.
+
+*** DONE Basic Usage
+
+    - Open a terminal an rename it;
+    - Navigate it with "terminal functionality" disabled/enabled.
+
+*** TODO Dedicated terminal
+
+    Emacs has dedicated windows.
+
+    Check Matering Emacs' [[https://www.masteringemacs.org/article/demystifying-emacs-window-manager][post]].
 
 ** DONE Org mode
 
