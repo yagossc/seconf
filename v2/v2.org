@@ -839,6 +839,92 @@ In the beginning...
 
   #+END_SRC
 
+* In buffer completion
+
+  A very important behavior for any editor is completion.
+
+  Emacs makes the distinction between "minibuffer completion" (already
+  covered and configured in this file) and "in buffer completion.
+
+  The distinctions in this section will be regarding "native"
+  completion functionalities (i.e., Emacs builtin) and third-party
+  libraries.
+
+** Built-in
+
+   Out-of-the-box completion functionalities.
+
+*** dabbrev
+
+    =dabbrev= is the simplest possible package for completion, it
+    simply looks for known words and has a couple of available
+    configurable variables.
+
+    #+BEGIN_QUOTE
+    The purpose with this package is to let you write just a few
+    characters of words you've written earlier to be able to expand
+    them.
+
+    To expand a word, just put the point right after the word and press
+    M-/ (dabbrev-expand) or M-C-/ (dabbrev-completion).
+    #+END_QUOTE
+
+    We'll do some simple configurations:
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; non-nil means case sensitive search.
+    (customize-set-variable 'dabbrev-upcase-means-case-search nil)
+
+    ;; whether dabbrev treats expansions as the same if they differ
+    ;; in case a value of nil means treat them as different.
+    (customize-set-variable 'dabbrev-case-distinction nil)
+
+    #+END_SRC
+
+*** hippie-exp
+
+    #+BEGIN_QUOTE
+    `hippie-expand' is a single function for a lot of different kinds
+    of completions and expansions.  Called repeatedly it tries all
+    possible completions in succession.
+    Which kinds of completions to try, and in which order, is
+    determined by the contents of `hippie-expand-try-functions-list'.
+    Much customization of `hippie-expand' can be made by changing the
+    order of, removing, or inserting new functions in this list.
+    Given a positive numeric argument, `hippie-expand' jumps directly
+    ARG functions forward in this list.  Given some other argument
+    (a negative argument or just Ctrl-U) it undoes the tried
+    completion.
+    #+END_QUOTE
+
+    And the default value of =hippie-expand-try-functions-list= is
+    very satisfying.
+
+    So, we'll simply set a key bind for calling =hippie-expand=:
+
+    #+BEGIN_SRC emacs-lisp
+
+    (global-set-key (kbd "M-\\") 'hippie-expand)
+
+    #+END_SRC
+
+*** completion-at-point-function
+
+    #+BEGIN_QUOTE
+    completion-at-point-functions is a variable defined in
+    ‘minibuffer.el’.
+    ...
+    Special hook to find the completion table for the entity at point.
+    #+END_QUOTE
+
+    This is the most "general-purpose" option here and it's (at least
+    it should be) how third-party libraries insert themselves in
+    Emacs' completion flow.
+
+    This is not what happens with solutions like "company", which
+    we'll be avoided in this configuration.
+
 * Project Management
 
   Initially, we used =projectile= for this, however, it might no
@@ -1058,6 +1144,11 @@ In the beginning...
     - ag.el source: https://github.com/Wilfred/ag.el
     - s.el (ag.el dependency): https://github.com/magnars/s.el
 
+*** TODO Ispell dictionaries
+
+    Brazillian portuguese dictionary has to be manually installed,
+    i.e., cloned from github.
+
 ** DONE Create needed sections
 
    As of now, it seems to make sense to have the 3 sections:
@@ -1141,7 +1232,6 @@ In the beginning...
       files);
     - Tangle normally;
     - Done.
-
 
 ** TODO Cleanup
 
