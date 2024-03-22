@@ -841,10 +841,9 @@ In the beginning...
 
 * In buffer completion
 
-  A very important behavior for any editor is completion.
-
   Emacs makes the distinction between "minibuffer completion" (already
-  covered and configured in this file) and "in buffer completion.
+  covered and configured in this file) and "in buffer" completion
+  (even though all completion is somewhat related to the minibuffer).
 
   The distinctions in this section will be regarding "native"
   completion functionalities (i.e., Emacs builtin) and third-party
@@ -924,6 +923,78 @@ In the beginning...
 
     This is not what happens with solutions like "company", which
     we'll be avoided in this configuration.
+
+** Third-party
+
+   External libraries that handle completion.
+
+*** corfu
+
+    =corfu= is a third-party completion UI that relies on Emacs'
+    native completion features and also the pluggable backends called
+    =completion-at-point-functions=.
+
+    #+BEGIN_QUOTE
+    Corfu does not include its own completion backends. The Emacs
+    built-in Capfs and the Capfs provided by third-party programming
+    language packages are often sufficient.
+    #+END_QUOTE
+
+    This is a "work in progress" section. The following are some
+    initial configurations for =corfu=:
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; These are all a matter of personal preference, one should tweak
+    ;; these variables around to find the best combination for themselves
+    (customize-set-variable 'corfu-auto t)        ;; Enable auto completion
+    (customize-set-variable 'corfu-cycle t)                    ;; Enable cycling for `corfu-next/previous'
+    (customize-set-variable 'corfu-separator ?\s)              ;; Orderless field separator
+    (customize-set-variable 'corfu-quit-at-boundary t)         ;; Quit at completion boundary, i.e., if word is over
+    (customize-set-variable 'corfu-quit-no-match t)            ;; Quit  if there is no match
+    (customize-set-variable 'corfu-preview-current 'insert)    ;; Candidate is automatically inserted on further input
+    (customize-set-variable 'corfu-preselect 'first)           ;; Always pre-select first candidate
+    (customize-set-variable 'corfu-auto-prefix 2)              ;; Start completing after two characters
+    (customize-set-variable 'corfu-scroll-margin 5)
+
+    #+END_SRC
+
+    Also, some keybinds for my personal flow:
+
+    #+BEGIN_SRC emacs-lisp
+
+    (eval-after-load 'corfu
+      (lambda ()
+        (when (boundp 'corfu-map)
+          (define-key corfu-map (kbd "C-j") 'corfu-insert))))
+
+    #+END_SRC
+
+    Finally, as recomended by the libraries authors, enable it
+    globally:
+
+    #+BEGIN_SRC emacs-lisp
+
+    :init
+    (global-corfu-mode)
+
+    #+END_SRC
+
+** TODO cape
+
+   Third-party =capfs= provider.
+
+   Question: How to handle 'completion-at-point-functions being
+   locally overwritten?
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+   ;; (add-to-list 'completion-at-point-functions #'cape-file)
+   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
+   ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+
+   #+END_SRC
 
 * Project Management
 
@@ -1187,8 +1258,11 @@ In the beginning...
 
 *** TODO Ispell dictionaries
 
-    Brazillian portuguese dictionary has to be manually installed,
+    - Brazillian portuguese dictionary has to be manually installed,
     i.e., cloned from github.
+    - Also, remember that aspell is an Unix utility, meaning it has to
+      be installed in the system for any of the "ispell-*" commands to
+      work.
 
 ** DONE Create needed sections
 
