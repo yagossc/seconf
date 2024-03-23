@@ -974,7 +974,7 @@ In the beginning...
 
     #+END_SRC
 
-    Finally, as recomended by the libraries authors, enable it
+    Finally, as recomended by the library's authors, enable it
     globally:
 
     #+BEGIN_SRC emacs-lisp
@@ -984,24 +984,24 @@ In the beginning...
 
     #+END_SRC
 
-** cape
+*** cape
 
-   Third-party =capfs= provider.
+    Third-party =capfs= provider.
 
-   Question: How to handle 'completion-at-point-functions being
-   locally overwritten?
+    Question: How to handle 'completion-at-point-functions being
+    locally overwritten?
 
-   Answer: Simply add the =capfs= that should always be present after
-   changing major modes (maybe, let's see).
+    Answer: Simply add the =capfs= that should always be present after
+    changing major modes (maybe, let's see).
 
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-   (add-hook 'after-change-major-mode-hook
-             (lambda ()
-               (add-to-list 'completion-at-point-functions #'cape-file)
-               (add-to-list 'completion-at-point-functions #'cape-dabbrev)))
+    (add-hook 'after-change-major-mode-hook
+              (lambda ()
+                (add-to-list 'completion-at-point-functions #'cape-file)
+                (add-to-list 'completion-at-point-functions #'cape-dabbrev)))
 
-   #+END_SRC
+    #+END_SRC
 
 * Project Management
 
@@ -1179,6 +1179,46 @@ In the beginning...
 
   #+END_SRC
 
+* Programming
+
+  This section holds "generic" customizations/configurations used when
+  programming, i.e., when =prog-mode= is active.
+
+  Language specific configurations will be contained in other files to
+  be included in this section of this "main file" and tied together in
+  the build process.
+
+  /Note: some of the settings here could also be placed in the/
+  /"Dealing with buffers" section./
+
+  Starting with =subword=: this package provides a minor mode, which
+  merges the old remap-based subword.el (derived from cc-mode code)
+  and cap-words.el, which takes advantage of core Emacs
+  word-motion-customization functionality.
+
+  It's very good for navigating over =CamelCase=.
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'window-setup-hook
+            (lambda ()
+              (funcall 'global-subword-mode 1)))
+
+  #+END_SRC
+
+  It is also generally good being able to hide blocks of
+  code/comments, so we'll use the  =hideshow= library for this:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; activate hs-minor-mode when programming
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+
+  ;; add a noice bind to it
+  (define-key ctl-x-map (kbd "[") 'hs-toggle-hiding)
+
+  #+END_SRC
+
 * General Customizations
 
   Disabling all "bars" in order to have a "clean screen":
@@ -1218,24 +1258,24 @@ In the beginning...
 
 *** ag.el
 
-   - git@github.com:Wilfred/ag.el.git
+    - git@github.com:Wilfred/ag.el.git
 
 **** Dependencies
 
-   - git@github.com:magnars/s.el.git
-   - git@github.com:magnars/dash.el.git
+     - git@github.com:magnars/s.el.git
+     - git@github.com:magnars/dash.el.git
 
 *** browse-kill-ring
 
-   - git@github.com:browse-kill-ring/browse-kill-ring.git
+    - git@github.com:browse-kill-ring/browse-kill-ring.git
 
 *** cape
 
-   - git@github.com:minad/cape.git
+    - git@github.com:minad/cape.git
 
 *** corfu
 
-   - git@github.com:minad/corfu.git
+    - git@github.com:minad/corfu.git
 
 *** magit
 
@@ -1243,10 +1283,10 @@ In the beginning...
 
 **** Dependencies
 
-    - git@github.com:magnars/dash.el.git
-    - git@github.com:magit/transient.git
-    - git@github.com:magit/with-editor.git
-    - git@github.com:emacs-compat/compat.git
+     - git@github.com:magnars/dash.el.git
+     - git@github.com:magit/transient.git
+     - git@github.com:magit/with-editor.git
+     - git@github.com:emacs-compat/compat.git
 
 ** TODO Install script
 
@@ -1370,6 +1410,10 @@ In the beginning...
 
 *** TODO Dash Docs for
 ** TODO Iedit
+** TODO Yasnippet
+** TODO Undo-tree
+** TODO Etags
+** TODO Xref
 ** DONE Project Management
 
    Here goes magit and projectile and that's it.
