@@ -169,6 +169,23 @@ In the beginning...
 
   #+END_SRC
 
+* Theme
+
+  This configuration uses a "tweaked" =dracula-theme=. Other
+  experimental themes might become available in the =themes=
+  directory.
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; add seconf-theme-dir to theme load path
+  (add-to-list 'custom-theme-load-path
+               (concat user-emacs-directory "themes"))
+
+  ;; load theme
+  (load-theme 'dracula t)
+
+  #+END_SRC
+
 * History and Cache
 
   For many functionalities that go through the minibuffer, having a
@@ -1359,10 +1376,11 @@ In the beginning...
    Also maybe a "Display" or "Screen" section for things like the
    menubar, highlight line, etc.
 
-** TODO Theme
+** DONE Theme
 
    - Fiddle with darcula theme until good enough;
    - Remove unused customizations;
+   - For now this should be enough;
 
 ** DONE Minibuffer
 
@@ -1414,6 +1432,17 @@ In the beginning...
 ** TODO Undo-tree
 ** TODO Etags
 ** TODO Xref
+** Other libraries to check
+
+   - https://github.com/nlamirault/gotest.el
+   - https://github.com/minad/marginalia
+   - https://github.com/minad/consult
+   - https://github.com/minad/vertico
+   - https://github.com/jaypei/emacs-neotree
+   - https://github.com/Fanael/rainbow-delimiters
+   - https://github.com/dbordak/telephone-line
+   - https://www.emacswiki.org/emacs/SpeedBar
+
 ** DONE Project Management
 
    Here goes magit and projectile and that's it.
