@@ -940,8 +940,9 @@ In the beginning...
     language packages are often sufficient.
     #+END_QUOTE
 
-    This is a "work in progress" section. The following are some
-    initial configurations for =corfu=:
+    /Note: This section is a work in progress./
+
+    The following are some initial configurations for =corfu=:
 
     #+BEGIN_SRC emacs-lisp
 
@@ -987,12 +988,15 @@ In the beginning...
    Question: How to handle 'completion-at-point-functions being
    locally overwritten?
 
+   Answer: Simply add the =capfs= that should always be present after
+   changing major modes (maybe, let's see).
+
    #+BEGIN_SRC emacs-lisp
 
-   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-   ;; (add-to-list 'completion-at-point-functions #'cape-file)
-   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-   ;; (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+   (add-hook 'after-change-major-mode-hook
+             (lambda ()
+               (add-to-list 'completion-at-point-functions #'cape-file)
+               (add-to-list 'completion-at-point-functions #'cape-dabbrev)))
 
    #+END_SRC
 
@@ -1104,7 +1108,10 @@ In the beginning...
                'org-babel-load-languages
                '((emacs-lisp . t)
                  (shell . t)
-                 (python . t)))))
+                 (python . t)))
+
+              ;; also add dict based capf to capfs
+              (add-to-list 'completion-at-point-functions #'cape-dict)))
 
   #+END_SRC
 
