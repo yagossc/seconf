@@ -922,7 +922,7 @@ In the beginning...
     Emacs' completion flow.
 
     This is not what happens with solutions like "company", which
-    we'll be avoided in this configuration.
+    we'll avoid in this configuration.
 
 ** Third-party
 
@@ -967,7 +967,10 @@ In the beginning...
     (eval-after-load 'corfu
       (lambda ()
         (when (boundp 'corfu-map)
-          (define-key corfu-map (kbd "C-j") 'corfu-insert))))
+          (define-key corfu-map (kbd "C-j") 'corfu-insert)
+          ;; leave my ctrl-m alone. not sure about this.
+          ;; (define-key corfu-map (kbd "RET") nil)
+          )))
 
     #+END_SRC
 
@@ -981,7 +984,7 @@ In the beginning...
 
     #+END_SRC
 
-** TODO cape
+** cape
 
    Third-party =capfs= provider.
 
@@ -1213,6 +1216,38 @@ In the beginning...
    Organize third party libraries as git submodules forked in my own
    github.
 
+*** ag.el
+
+   - git@github.com:Wilfred/ag.el.git
+
+**** Dependencies
+
+   - git@github.com:magnars/s.el.git
+   - git@github.com:magnars/dash.el.git
+
+*** browse-kill-ring
+
+   - git@github.com:browse-kill-ring/browse-kill-ring.git
+
+*** cape
+
+   - git@github.com:minad/cape.git
+
+*** corfu
+
+   - git@github.com:minad/corfu.git
+
+*** magit
+
+    - git@github.com:magit/magit.git
+
+**** Dependencies
+
+    - git@github.com:magnars/dash.el.git
+    - git@github.com:magit/transient.git
+    - git@github.com:magit/with-editor.git
+    - git@github.com:emacs-compat/compat.git
+
 ** TODO Install script
 
    This should contain the following:
@@ -1334,14 +1369,13 @@ In the beginning...
    =dash-docs=.
 
 *** TODO Dash Docs for
-
+** TODO Iedit
 ** DONE Project Management
 
    Here goes magit and projectile and that's it.
 
 *** DONE Magit
 *** DONE Projectile
-
 ** TODO Programming
 
    Here goes the editing code specifics.
