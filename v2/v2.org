@@ -6,7 +6,6 @@
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
 
-
 #+BEGIN_QUOTE
 In the beginning...
 #+END_QUOTE
@@ -135,7 +134,7 @@ In the beginning...
   (require 'cl-seq)
 
   (defun seconf/generate-loaddefs (&optional generate-full)
-    "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
+    "Generate loaddefs file for all directories inside of 'user-emacs-directory/lisp'.
   If called interactively, regenerate all loaddefs."
     (interactive "p")
     (let ((dir (expand-file-name "lisp/" user-emacs-directory))
@@ -311,7 +310,7 @@ In the beginning...
   #+BEGIN_SRC emacs-lisp
 
   ;; non-nil inhibits the startup screen
-  ;; this variable is an alias for `inhibit-startup-screen'
+  ;; this variable is an alias for 'inhibit-startup-screen'
   (customize-set-variable 'inhibit-startup-message t)
 
   ;; non-nil inhibits the initial startup echo area message
@@ -629,7 +628,7 @@ In the beginning...
 
     #+BEGIN_SRC emacs-lisp
 
-    ;; hook run upon entry into `ibuffer-mode'
+    ;; hook run upon entry into "ibuffer-mode"
     (add-hook 'ibuffer-mode-hook
               (lambda ()
                 (ibuffer-auto-mode 1)
@@ -729,7 +728,7 @@ In the beginning...
   ;; number of completion candidates below which cycling is used
   (customize-set-variable 'completion-cycle-threshold nil)
 
-  ;; treat the SPC or - inserted by `minibuffer-complete-word as delimiters
+  ;; treat the SPC or - inserted by 'minibuffer-complete-word as delimiters
   (customize-set-variable 'completion-pcm-complete-word-inserts-delimiters t)
 
   ;; a string of characters treated as word delimiters for completion
@@ -793,10 +792,10 @@ In the beginning...
 
   #+BEGIN_SRC emacs-lisp
 
-  ;; pending-completions number over which to apply `icomplete-compute-delay
+  ;; pending-completions number over which to apply 'icomplete-compute-delay
   (customize-set-variable 'icomplete-delay-completions-threshold 128)
 
-  ;; maximum number of initial chars to apply `icomplete-compute-delay
+  ;; maximum number of initial chars to apply 'icomplete-compute-delay
   (customize-set-variable 'icomplete-max-delay-chars 0.3)
 
   ;; completions-computation stall, used only with large-number completions
@@ -814,8 +813,8 @@ In the beginning...
   ;; string used by Icomplete to separate alternatives in the minibuffer
   (customize-set-variable 'icomplete-separator (propertize " · " 'face 'shadow))
 
-  ;; specialized completion tables with which `icomplete should operate,
-  ;; if this is t, `icomplete operates on all tables
+  ;; specialized completion tables with which 'icomplete should operate,
+  ;; if this is t, 'icomplete operates on all tables
   (customize-set-variable 'icomplete-with-completion-tables t)
 
   ;; if non-nil, also use icomplete when completing in non-mini buffers
@@ -859,8 +858,7 @@ In the beginning...
 * In buffer completion
 
   Emacs makes the distinction between "minibuffer completion" (already
-  covered and configured in this file) and "in buffer" completion
-  (even though all completion is somewhat related to the minibuffer).
+  covered and configured in this file) and "in buffer" completion.
 
   The distinctions in this section will be regarding "native"
   completion functionalities (i.e., Emacs builtin) and third-party
@@ -901,14 +899,14 @@ In the beginning...
 *** hippie-exp
 
     #+BEGIN_QUOTE
-    `hippie-expand' is a single function for a lot of different kinds
+    'hippie-expand' is a single function for a lot of different kinds
     of completions and expansions.  Called repeatedly it tries all
     possible completions in succession.
     Which kinds of completions to try, and in which order, is
-    determined by the contents of `hippie-expand-try-functions-list'.
-    Much customization of `hippie-expand' can be made by changing the
+    determined by the contents of 'hippie-expand-try-functions-list'.
+    Much customization of 'hippie-expand' can be made by changing the
     order of, removing, or inserting new functions in this list.
-    Given a positive numeric argument, `hippie-expand' jumps directly
+    Given a positive numeric argument, 'hippie-expand' jumps directly
     ARG functions forward in this list.  Given some other argument
     (a negative argument or just Ctrl-U) it undoes the tried
     completion.
@@ -965,15 +963,17 @@ In the beginning...
 
     ;; These are all a matter of personal preference, one should tweak
     ;; these variables around to find the best combination for themselves
-    (customize-set-variable 'corfu-auto t)        ;; Enable auto completion
-    (customize-set-variable 'corfu-cycle t)                    ;; Enable cycling for `corfu-next/previous'
+    (customize-set-variable 'corfu-auto t)                     ;; Enable auto completion
+    (customize-set-variable 'corfu-cycle t)                    ;; Enable cycling for 'corfu-next/previous'
     (customize-set-variable 'corfu-separator ?\s)              ;; Orderless field separator
     (customize-set-variable 'corfu-quit-at-boundary t)         ;; Quit at completion boundary, i.e., if word is over
     (customize-set-variable 'corfu-quit-no-match t)            ;; Quit  if there is no match
     (customize-set-variable 'corfu-preview-current 'insert)    ;; Candidate is automatically inserted on further input
     (customize-set-variable 'corfu-preselect 'first)           ;; Always pre-select first candidate
     (customize-set-variable 'corfu-auto-prefix 2)              ;; Start completing after two characters
-    (customize-set-variable 'corfu-scroll-margin 5)
+    (customize-set-variable 'corfu-scroll-margin 5)            ;; "Candidates" border
+    (customize-set-variable 'corfu-quick1 "123456")            ;; Quick keys
+    (customize-set-variable 'corfu-quick2 "7890ab")
 
     #+END_SRC
 
@@ -987,6 +987,7 @@ In the beginning...
           (define-key corfu-map (kbd "C-j") 'corfu-insert)
           ;; leave my ctrl-m alone. not sure about this.
           ;; (define-key corfu-map (kbd "RET") nil)
+          (define-key corfu-map (kbd "M-q") 'corfu-quick-complete)
           )))
 
     #+END_SRC
@@ -1358,7 +1359,7 @@ In the beginning...
 *** TODO Ispell dictionaries
 
     - Brazillian portuguese dictionary has to be manually installed,
-    i.e., cloned from github.
+    i.e., cloned from github (haven't done nor tested this).
     - Also, remember that aspell is an Unix utility, meaning it has to
       be installed in the system for any of the "ispell-*" commands to
       work.
@@ -1398,9 +1399,18 @@ In the beginning...
 
    This might not really be needed.
 
-** TODO Completion
+** DONE Completion
 
-   This could get its own section
+   This could get its own section.
+
+   Solved with =capfs=, =corfu= and =cape=.
+
+   There'll probably be more on completion in each language specifc
+   file or even a section for LSP.
+
+   NOTE: remember that we had to install the package called "words" in
+   Arch Linux, which is where the dictionary files at
+   "/usr/share/dict/words" comes from.
 
 ** TODO Terminals
 
@@ -1432,7 +1442,7 @@ In the beginning...
 ** TODO Undo-tree
 ** TODO Etags
 ** TODO Xref
-** Other libraries to check
+** TODO Other libraries to check
 
    - https://github.com/nlamirault/gotest.el
    - https://github.com/minad/marginalia
@@ -1476,3 +1486,5 @@ In the beginning...
 ** TODO Cleanup
 
    For removing key-binds from minor modes, etc.
+
+   That's all folks.
