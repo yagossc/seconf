@@ -50,6 +50,10 @@ Now let's ensure an Eglot session is runnning:
 
 #+END_SRC
 
+Eglot annoyingly overrides our =completion-at-point-functions= list,
+so in other to keep =dabbrev= and =file= completions, we'll have to
+reinsert the =capfs= in the list.
+
 #+BEGIN_SRC emacs-lisp
 
 (add-hook 'eglot-managed-mode-hook
