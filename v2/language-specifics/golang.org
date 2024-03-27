@@ -1,0 +1,85 @@
+#+TITLE: Golang Configuration File
+
+The main library used for Golang files in Emacs is the third-pary
+=go-mode=. It has no specific installation steps besides cloning the
+repository into your =load-path=.
+
+Let's load =go-mode= whenever we open a "*.go" file:
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'window-setup-hook
+          (lambda ()
+            (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))))
+
+#+END_SRC
+
+We'll try to use the language's LSP called =gopls=, which is a binary
+that sould be installed on your system available on your $PATH.
+
+It needs some configurations alongside the chosen LSP client, which is
+=eglot= since it already comes with Emacs.
+
+#+BEGIN_QUOTE
+Eglot uses the built-in project package to identify the LSP workspace
+for a newly-opened buffer. The project package does not natively know
+about GOPATH or Go modules. Fortunately, you can give it a custom hook
+to tell it to look for the nearest parent go.mod file (that is, the
+root of the Go module) as the project root.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+
+(add-hook 'project-find-functions #'project-find-go-module)
+
+#+END_SRC
+
+
+Now let's ensure an Eglot session is runnning:
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'go-mode-hook 'eglot-ensure)
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'eglot-managed-mode-hook
+          (lambda ()
+            (add-to-list 'completion-at-point-functions #'cape-file)
+            (add-to-list 'completion-at-point-functions #'cape-dabbrev)))
+
+#+END_SRC
+
+Let's use =gopls= to format the golang file through the
+=before-save-hook=:
+
+#+BEGIN_SRC emacs-lisp
+
+;; Optional: install eglot-format-buffer as a save hook.
+;; The depth of -10 places this before eglot's willSave notification,
+;; so that that notification reports the actual contents that will be saved.
+(defun eglot-format-buffer-on-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+
+(add-hook 'go-mode-hook #'eglot-format-buffer-on-save)
+
+#+END_SRC
+
+And, let's also use =gopls= to organize our imports:
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (call-interactively 'eglot-code-action-organize-imports)))
+
+#+END_SRC

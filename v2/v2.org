@@ -5,6 +5,7 @@
 #+LANGUAGE: en
 #+BABEL: :cache yes
 #+PROPERTY: header-args :tangle yes
+#+EXPORT_FILE_NAME: init.org
 
 #+BEGIN_QUOTE
 In the beginning...
@@ -74,7 +75,7 @@ In the beginning...
 
   And such code contained in the =subdirs.el= file is:
 
-  #+BEGIN_SRC emacs-lisp :tangle no
+  #+BEGIN_SRC emacs-lisp :tangle no :exports no
 
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path))
@@ -134,7 +135,7 @@ In the beginning...
   (require 'cl-seq)
 
   (defun seconf/generate-loaddefs (&optional generate-full)
-    "Generate loaddefs file for all directories inside of 'user-emacs-directory/lisp'.
+    "Generate loaddefs file for all directories inside of `user-emacs-directory/lisp'.
   If called interactively, regenerate all loaddefs."
     (interactive "p")
     (let ((dir (expand-file-name "lisp/" user-emacs-directory))
@@ -987,8 +988,7 @@ In the beginning...
           (define-key corfu-map (kbd "C-j") 'corfu-insert)
           ;; leave my ctrl-m alone. not sure about this.
           ;; (define-key corfu-map (kbd "RET") nil)
-          (define-key corfu-map (kbd "M-q") 'corfu-quick-complete)
-          )))
+          (define-key corfu-map (kbd "M-q") 'corfu-quick-complete))))
 
     #+END_SRC
 
@@ -1021,6 +1021,8 @@ In the beginning...
 
     #+END_SRC
 
+    /Note: the order in which the capfs are added matters./
+
 * Project Management
 
   Initially, we used =projectile= for this, however, it might no
@@ -1043,6 +1045,17 @@ In the beginning...
 
   =Note:= When using =project.el=, if the newly added project is an
   empty directory, an error will occur.
+
+  Also, let's ensure =project.el= always fallback to basing the
+  project in hand on its version control information:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'window-setup-hook
+            (lambda ()
+              (add-hook 'project-find-functions #'project-try-vc)))
+
+  #+END_SRC
 
 * Version Control (magit)
 
@@ -1129,9 +1142,19 @@ In the beginning...
                'org-babel-load-languages
                '((emacs-lisp . t)
                  (shell . t)
-                 (python . t)))
+                 (python . t)))))
 
-              ;; also add dict based capf to capfs
+  #+END_SRC
+
+  Let's also add a completion function for org using the third-party
+  library called =cape=:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; cape-dict: uses the dictionary of words available at
+              ;; /usr/share/dict/words for text completion.
               (add-to-list 'completion-at-point-functions #'cape-dict)))
 
   #+END_SRC
@@ -1236,6 +1259,10 @@ In the beginning...
   (define-key ctl-x-map (kbd "[") 'hs-toggle-hiding)
 
   #+END_SRC
+
+** Language specifics
+
+   #+INCLUDE: "./language-specifics/golang.org"
 
 * General Customizations
 
@@ -1364,6 +1391,11 @@ In the beginning...
       be installed in the system for any of the "ispell-*" commands to
       work.
 
+*** TODO Install /usr/share/dict/words
+
+    In Arch Linux, this comes from a package named =words= and is
+    needed for =cape-dict= capf.
+
 ** DONE Create needed sections
 
    As of now, it seems to make sense to have the 3 sections:
@@ -1391,12 +1423,6 @@ In the beginning...
 
    The =custom.el= is a good place for calls like
 
-   #+BEGIN_SRC emacs-lisp :tangle no
-
-   (safe-funcall 'menu-bar-mode 0)
-
-   #+END_SRC
-
    This might not really be needed.
 
 ** DONE Completion
@@ -1415,6 +1441,9 @@ In the beginning...
 ** TODO Terminals
 
    This could get its own section.
+
+   - Use =term= and the =seconf/run-term= function;
+   - Something using dedicated windows will have to be done;
 
 *** DONE Basic Usage
 
