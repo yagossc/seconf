@@ -1220,6 +1220,61 @@ In the beginning...
 
   #+END_SRC
 
+** Dedicated Terminal
+
+   A nice little thing to have is a "bottom of the screen pop anytime
+   terminal".
+
+   The inspiration and literraly instructions for doing this came from
+   [[https://www.masteringemacs.org/article/demystifying-emacs-window-manager][this]] "Mastering Emacs" post.
+
+   #+BEGIN_QUOTE
+   Emacs is a fantastic tiling window manager, and not enough people
+   know that. There, it’s out now; I said it; now everybody knows. And
+   thanks to a number of consolidations and improvements, it’s no
+   longer the indomitable black box it once was.
+   #+END_QUOTE
+
+   First, we need to tell Emacs how to handle this particular window:
+
+   #+BEGIN_SRC emacs-lisp
+
+   (add-to-list 'display-buffer-alist
+                '("\\*dedicated-term\\*" display-buffer-in-direction
+                  (slot . 0)
+                  (dedicated . t)
+                  (direction . bottom)
+                  (window . root)
+                  (window-height . 0.3)))
+
+   #+END_SRC
+
+   Now, we need a function for creating a terminal named
+   "*dedicated-term*":
+
+   #+BEGIN_SRC emacs-lisp
+
+   (defun seconf/dedicated-term ()
+     (interactive)
+     (let ((window (get-buffer-window "*dedicated-term*")))
+       (if window (delete-window window)
+         (progn (make-term "dedicated-term" (getenv "SHELL"))
+                (pop-to-buffer-same-window "*dedicated-term*")
+                (term-char-mode)))))
+
+   #+END_SRC
+
+   And finally, set a nice key-bind for it:
+
+   #+BEGIN_SRC emacs-lisp
+
+   (define-key ctl-x-map (kbd "C-x") 'seconf/dedicated-term)
+
+   ;; meaning C-c C-x closes the dedicated term
+   (define-key term-mode-map (kbd "C-x") 'seconf/dedicated-term)
+
+   #+END_SRC
+
 * Programming
 
   This section holds "generic" customizations/configurations used when
@@ -1438,7 +1493,7 @@ In the beginning...
    Arch Linux, which is where the dictionary files at
    "/usr/share/dict/words" comes from.
 
-** TODO Terminals
+** DONE Terminals
 
    This could get its own section.
 
@@ -1450,7 +1505,7 @@ In the beginning...
     - Open a terminal an rename it;
     - Navigate it with "terminal functionality" disabled/enabled.
 
-*** TODO Dedicated terminal
+*** DONE Dedicated terminal
 
     Emacs has dedicated windows.
 
