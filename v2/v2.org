@@ -1271,7 +1271,8 @@ In the beginning...
    (define-key ctl-x-map (kbd "C-x") 'seconf/dedicated-term)
 
    ;; meaning C-c C-x closes the dedicated term
-   (define-key term-mode-map (kbd "C-x") 'seconf/dedicated-term)
+   (when (boundp 'term-mode-map)
+     (define-key term-mode-map (kbd "C-x") 'seconf/dedicated-term))
 
    #+END_SRC
 
