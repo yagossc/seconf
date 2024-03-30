@@ -84,6 +84,7 @@ And, let's also use =gopls= to organize our imports:
 
 (add-hook 'before-save-hook
           (lambda ()
-            (call-interactively 'eglot-code-action-organize-imports)))
+            (if (equal major-mode 'go-mode)
+            (call-interactively 'eglot-code-action-organize-imports))))
 
 #+END_SRC
