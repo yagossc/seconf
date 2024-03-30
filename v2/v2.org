@@ -375,8 +375,8 @@ In the beginning...
   consider to be "dealing with buffers". Hence, there might be some
   functions and variables mentioned here that are =technically=
   "dealing with windows", however, since the "side effects feel like"
-  they're being applied to the buffer being displayed, we'll keep
-  these functions and variables here.
+  they're being applied to the buffer in display, we'll keep these
+  functions and variables here.
 
 ** Managing Buffers
 
@@ -570,7 +570,6 @@ In the beginning...
                         (name . "^\\*eldoc for")
                         (name . "^\\*scratch\\*$")
                         (name . "^\\*Warnings\\*$")
-                        (name . "^\\*Completions\\*$")
                         (name . "^\\*Completions\\*$")
                         (name . "^\\*Messages\\*$")))
 
@@ -1040,6 +1039,7 @@ In the beginning...
 
   (define-key project-prefix-map (kbd "o") 'project-switch-project)
   (define-key project-prefix-map (kbd "p") 'ag-project)
+  (define-key project-prefix-map (kbd "SPC") 'project-compile)
 
   #+END_SRC
 
@@ -1181,8 +1181,8 @@ In the beginning...
 
 * Terminals
 
-  For now, we'll be using =term.el= with two clever binds, but first,
-  let's write a function that runs a terminal and asks for its name:
+  We'll be using =term.el= with two clever binds, but first, let's
+  write a function that runs a terminal and asks for its name:
 
   #+BEGIN_SRC emacs-lisp
 
@@ -1225,8 +1225,8 @@ In the beginning...
    A nice little thing to have is a "bottom of the screen pop anytime
    terminal".
 
-   The inspiration and literraly instructions for doing this came from
-   [[https://www.masteringemacs.org/article/demystifying-emacs-window-manager][this]] "Mastering Emacs" post.
+   The inspiration (and literal instructions) for this came from [[https://www.masteringemacs.org/article/demystifying-emacs-window-manager][this]]
+   "Mastering Emacs" post.
 
    #+BEGIN_QUOTE
    Emacs is a fantastic tiling window manager, and not enough people
@@ -1317,6 +1317,9 @@ In the beginning...
   #+END_SRC
 
 ** Language specifics
+
+   Here's a list of language specifc included files that will be
+   exported alongside this main file in the build process:
 
    #+INCLUDE: "./language-specifics/golang.org"
 
@@ -1516,6 +1519,18 @@ In the beginning...
 
    This could get its own section
 
+** TODO YAML-mode
+
+   https://www.emacswiki.org/emacs/YamlMode
+
+   Actually, since Emacs 29, =tree-sitter= is built-in which also
+   brings =yaml-ts-mode.el=, and a simple call to
+   =treesit-install-language-grammar= (with the grammar's URL as
+   argument) worked like a charm.
+
+   The question now is wether or not to put this information in a
+   dedicated section or not.
+
 ** TODO Documentation
 
    Here there could be configurations for =man=, =woman= and
@@ -1537,6 +1552,7 @@ In the beginning...
    - https://github.com/Fanael/rainbow-delimiters
    - https://github.com/dbordak/telephone-line
    - https://www.emacswiki.org/emacs/SpeedBar
+   - https://github.com/akermu/emacs-libvterm
 
 ** DONE Project Management
 
@@ -1544,15 +1560,15 @@ In the beginning...
 
 *** DONE Magit
 *** DONE Projectile
-** TODO Programming
+** DONE Programming
 
    Here goes the editing code specifics.
 
-*** TODO General
+*** DONE General
 
     Prog-mode stuff maybe?
 
-*** TODO Language Specific
+*** DONE Language Specific
 
     Idea: include other files.
 
@@ -1573,3 +1589,4 @@ In the beginning...
    For removing key-binds from minor modes, etc.
 
    That's all folks.
+
