@@ -1,0 +1,255 @@
+#+title: Lua Configuration File
+
+* Lua
+
+  The main library (major mode) used for Lua files in this configuration
+  is the third-pary =lua-mode= available at:
+
+  https://github.com/immerrr/lua-mode
+
+  Firstly, let's load =lua-mode= whenever we open a "*.lua" file:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'window-setup-hook
+            (lambda ()
+              (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode))))
+
+  #+END_SRC
+
+  Lua mode provides functions for making a comint buffer attached to a
+  lua process, which is a "nice to have" for an interpreted
+  language. Let's do some configurations on it:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; non-nil means display lua-process-buffer after sending a command.
+  (customize-set-variable 'lua-process-buffer t)
+
+  ;; default application to run in Lua process
+  (customize-set-variable 'lua-default-application "lua")
+
+  ;; command switches for lua-default-application. this is important
+  ;; since signals the use of the "interactive mode" to the interpreter
+  (customize-set-variable 'lua-default-command-switches "-i")
+
+  #+END_SRC
+
+  Now, let's add some nice key-binds for the "interactive programming
+  session":
+
+  #+BEGIN_SRC emacs-lisp
+
+  (eval-after-load 'lua-mode
+    (lambda ()
+      (when (boundp 'lua-mode-map)
+        (define-key lua-mode-map (kbd "C-c C-p") 'lua-start-process)
+        (define-key lua-mode-map (kbd "C-c C-b") 'lua-send-buffer)
+        (define-key lua-mode-map (kbd "C-c C-e") 'lua-send-current-line)
+        (define-key lua-mode-map (kbd "C-c C-r") 'lua-send-region))))
+
+  #+END_SRC
+
+  Let's do a couple of general customizations based on personal
+  preference:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; amount by which Lua subexpressions are indented
+  (customize-set-variable 'lua-indent-level 4)
+
+  ;; if non-nil, contents of multiline string will be indented
+  (customize-set-variable 'lua-indent-string-contents t)
+
+  ;; jump to innermost traceback location in *lua* buffer
+  ;; when this variable is non-nil and a traceback occurs
+  ;; when running Lua code in a process, jump immediately
+  ;; to the source code of the innermost traceback location
+  (customize-set-variable 'lua-jump-on-traceback t)
+
+  #+END_SRC
+
+  Let's maybe try and use =Eglot= for completion and etc here:
+
+  /Note:	This is very hackish, so it's under analysis./
+  /-		If needed one can check [[https://2metz.fr/blog/configuring-emacs-eglot-lsp-with-docker-containers/][this]] hackish post/
+  /-		Also, this needs a custom docker image, which I did, but/
+  /-		geez, you know, if it was well supported it wouldn't be necessary./
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; (setq eglot-withhold-process-id "1")
+
+  ;; (with-eval-after-load 'eglot
+  ;;   (add-to-list 'eglot-server-programs `(lua-mode . ("~/.emacs.d/lsp-docker.sh" "lua-lsp:latest" "lua-lsp"))))
+
+  #+END_SRC
+
+* love2d
+
+  =love2d= is a game engine based on SDL. It's easy to use and
+  alongside Emacs, the comint buffer running a Lua process and this
+  little piece of code called =repler=, we can have a pretty neat,
+  quick and "interactive" game development flow.
+
+  Here's =repler's= code:
+
+  #+BEGIN_SRC lua
+  --[[ LICENSE
+      -- Following is the MIT license as found on
+      -- http://www.opensource.org/licenses/mit-license.php .
+
+      Copyright (c) 2013 Bart van Strien
+
+      Permission is hereby granted, free of charge, to any person obtaining
+      a copy of this software and associated documentation files (the
+      "Software"), to deal in the Software without restriction, including
+      without limitation the rights to use, copy, modify, merge, publish,
+      distribute, sublicense, and/or sell copies of the Software, and to
+      permit persons to whom the Software is furnished to do so, subject to
+      the following conditions:
+
+      The above copyright notice and this permission notice shall be
+      included in all copies or substantial portions of the Software.
+
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+      IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+      CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+      TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+      SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  ]]
+
+  local function sprint(...)
+      local args = {...}
+      for i, v in ipairs(args) do
+          args[i] = tostring(v)
+      end
+
+      if #args == 0 then
+          return nil
+      end
+
+      return table.concat(args, "\t")
+  end
+
+  local function doExecute(command)
+      command = command:gsub("^=", "return ")
+      local success, f = pcall(loadstring, command)
+      local results
+      if success then
+          results = {pcall(f)}
+      end
+
+      if not success then
+          return sprint(f)
+      elseif not table.remove(results, 1) then
+          return sprint(results[1])
+      else
+          return sprint(unpack(results))
+      end
+  end
+
+  local load
+  if love.thread.newChannel then
+      local channel = love.thread.newChannel()
+      local threadcode = [[
+          local channel = ...
+
+          require "love.thread"
+          require "love.event"
+
+          function prompt()
+          io.write("> ")
+          io.flush()
+          return io.read("*l")
+          end
+
+          repeat
+          local command = prompt()
+          if not command then break end
+
+          love.event.push("repler", command)
+          local result = channel:demand()
+          if #result > 0 then
+          print(result:sub(2, -1))
+          end
+          until infinity
+          ]]
+
+          function load()
+              local t = love.thread.newThread(
+                  love.filesystem.newFileData(threadcode, "replthread"))
+
+              love.handlers.repler = rawget(love.handlers, "repler") or function(command)
+                  local result = doExecute(command)
+                  if result == nil then
+                      channel:push("")
+                  else
+                      channel:push("\"" .. result)
+                  end
+              end
+
+              t:start(channel)
+          end
+  else -- this is for love2d's older versions
+      local threadcode = [[
+          require "love.event"
+
+          function prompt()
+          io.write("> ")
+          io.flush()
+          return io.read("*l")
+          end
+
+          t = love.thread.getThread()
+
+          repeat
+          local command = prompt()
+          if not command then break end
+
+          love.event.push("repler", t, command)
+          local result = t:demand("result")
+          if #result > 0 then
+          print(result:sub(2, -1))
+          end
+          until infinity
+          ]]
+
+          function load()
+              local t = love.thread.newThread("repler-thread",
+                                              love.filesystem.newFileData(threadcode,	"replthread"))
+              love.handlers.repler = rawget(love.handlers, "repler") or function(thread, command)
+                  local result = doExecute(command)
+                  if result == nil then
+                      t:set("result", "")
+                  else
+                      t:set("result", "\"" .. result)
+                  end
+              end
+              t:start()
+          end
+  end
+
+  return {load = load}
+  #+END_SRC
+
+  Also, we have to change the variable =lua-default-application= in
+  order to have it run =love= instead of =lua= and "gambi" the
+  =lua-default-command-switches= variable to ".", because running a
+  =love2d= project is done with "love .":
+
+  #+BEGIN_SRC emacs-lisp
+
+  (defun seconf/enable-love2d ()
+    (interactive)
+    (customize-set-variable 'lua-default-application "love")
+    (customize-set-variable 'lua-default-command-switches (list ".")))
+
+  (defun seconf/disable-love2d ()
+    (interactive)
+    (customize-set-variable 'lua-default-application "lua")
+    (customize-set-variable 'lua-default-command-switches (list "-i")))
+
+  #+END_SRC

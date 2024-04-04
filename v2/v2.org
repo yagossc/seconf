@@ -1322,6 +1322,7 @@ In the beginning...
    exported alongside this main file in the build process:
 
    #+INCLUDE: "./language-specifics/golang.org"
+   #+INCLUDE: "./language-specifics/lua.org"
 
 * General Customizations
 
