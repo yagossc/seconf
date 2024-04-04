@@ -1520,6 +1520,11 @@ In the beginning...
 
    This could get its own section
 
+** TODO Backup Files
+
+   The =everything.sth~= is kind of anoying and space consuming. Maybe
+   we should do something about it.
+
 ** TODO YAML-mode
 
    https://www.emacswiki.org/emacs/YamlMode
