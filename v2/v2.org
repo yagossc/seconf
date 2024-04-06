@@ -1316,6 +1316,15 @@ In the beginning...
 
   #+END_SRC
 
+  I personally enjoy having the line numbers displayed (at least) when
+  programming:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+  #+END_SRC
+
 ** Language specifics
 
    Here's a list of language specifc included files that will be
