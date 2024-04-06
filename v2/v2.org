@@ -1569,9 +1569,33 @@ In the beginning...
    - https://www.emacswiki.org/emacs/SpeedBar
    - https://github.com/akermu/emacs-libvterm
 
-** DONE Project Management
+** TODO Project Management
 
    Here goes magit and projectile and that's it.
+
+*** DONE Basic configurations
+*** TODO Encoding in compilation buffer
+
+    There appears to be some encoding treachery going on when I use
+    project-compile. If I set the commint-mode to =t= it displays
+    everything nicely:
+
+    #+BEGIN_SRC emacs-lisp :tangle no :exports no
+
+    (defadvice compile (before ad-compile-smart activate)
+      "Advises `compile' so it sets the argument COMINT to t."
+      (ad-set-arg 1 t))
+
+    #+END_SRC
+
+    Or do something like:
+
+    #+BEGIN_SRC emacs-lisp :tangle no :exports no
+
+    (defun custom-compile(cmd)
+      (compile cmd t))
+
+    #+END_SRC
 
 *** DONE Magit
 *** DONE Projectile
