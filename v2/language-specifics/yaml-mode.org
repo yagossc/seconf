@@ -1,0 +1,15 @@
+#+TITLE: YAML Mode Configuration File
+
+Starting in Emacs 29, =tree-sitter= is built-in which also brings
+=yaml-ts-mode.el=, and a simple call to
+=treesit-install-language-grammar= (with the grammar's URL as
+argument) worked like a charm.
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'window-setup-hook
+          (lambda ()
+            (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+            (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-ts-mode))))
+
+#+END_SRC

@@ -1354,6 +1354,7 @@ In the beginning...
 
    #+INCLUDE: "./language-specifics/golang.org"
    #+INCLUDE: "./language-specifics/lua.org"
+   #+INCLUDE: "./language-specifics/yaml-mode.org"
 
 * General Customizations
 
@@ -1557,13 +1558,12 @@ In the beginning...
 
    https://github.com/spotify/dockerfile-mode
 
-
-** TODO Backup Files
+** DONE Backup Files
 
    The =everything.sth~= is kind of anoying and space consuming. Maybe
    we should do something about it.
 
-** TODO YAML-mode
+** DONE YAML-mode
 
    https://www.emacswiki.org/emacs/YamlMode
 
@@ -1574,6 +1574,17 @@ In the beginning...
 
    The question now is wether or not to put this information in a
    dedicated section or not.
+
+   We should at least put this somewhere:
+
+   #+BEGIN_SRC emacs-lisp :tangle no :exports no
+
+   (add-hook 'window-setup-hook
+             (lambda ()
+               (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+               (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-ts-mode))))
+
+   #+END_SRC
 
 ** TODO Documentation
 
