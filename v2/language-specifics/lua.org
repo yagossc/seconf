@@ -85,6 +85,10 @@
 
   #+END_SRC
 
+** TODO Checkout lua-language-server implementation
+
+   https://github.com/LuaLS/lua-language-server
+
 * love2d
 
   =love2d= is a game engine based on SDL. It's easy to use and
