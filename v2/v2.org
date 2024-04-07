@@ -1057,6 +1057,18 @@ In the beginning...
 
   #+END_SRC
 
+** Compilation
+
+   When compiling a project through Emacs' =compile=, the output will
+   get messed up in case of color usage. However, there's a simple
+   function to =compilation-filter-hook= to solve this:
+
+   #+BEGIN_SRC emacs-lisp
+
+   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
+   #+END_SRC
+
 * Version Control (magit)
 
   /Note: Please refer to [[https://magit.vc/manual/magit/Installing-from-the-Git-Repository.html][this manual]] for Magit's installation and/
@@ -1529,6 +1541,13 @@ In the beginning...
 
    This could get its own section
 
+** TODO dockerfile-mode
+
+   It's from Spotify and it seems to be very useful:
+
+   https://github.com/spotify/dockerfile-mode
+
+
 ** TODO Backup Files
 
    The =everything.sth~= is kind of anoying and space consuming. Maybe
@@ -1569,12 +1588,12 @@ In the beginning...
    - https://www.emacswiki.org/emacs/SpeedBar
    - https://github.com/akermu/emacs-libvterm
 
-** TODO Project Management
+** DONE Project Management
 
    Here goes magit and projectile and that's it.
 
 *** DONE Basic configurations
-*** TODO Encoding in compilation buffer
+*** DONE Color in compilation buffer
 
     There appears to be some encoding treachery going on when I use
     project-compile. If I set the commint-mode to =t= it displays
@@ -1596,6 +1615,12 @@ In the beginning...
       (compile cmd t))
 
     #+END_SRC
+
+    Maybe a hackish solution would be to simply make the buffer
+    read-only with =comint-mode= =t=.
+
+    =NOPE.= None of this is needed, see the =Compilation= section
+    under =Project Management=.
 
 *** DONE Magit
 *** DONE Projectile
