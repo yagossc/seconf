@@ -186,7 +186,7 @@ In the beginning...
 
   #+END_SRC
 
-* History and Cache
+* History, Cache and Backup
 
   For many functionalities that go through the minibuffer, having a
   list of =previously used candidates= depends on having a set
@@ -235,7 +235,7 @@ In the beginning...
 
   #+END_SRC
 
-  And finally, enable =savehist mode=:
+  Now, enable =savehist mode=:
 
   #+BEGIN_SRC emacs-lisp
 
@@ -243,6 +243,16 @@ In the beginning...
   (add-hook 'window-setup-hook
             (lambda ()
               (funcall 'savehist-mode 1)))
+
+  #+END_SRC
+
+  Finally, disable the annoyance of having =file-name.extension~=
+  backup files for every visited file:
+
+  #+BEGIN_SRC emacs-lisp
+
+  ;; non-nil means make a backup of a file the first time it is saved
+  (customize-set-variable 'make-backup-files nil)
 
   #+END_SRC
 
