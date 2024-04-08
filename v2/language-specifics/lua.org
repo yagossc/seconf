@@ -78,10 +78,17 @@
 
   #+BEGIN_SRC emacs-lisp
 
-  ;; (setq eglot-withhold-process-id "1")
+  ;; set eglot process id in case we're doing lua
+  ;; (add-hook 'window-setup-hook
+  ;;           (lambda ()
+  ;;             (if (equal major-mode 'lua-mode)
+  ;;                 (setq eglot-withhold-process-id "1")
+  ;;               (setq eglot-withhold-process-id nil))))
 
   ;; (with-eval-after-load 'eglot
-  ;;   (add-to-list 'eglot-server-programs `(lua-mode . ("~/.emacs.d/lsp-docker.sh" "lua-lsp:latest" "lua-lsp"))))
+  ;;   (add-to-list 'eglot-server-programs `(lua-mode . ("~/.emacs.d/lsp-docker.sh" "lua-language-server:latest" "lua-language-server"))))
+
+  ;; (add-hook 'lua-mode-hook 'eglot-ensure)
 
   #+END_SRC
 
