@@ -1613,6 +1613,7 @@ In the beginning...
 ** TODO Xref
 ** TODO Other libraries to check
 
+   - https://github.com/magnars/multiple-cursors.el
    - https://github.com/nlamirault/gotest.el
    - https://github.com/minad/marginalia
    - https://github.com/minad/consult
