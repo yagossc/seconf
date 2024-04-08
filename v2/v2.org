@@ -1425,6 +1425,12 @@ In the beginning...
      - git@github.com:magit/with-editor.git
      - git@github.com:emacs-compat/compat.git
 
+*** iedit
+
+    - https://github.com/victorhge/iedit.git
+
+    Note: have to run =make= to generate iedit =autoloads= file.
+
 ** TODO Install script
 
    This should contain the following:
@@ -1593,6 +1599,14 @@ In the beginning...
 
 *** TODO Dash Docs for
 ** TODO Iedit
+
+   - git clone
+   - make (for autoloads)
+
+*** TODO Must edit theme
+
+    Must add a proper color to =iedit-mode=.
+
 ** TODO Yasnippet
 ** TODO Undo-tree
 ** TODO Etags
