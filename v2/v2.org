@@ -539,14 +539,31 @@ In the beginning...
 
     #+BEGIN_SRC emacs-lisp
 
-      (add-hook 'window-setup-hook
-                (lambda ()
-                  (funcall 'electric-pair-mode 1)))
+    (add-hook 'window-setup-hook
+              (lambda ()
+                (funcall 'electric-pair-mode 1)))
 
-      ;; (add-to-list 'electric-pair-pairs '(?\( . ?\)))
+    ;; (add-to-list 'electric-pair-pairs '(?\( . ?\)))
 
     #+END_SRC
 
+*** iedit
+
+    #+BEGIN_QUOTE
+    =iedit-mode= is a great alternative of build-in replace commands:
+
+    - A more intuitive way to alter all the occurrences at once
+    - Visual feedback
+    - Less keystrokes in most cases
+    #+END_QUOTE
+
+    Let's add a global key-bind for it:
+
+    #+BEGIN_SRC emacs-lisp
+
+    (global-set-key (kbd "C-;") 'iedit-mode)
+
+    #+END_SRC
 
 ** Navigating through Buffers
 

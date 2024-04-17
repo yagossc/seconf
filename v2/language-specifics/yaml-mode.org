@@ -31,7 +31,8 @@ And also, configure the mode to "automatically" ident on "ENTER":
 #+BEGIN_SRC emacs-lisp
 
 (add-hook 'yaml-mode-hook
-          '(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+          (lambda ()
+            (when (boundp 'yaml-mode-map)
+              (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
 
 #+END_SRC
