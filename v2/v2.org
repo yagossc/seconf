@@ -1448,6 +1448,10 @@ In the beginning...
 
     Note: have to run =make= to generate iedit =autoloads= file.
 
+*** yaml-mode (yoshiki's)
+
+    - https://github.com/yoshiki/yaml-mode.git
+
 ** TODO Install script
 
    This should contain the following:

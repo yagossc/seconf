@@ -5,11 +5,33 @@ Starting in Emacs 29, =tree-sitter= is built-in which also brings
 =treesit-install-language-grammar= (with the grammar's URL as
 argument) worked like a charm.
 
+/Note: as of 04-17-2024, calling =yaml-ts-mode= crashes Emacs./
+
 #+BEGIN_SRC emacs-lisp
 
-(add-hook 'window-setup-hook
-          (lambda ()
-            (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
-            (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-ts-mode))))
+;; (add-hook 'window-setup-hook
+;;           (lambda ()
+;;             (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+;;             (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-ts-mode))))
+
+#+END_SRC
+
+So, using yoshiki's =yaml-mode=:
+
+#+BEGIN_SRC emacs-lisp
+
+(add-to-list 'auto-mode-alist
+             '("\\.yml\\'" . yaml-mode)
+             '("\\.yaml\\'" . yaml-mode))
+
+#+END_SRC
+
+And also, configure the mode to "automatically" ident on "ENTER":
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'yaml-mode-hook
+          '(lambda ()
+             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 #+END_SRC
