@@ -531,6 +531,23 @@ In the beginning...
 
     #+END_SRC
 
+*** elec-pair.el --- Automatic parenthesis pairing
+
+    Very useful. Open a "(" and the closing ")" comes along.
+
+    Let's set globally enable =electric-pair-mode=:
+
+    #+BEGIN_SRC emacs-lisp
+
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (funcall 'electric-pair-mode 1)))
+
+      ;; (add-to-list 'electric-pair-pairs '(?\( . ?\)))
+
+    #+END_SRC
+
+
 ** Navigating through Buffers
 
    Here are some general purpose binds/commands for navigating through
