@@ -31,7 +31,7 @@
 
   ;; command switches for lua-default-application. this is important
   ;; since signals the use of the "interactive mode" to the interpreter
-  (customize-set-variable 'lua-default-command-switches "-i")
+  (customize-set-variable 'lua-default-command-switches (list "-i"))
 
   #+END_SRC
 

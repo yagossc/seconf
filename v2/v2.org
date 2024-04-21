@@ -1636,12 +1636,12 @@ In the beginning...
    =dash-docs=.
 
 *** TODO Dash Docs for
-** TODO Iedit
+** DONE Iedit
 
    - git clone
    - make (for autoloads)
 
-*** TODO Must edit theme
+*** DONE Must edit theme
 
     Must add a proper color to =iedit-mode=.
 
