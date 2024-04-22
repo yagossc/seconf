@@ -253,14 +253,58 @@
 
   #+BEGIN_SRC emacs-lisp
 
-  (defun seconf/enable-love2d ()
-    (interactive)
-    (customize-set-variable 'lua-default-application "love")
-    (customize-set-variable 'lua-default-command-switches (list ".")))
+  (defvar seconf-love2d-mode t)
 
-  (defun seconf/disable-love2d ()
+  (defun seconf/toggle-love2d-mode ()
     (interactive)
-    (customize-set-variable 'lua-default-application "lua")
-    (customize-set-variable 'lua-default-command-switches (list "-i")))
+    (if (eq seconf-love2d-mode t)
+        (progn
+          (customize-set-variable 'lua-default-application "lua")
+          (customize-set-variable 'lua-default-command-switches (list "-i"))
+          (customize-set-variable 'seconf-love2d-mode nil)
+          (define-key lua-mode-map (kbd "C-c C-p") 'lua-start-process))
+      (progn
+        (customize-set-variable 'lua-default-application "love")
+        (customize-set-variable 'lua-default-command-switches (list "."))
+        (customize-set-variable 'seconf-love2d-mode t)
+        (define-key lua-mode-map (kbd "C-c C-p") 'seconf/toggle-love2d-commint)
+        ;; FIXME: find a better way to toggle the commint buffer
+        (define-key comint-mode-map (kbd "C-c C-p") 'seconf/toggle-love2d-commint))))
+
+  #+END_SRC
+
+  I find the way =lua-mode= handels lua's commint buffer very
+  anoying. It lacks a good window management strategy. I choose to
+  handle it like a "dedicated term" fixed to the bottom of the screen.
+
+  For this, we have to tell Emacs how to handle love2d's commint
+  buffer:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-to-list 'display-buffer-alist
+               '("\\*love\\*" display-buffer-in-direction
+                 (slot . 1)
+                 (dedicated . t)
+                 (direction . bottom)
+                 (window . root)
+                 (window-height . 0.3)))
+
+  #+END_SRC
+
+  Also, we'll have to "hook" lua-mode's =lua-start-process= function
+  in order to have it properly switch to our target dedicated comint
+  buffer:
+
+  #+BEGIN_SRC emacs-lisp
+
+  (defun seconf/toggle-love2d-commint ()
+    (interactive)
+    (let ((window (get-buffer-window "*love*")))
+      (if window (delete-window window)
+        (progn
+          (if (get-buffer-process lua-process-buffer)
+              (pop-to-buffer-same-window "*love*")
+            (lua-start-process))))))
 
   #+END_SRC
