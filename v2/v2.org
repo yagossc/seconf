@@ -565,7 +565,7 @@ In the beginning...
 
     #+END_SRC
 
-** Navigating through Buffers
+** Navigating between Buffers
 
    Here are some general purpose binds/commands for navigating through
    buffers.
@@ -685,6 +685,32 @@ In the beginning...
     #+BEGIN_SRC emacs-lisp
 
     (define-key ctl-x-map (kbd "C-b") 'ibuffer)
+
+    #+END_SRC
+
+*** ag.el
+
+    =ag.el= is an Emacs front-end for the =the_silver_searcher=. Its use
+    is actually for searching patterns. From =man ag(1)=:
+
+    #+BEGIN_QUOTE
+    Recursively search for PATTERN in PATH. Like grep or ack, but faster.
+    #+END_QUOTE
+
+    But, for me, the consequence of this pattern searching is mapping
+    pattern locations in files, hence, the placement of these
+    configurations in the "Navigating between buffers" section.
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; non-nil means we highlight the current search term in results
+    (customize-set-variable 'ag-highlight-search t)
+
+    ;; non-nil means we reuse the existing search results buffer
+    (customize-set-variable 'ag-reuse-buffers t)
+
+    ;; non-nil means we open search results in the same window
+    (customize-set-variable 'ag-reuse-window t)
 
     #+END_SRC
 
@@ -1649,6 +1675,13 @@ In the beginning...
 ** TODO Undo-tree
 ** TODO Etags
 ** TODO Xref
+** DONE jq-format.el
+
+   Particularly useful for dealing with JSON (when it comes poorly
+   formatted or invalid).
+
+   - https://github.com/wbolster/emacs-jq-format
+
 ** TODO Other libraries to check
 
    - https://github.com/magnars/multiple-cursors.el
