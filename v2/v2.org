@@ -1110,6 +1110,8 @@ In the beginning...
   (define-key project-prefix-map (kbd "o") 'project-switch-project)
   (define-key project-prefix-map (kbd "p") 'ag-project)
   (define-key project-prefix-map (kbd "SPC") 'project-compile)
+  ;; FIXME: place this in it's proper place
+  (define-key project-prefix-map (kbd "l") 'seconf/reset-eglot)
 
   #+END_SRC
 
@@ -1224,7 +1226,8 @@ In the beginning...
                'org-babel-load-languages
                '((emacs-lisp . t)
                  (shell . t)
-                 (python . t)))))
+                 (python . t)
+                 (sql . t)))))
 
   #+END_SRC
 
