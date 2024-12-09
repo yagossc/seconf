@@ -1417,6 +1417,7 @@ In the beginning...
 
    #+INCLUDE: "./language-specifics/golang.org"
    #+INCLUDE: "./language-specifics/lua.org"
+   #+INCLUDE: "./language-specifics/manim.org"
    #+INCLUDE: "./language-specifics/yaml-mode.org"
 
 * General Customizations

@@ -1,0 +1,59 @@
+#+TITLE: Manim Configuration File
+
+These are a bunch o settings and scripts that aim at providing an
+"interactive envoriment" for building programmatic animations using
+Manim (Community Edition).
+
+Note: this is a quick and dirty solution that does not make use of all
+features available when using a language's REPL, i.e., completions and
+such are yet not available.
+
+#+BEGIN_SRC emacs-lisp
+
+(defvar manim-cli-file-path "/path/to/venv/bin/manim"
+  "Path to the program used by `run-manim'")
+
+(defvar manim-cmdline-arguments  (list "-qm" "-p" "--renderer=opengl")
+  "Commandline arguments to pass to `manim-cli'.")
+
+
+(defvar manim-buffer-name "*Manim*"
+  "Name of the buffer to use for the `run-manim' comint instance.")
+
+
+(defun run-manim ()
+  "Run an inferior instance of `manim-script' inside Emacs."
+  ;; Note: right now this is only usable in a file containing
+  ;; a single SceneClass. Use animation groups if needed.
+  (interactive)
+  (let* ((manim-executable manim-cli-file-path)
+         (buffer (get-buffer-create manim-buffer-name))
+         (proc-alive (comint-check-proc buffer))
+         (process (get-buffer-process buffer))
+         (cmdline-arguments manim-cmdline-arguments)
+         (python-script-file-path (buffer-file-name (current-buffer))))
+    ;; if the process is dead then re-create the process and reset the
+    ;; mode.
+    (unless proc-alive
+      (with-current-buffer buffer
+        (apply 'make-comint-in-buffer manim-buffer-name buffer
+               manim-executable nil (add-to-list 'manim-cmdline-arguments python-script-file-path t))
+        (comint-mode)))
+    ;; Regardless, provided we have a valid buffer, we pop to it.
+    (when buffer
+      (pop-to-buffer buffer))))
+
+
+(defun manim-send-region (start end)
+  (interactive "r")
+  (let ((process (get-buffer-process "*Manim*"))
+        (string  (mapconcat #'(lambda (s) (format "%s" (car (last (split-string s "    ")))))
+                            (string-split (buffer-substring-no-properties start end) "\n") "\n")))
+    (comint-send-string process string)
+    (comint-send-string process "\n\n")))
+
+
+(define-derived-mode inferior-manim-mode inferior-python-mode "Inferior Manim")
+(define-derived-mode manim-mode python-mode "Manim")
+
+#+END_SRC
