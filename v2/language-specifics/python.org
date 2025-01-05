@@ -1,0 +1,8 @@
+#+TITLE: Python Configuration File
+#+AUTHOR: yagossc
+
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'python-mode-hook 'eglot-ensure)
+
+#+END_SRC
