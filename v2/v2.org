@@ -565,6 +565,33 @@ In the beginning...
 
     #+END_SRC
 
+*** undo-tree
+
+    #+BEGIN_QUOTE
+    Emacs has a powerful undo system. Unlike the standard undo/redo
+    system in most software, it allows you to recover any past state
+    of a buffer (whereas the standard undo/redo system can lose past
+    states as soon as you redo). However, this power comes at a price:
+    many people find Emacs' undo system confusing and difficult to
+    use, spawning a number of packages that replace it with the less
+    powerful but more intuitive undo/redo system.
+    #+END_QUOTE
+
+    #+BEGIN_SRC emacs-lisp
+
+    ;; define alias for redo
+    (defalias 'redo 'undo-tree-redo)
+
+    ;; add a nice bind to it
+    (define-key ctl-x-map (kbd "u") 'undo-tree-visualize)
+
+    ;; enable it globally
+    (add-hook 'window-setup-hook
+              (lambda ()
+                (funcall 'global-undo-tree-mode 1)))
+
+    #+END_SRC
+
 ** Navigating between Buffers
 
    Here are some general purpose binds/commands for navigating through
