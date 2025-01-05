@@ -1,4 +1,4 @@
-+TITLE: Manim Configuration File
+#+TITLE: Manim Configuration File
 
 These are a bunch o settings and scripts that aim at providing an
 "interactive envoriment" for building programmatic animations using
@@ -103,10 +103,10 @@ such are yet not available.
 ;;   "Window commands keymap.")
 ;; (define-derived-mode inferior-manim-mode inferior-python-mode "Inferior Manim")
 ;; (define-derived-mode manim-mode python-mode "Manim")
-(define-key python-mode-map (kbd "C-c C-p") 'run-manimgl)
-(define-key python-mode-map (kbd "C-c C-p") 'run-manim)
-(define-key python-mode-map (kbd "C-c C-e") 'manim-send-last-statement)
-(define-key python-mode-map (kbd "C-c C-r") 'manim-send-region)
+;; (define-key python-mode-map (kbd "C-c C-p") 'run-manimgl)
+;; (define-key python-mode-map (kbd "C-c C-p") 'run-manim)
+;; (define-key python-mode-map (kbd "C-c C-e") 'manim-send-last-statement)
+;; (define-key python-mode-map (kbd "C-c C-r") 'manim-send-region)
 
 ;; (eval-after-load 'python-mode
 ;;   (lambda ()
