@@ -1,4 +1,4 @@
-#+TITLE: Manim Configuration File
++TITLE: Manim Configuration File
 
 These are a bunch o settings and scripts that aim at providing an
 "interactive envoriment" for building programmatic animations using
@@ -10,12 +10,17 @@ such are yet not available.
 
 #+BEGIN_SRC emacs-lisp
 
-(defvar manim-cli-file-path "/path/to/venv/bin/manim"
+(defvar manim-cli-file-path "~/work/animated-doc/manim-community-venv/bin/manim"
   "Path to the program used by `run-manim'")
 
-(defvar manim-cmdline-arguments  (list "-qm" "-p" "--renderer=opengl")
+(defvar manim-cmdline-arguments  (list "-qh" "-p" "--renderer=opengl" "--disable_caching")
   "Commandline arguments to pass to `manim-cli'.")
 
+(defvar manimgl-cli-file-path "~/work/animated-doc/manimgl-venv/bin/manimgl"
+  "Path to the program used by `run-manim'")
+
+(defvar manimgl-cmdline-arguments  (list "")
+  "Commandline arguments to pass to `manim-cli'.")
 
 (defvar manim-buffer-name "*Manim*"
   "Name of the buffer to use for the `run-manim' comint instance.")
@@ -43,17 +48,73 @@ such are yet not available.
     (when buffer
       (pop-to-buffer buffer))))
 
+(defun manim-scence-class (string)
+  (string-match ".+\(Scene\):" buffer-content)
+  (car (split-string (car (nthcdr 1 (split-string (match-string-no-properties 0) " "))) "(")))
+
+(defun run-manimgl ()
+  "Run an inferior instance of `manim-script' inside Emacs."
+  ;; Note: right now this is only usable in a file containing
+  ;; a single SceneClass. Use animation groups if needed.
+  (interactive)
+  (let* ((manim-executable manimgl-cli-file-path)
+         (buffer (get-buffer-create manim-buffer-name))
+         (process (get-buffer-process buffer))
+         (proc-alive (comint-check-proc buffer))
+         (cmdline-arguments manim-cmdline-arguments)
+         (buffer-content (buffer-substring-no-properties (point-min) (point-max)))
+         (python-script-file-path (buffer-file-name (current-buffer)))
+         (scene-class (manim-scence-class buffer-content)))
+
+    ;; if the process is dead then re-create the process and reset the
+    ;; mode.
+    (unless proc-alive
+      (with-current-buffer buffer
+        (apply 'make-comint-in-buffer manim-buffer-name buffer
+               manim-executable nil (list python-script-file-path scene-class))
+        (comint-mode)))
+    ;; Regardless, provided we have a valid buffer, we pop to it.
+    (when buffer
+      (pop-to-buffer buffer))))
+
 
 (defun manim-send-region (start end)
   (interactive "r")
   (let ((process (get-buffer-process "*Manim*"))
-        (string  (mapconcat #'(lambda (s) (format "%s" (car (last (split-string s "    ")))))
+        (string  (mapconcat #'(lambda (s)
+                                (let ((target-string  (car (last (split-string s "    ")))))
+                                  ;; (print target-string)
+                                  (format "%s" (if (string= "" target-string)
+                                                   "\"\"\"\"\"\"" target-string))))
                             (string-split (buffer-substring-no-properties start end) "\n") "\n")))
+    ;; (print string)
     (comint-send-string process string)
     (comint-send-string process "\n\n")))
 
+(defun manim-send-last-statement ()
+  (interactive)
+  (manim-send-region
+   (python-nav-beginning-of-statement)
+   (python-nav-end-of-statement)))
 
-(define-derived-mode inferior-manim-mode inferior-python-mode "Inferior Manim")
-(define-derived-mode manim-mode python-mode "Manim")
+;; FIXME: define a proper mode and map so we can use these keybinds
+;; (defvar manim-mode-map
+;;   (make-sparse-keymap)
+;;   "Window commands keymap.")
+;; (define-derived-mode inferior-manim-mode inferior-python-mode "Inferior Manim")
+;; (define-derived-mode manim-mode python-mode "Manim")
+(define-key python-mode-map (kbd "C-c C-p") 'run-manimgl)
+(define-key python-mode-map (kbd "C-c C-p") 'run-manim)
+(define-key python-mode-map (kbd "C-c C-e") 'manim-send-last-statement)
+(define-key python-mode-map (kbd "C-c C-r") 'manim-send-region)
+
+;; (eval-after-load 'python-mode
+;;   (lambda ()
+;;     (when (boundp 'manim-mode-map)
+
+;;       (define-key manim-mode-map (kbd "C-c C-p") 'run-manim)
+;;       ;; (define-key manim-mode-map (kbd "C-c C-b") 'manim-send-buffer)
+;;       ;; (define-key manim-mode-map (kbd "C-c C-e") 'manim-send-current-line)
+;;       (define-key manim-mode-map (kbd "C-c C-r") 'manim-send-region))))
 
 #+END_SRC

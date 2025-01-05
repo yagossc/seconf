@@ -253,7 +253,7 @@
 
   #+BEGIN_SRC emacs-lisp
 
-  (defvar seconf-love2d-mode t)
+  (defvar seconf-love2d-mode nil)
 
   (defun seconf/toggle-love2d-mode ()
     (interactive)

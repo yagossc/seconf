@@ -54,12 +54,14 @@ Eglot annoyingly overrides our =completion-at-point-functions= list,
 so in other to keep =dabbrev= and =file= completions, we'll have to
 reinsert the =capfs= in the list.
 
+/FIXME: this config belongs in the general emacs configuration file/
+
 #+BEGIN_SRC emacs-lisp
 
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
-            (add-to-list 'completion-at-point-functions #'cape-file)
-            (add-to-list 'completion-at-point-functions #'cape-dabbrev)))
+            (add-to-list 'completion-at-point-functions #'cape-file t)
+            (add-to-list 'completion-at-point-functions #'cape-dabbrev t)))
 
 #+END_SRC
 
