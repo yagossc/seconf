@@ -590,6 +590,9 @@ In the beginning...
               (lambda ()
                 (funcall 'global-undo-tree-mode 1)))
 
+    ;; avoid anoying history files
+    (customize-set-variable 'undo-tree-auto-save-history nil)
+
     #+END_SRC
 
 ** Navigating between Buffers
