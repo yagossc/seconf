@@ -1450,6 +1450,7 @@ In the beginning...
    #+INCLUDE: "./language-specifics/lua.org"
    #+INCLUDE: "./language-specifics/manim.org"
    #+INCLUDE: "./language-specifics/yaml-mode.org"
+   #+INCLUDE: "./language-specifics/ruby.org"
 
 * General Customizations
 

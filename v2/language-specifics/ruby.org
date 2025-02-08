@@ -1,0 +1,30 @@
+#+TITLE: Ruby Configuration File
+#+AUTHOR: yagossc
+
+* System dependencies (arch linux)
+
+  - rbenv
+  - ruby-build
+
+* Emacs dependencies
+
+  - robe.el
+  - inf-ruby.el
+  - rbenv.el
+
+* Initialization
+
+  #+BEGIN_SRC emacs-lisp
+
+  (add-hook 'ruby-mode-hook 'robe-mode)
+  ;; or
+  ;; (global-robe-mode)
+
+  (global-rbenv-mode) ; — activate / deactivate rbenv.el (The current Ruby version is shown in the modeline).
+
+  ;; rbenv-use — allows you to choose what Ruby version you want to use.
+  ;; rbenv-use-corresponding — searches for .ruby-version and activates the corresponding Ruby interpreter.
+
+  #+END_SRC
+
+* TODO Docker
