@@ -6,3 +6,12 @@
 (add-hook 'python-mode-hook 'eglot-ensure)
 
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+(eval-after-load 'python-mode
+    (lambda ()
+      (when (boundp 'python-mode-map)
+        (define-key python-mode-map (kbd "C-c C-b") 'python-shell-send-buffer))))
+
+#+END_SRC
