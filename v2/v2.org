@@ -1301,11 +1301,18 @@ In the beginning...
 
   #+BEGIN_SRC emacs-lisp
 
+  ;; (defun seconf/run-term ()
+  ;;   (interactive)
+  ;;   (term (getenv "SHELL"))
+  ;;   (rename-buffer
+  ;;    (read-string "Rame term buffer: " nil nil "term") t))
+
+
   (defun seconf/run-term ()
     (interactive)
-    (term (getenv "SHELL"))
-    (rename-buffer
-     (read-string "Rame term buffer: " nil nil "term") t))
+    (let ((eat-buffer-name (read-string "Rename term buffer: " nil nil "term")))
+      (eat-make eat-buffer-name (getenv "SHELL"))
+      (pop-to-buffer-same-window (format "*%s*" eat-buffer-name))))
 
   #+END_SRC
 
@@ -1323,15 +1330,15 @@ In the beginning...
 
   #+BEGIN_SRC emacs-lisp
 
-  (add-hook 'term-mode-hook
-            (lambda ()
-              (when (and (boundp 'term-raw-map)
-                         (boundp 'term-mode-map))
-                ;; term-raw-map
-                (define-key term-raw-map (kbd "C-z") 'term-line-mode)
+  ;; (add-hook 'term-mode-hook
+  ;;           (lambda ()
+  ;;             (when (and (boundp 'term-raw-map)
+  ;;                        (boundp 'term-mode-map))
+  ;;               ;; term-raw-map
+  ;;               (define-key term-raw-map (kbd "C-z") 'term-line-mode)
 
-                ;; term-mode-map
-                (define-key term-mode-map (kbd "C-z") 'term-char-mode))))
+  ;;               ;; term-mode-map
+  ;;               (define-key term-mode-map (kbd "C-z") 'term-char-mode))))
 
   #+END_SRC
 
@@ -1369,13 +1376,22 @@ In the beginning...
 
    #+BEGIN_SRC emacs-lisp
 
+   ;; (defun seconf/dedicated-term ()
+   ;;   (interactive)
+   ;;   (let ((window (get-buffer-window "*dedicated-term*")))
+   ;;     (if window (delete-window window)
+   ;;       (progn (make-term "dedicated-term" (getenv "SHELL"))
+   ;;              (pop-to-buffer-same-window "*dedicated-term*")
+   ;;              (term-char-mode)))))
+
+
    (defun seconf/dedicated-term ()
      (interactive)
      (let ((window (get-buffer-window "*dedicated-term*")))
        (if window (delete-window window)
-         (progn (make-term "dedicated-term" (getenv "SHELL"))
-                (pop-to-buffer-same-window "*dedicated-term*")
-                (term-char-mode)))))
+         (progn (eat-make "dedicated-term" (getenv "SHELL"))
+                (pop-to-buffer-same-window "*dedicated-term*")))))
+
 
    #+END_SRC
 
