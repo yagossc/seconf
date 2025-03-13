@@ -1361,13 +1361,13 @@ In the beginning...
 
    #+BEGIN_SRC emacs-lisp
 
-   (add-to-list 'display-buffer-alist
-                '("\\*dedicated-term\\*" display-buffer-in-direction
-                  (slot . 0)
-                  (dedicated . t)
-                  (direction . bottom)
-                  (window . root)
-                  (window-height . 0.3)))
+   ;; (add-to-list 'display-buffer-alist
+   ;;              '("\\*dedicated-term\\*" display-buffer-in-direction
+   ;;                (slot . 0)
+   ;;                (dedicated . t)
+   ;;                (direction . bottom)
+   ;;                (window . root)
+   ;;                (window-height . 0.5)))
 
    #+END_SRC
 
@@ -1385,12 +1385,21 @@ In the beginning...
    ;;              (term-char-mode)))))
 
 
+
    (defun seconf/dedicated-term ()
      (interactive)
      (let ((window (get-buffer-window "*dedicated-term*")))
-       (if window (delete-window window)
+       (if window (previous-buffer) ;; (delete-window window)
          (progn (eat-make "dedicated-term" (getenv "SHELL"))
                 (pop-to-buffer-same-window "*dedicated-term*")))))
+
+
+   ;; (defun seconf/dedicated-term ()
+   ;;   (interactive)
+   ;;   (let ((window (get-buffer-window "*dedicated-term*")))
+   ;;     (if window (delete-window window)
+   ;;       (progn (eat-make "dedicated-term" (getenv "SHELL"))
+   ;;              (pop-to-buffer-same-window "*dedicated-term*")))))
 
 
    #+END_SRC
@@ -1402,8 +1411,8 @@ In the beginning...
    (define-key ctl-x-map (kbd "C-x") 'seconf/dedicated-term)
 
    ;; meaning C-c C-x closes the dedicated term
-   (when (boundp 'term-mode-map)
-     (define-key term-mode-map (kbd "C-x") 'seconf/dedicated-term))
+   ;; (when (boundp 'term-mode-map)
+   ;;   (define-key term-mode-map (kbd "C-x") 'seconf/dedicated-term))
 
    #+END_SRC
 
