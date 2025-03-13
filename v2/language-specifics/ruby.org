@@ -3,28 +3,51 @@
 
 * System dependencies (arch linux)
 
-  - rbenv
-  - ruby-build
+  - =asdf=
+  - O diretório =~/.asdf/shims= deve constar no =$PATH=
 
 * Emacs dependencies
 
   - robe.el
   - inf-ruby.el
-  - rbenv.el
+
+** robe.el dependecies
+
+   - pry >= 0.10
+   - pry-doc >= 0.6.0 (for stdlib docs on MRI; optional)
+   - Ruby must be compiled with Readline support (how to check) (just
+     installed with asdf).
+   - With Ruby 3.3, the gem readline-ext is also needed.
+
+   When using bundler, all the above gems must be in the project's
+   Gemfile.
+
 
 * Initialization
 
   #+BEGIN_SRC emacs-lisp
 
   (add-hook 'ruby-mode-hook 'robe-mode)
+  (add-hook 'ruby-ts-mode-hook 'robe-mode)
+
+  (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
   ;; or
   ;; (global-robe-mode)
 
-  (global-rbenv-mode) ; — activate / deactivate rbenv.el (The current Ruby version is shown in the modeline).
 
-  ;; rbenv-use — allows you to choose what Ruby version you want to use.
-  ;; rbenv-use-corresponding — searches for .ruby-version and activates the corresponding Ruby interpreter.
+  (eval-after-load 'ruby-mode
+    (lambda()
+      (when (boundp 'ruby-mode-map)
+        (define-key ruby-mode-map (kbd "C-c C-p") 'robe-start)
+        (define-key ruby-mode-map (kbd "M-.") 'robe-jump)
+        (define-key ruby-mode-map (kbd "C-c C-e") 'ruby-send-last-stmt)
+        (define-key inf-ruby-mode-map (kbd "C-c C-b") 'ruby-load-file))))
 
   #+END_SRC
 
-* TODO Docker
+* TODO Completions
+
+  =robe.el= recomends company:
+  - https://github.com/dgutov/robe?tab=readme-ov-file#completion
+
+  company + cape?
