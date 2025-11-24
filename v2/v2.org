@@ -1301,18 +1301,24 @@ In the beginning...
 
   #+BEGIN_SRC emacs-lisp
 
-  ;; (defun seconf/run-term ()
+  (defun seconf/run-term ()
+    (interactive)
+    (term (getenv "SHELL"))
+    (rename-buffer
+     (read-string "Rame term buffer: " nil nil "term") t))
+
+  ;; (defun seconf/run-zsh ()
   ;;   (interactive)
-  ;;   (term (getenv "SHELL"))
+  ;;   (term "zsh")
   ;;   (rename-buffer
   ;;    (read-string "Rame term buffer: " nil nil "term") t))
 
 
-  (defun seconf/run-term ()
-    (interactive)
-    (let ((eat-buffer-name (read-string "Rename term buffer: " nil nil "term")))
-      (eat-make eat-buffer-name (getenv "SHELL"))
-      (pop-to-buffer-same-window (format "*%s*" eat-buffer-name))))
+  ;; (defun seconf/run-term ()
+  ;;   (interactive)
+  ;;   (let ((eat-buffer-name (read-string "Rename term buffer: " nil nil "term")))
+  ;;     (eat-make eat-buffer-name (getenv "SHELL"))
+  ;;     (pop-to-buffer-same-window (format "*%s*" eat-buffer-name))))
 
   #+END_SRC
 
@@ -1330,15 +1336,15 @@ In the beginning...
 
   #+BEGIN_SRC emacs-lisp
 
-  ;; (add-hook 'term-mode-hook
-  ;;           (lambda ()
-  ;;             (when (and (boundp 'term-raw-map)
-  ;;                        (boundp 'term-mode-map))
-  ;;               ;; term-raw-map
-  ;;               (define-key term-raw-map (kbd "C-z") 'term-line-mode)
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (when (and (boundp 'term-raw-map)
+                         (boundp 'term-mode-map))
+                ;; term-raw-map
+                (define-key term-raw-map (kbd "C-z") 'term-line-mode)
 
-  ;;               ;; term-mode-map
-  ;;               (define-key term-mode-map (kbd "C-z") 'term-char-mode))))
+                ;; term-mode-map
+                (define-key term-mode-map (kbd "C-z") 'term-char-mode))))
 
   #+END_SRC
 
@@ -1361,13 +1367,13 @@ In the beginning...
 
    #+BEGIN_SRC emacs-lisp
 
-   ;; (add-to-list 'display-buffer-alist
-   ;;              '("\\*dedicated-term\\*" display-buffer-in-direction
-   ;;                (slot . 0)
-   ;;                (dedicated . t)
-   ;;                (direction . bottom)
-   ;;                (window . root)
-   ;;                (window-height . 0.5)))
+   (add-to-list 'display-buffer-alist
+                '("\\*dedicated-term\\*" display-buffer-in-direction
+                  (slot . 0)
+                  (dedicated . t)
+                  (direction . bottom)
+                  (window . root)
+                  (window-height . 0.3)))
 
    #+END_SRC
 
@@ -1376,22 +1382,21 @@ In the beginning...
 
    #+BEGIN_SRC emacs-lisp
 
-   ;; (defun seconf/dedicated-term ()
-   ;;   (interactive)
-   ;;   (let ((window (get-buffer-window "*dedicated-term*")))
-   ;;     (if window (delete-window window)
-   ;;       (progn (make-term "dedicated-term" (getenv "SHELL"))
-   ;;              (pop-to-buffer-same-window "*dedicated-term*")
-   ;;              (term-char-mode)))))
-
-
-
    (defun seconf/dedicated-term ()
      (interactive)
      (let ((window (get-buffer-window "*dedicated-term*")))
-       (if window (previous-buffer) ;; (delete-window window)
-         (progn (eat-make "dedicated-term" (getenv "SHELL"))
-                (pop-to-buffer-same-window "*dedicated-term*")))))
+       (if window (delete-window window)
+         (progn (make-term "dedicated-term" (getenv "SHELL"))
+                (pop-to-buffer-same-window "*dedicated-term*")
+                (term-char-mode)))))
+
+
+   ;; (defun seconf/dedicated-term ()
+   ;;   (interactive)
+   ;;   (let ((window (get-buffer-window "*dedicated-term*")))
+   ;;     (if window (previous-buffer) ;; (delete-window window)
+   ;;       (progn (eat-make "dedicated-term" (getenv "SHELL"))
+   ;;              (pop-to-buffer-same-window "*dedicated-term*")))))
 
 
    ;; (defun seconf/dedicated-term ()
