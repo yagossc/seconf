@@ -41,7 +41,7 @@
         (define-key ruby-mode-map (kbd "C-c C-p") 'robe-start)
         (define-key ruby-mode-map (kbd "M-.") 'robe-jump)
         (define-key ruby-mode-map (kbd "C-c C-e") 'ruby-send-last-stmt)
-        (define-key inf-ruby-mode-map (kbd "C-c C-b") 'ruby-load-file))))
+        (define-key ruby-mode-map (kbd "C-c C-b") 'ruby-load-file))))
 
   #+END_SRC
 

@@ -273,7 +273,7 @@
 
   #+END_SRC
 
-  I find the way =lua-mode= handels lua's commint buffer very
+  I find the way =lua-mode= handles lua's commint buffer very
   anoying. It lacks a good window management strategy. I choose to
   handle it like a "dedicated term" fixed to the bottom of the screen.
 
