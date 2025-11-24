@@ -91,22 +91,22 @@ And, let's also use =gopls= to organize our imports:
 
 #+END_SRC
 
-** Gopls keeps crashing
+* Gopls keeps crashing
 
-   For some reason, it stops behaving well, i.e.:
-   - Flycheck gets stuck in fixed error;
-   - Imports stop being properly added/removed;
+  For some reason, it stops behaving well, i.e.:
+  - Flycheck gets stuck in fixed error;
+  - Imports stop being properly added/removed;
 
-   For now, a quick =reset function= should suffice, i.e.:
-   =eglot-shutdown-all= followed by =eglot= commands.
+    For now, a quick =reset function= should suffice, i.e.:
+    =eglot-shutdown-all= followed by =eglot= commands.
 
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-   (defun seconf/reset-eglot ()
-     "Simply reset eglot (and the language server)."
-     (interactive)
-     (progn (eglot-shutdown-all)
-            ;; (eglot 'major-mode (project-current)...
-            (execute-extended-command nil "eglot" "eg")))
+    (defun seconf/reset-eglot ()
+      "Simply reset eglot (and the language server)."
+      (interactive)
+      (progn (eglot-shutdown-all)
+             ;; (eglot 'major-mode (project-current)...
+             (execute-extended-command nil "eglot" "eg")))
 
-   #+END_SRC
+    #+END_SRC
