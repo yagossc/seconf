@@ -1741,6 +1741,9 @@ In the beginning...
 ** TODO Undo-tree
 ** TODO Etags
 ** TODO Xref
+
+   - Using LSPs solves this
+
 ** DONE jq-format.el
 
    Particularly useful for dealing with JSON (when it comes poorly
@@ -1827,3 +1830,70 @@ In the beginning...
 
    That's all folks.
 
+* Installation notes
+
+  This section is mostly for journaling installation experiences in
+  different linux distributions.
+
+
+** Ubuntu 24.04+ [25-05-2026]
+
+   Started installation with magit and its dependencies.
+   The installation guide linke has changed:
+    - https://docs.magit.vc/magit/Installing-from-the-Git-Repository.html
+
+   Basically:
+   - Clone the dependencies and add them to the loadpath;
+     - Today, the dependencies are: compat, cond-let, llama, seq,
+       transient and with-editor
+   - Clone magit
+   - As long as magit and its dependencies are in the same directory,
+     just run =make=
+   - Up to today, our =subdirs.el= script works fine.
+
+    Next, installed =corfu= and =cape= because of a
+     "(global-corfu-mode)" reference that breaks during startup
+
+   Next came =undo-tree= and its single dependency, i.e., =queue=
+   (this came from magit's core contributor =tarsius=).e
+
+   Next, for searching, installed =ag.el= and its dependencies, i.e.,
+   =dash.el= and =s.el=
+
+   Next, came =browse-kill-ring=. Nothing to say here.
+
+   Next, came =iedit=. Here we must run =make= to generate the
+   autoloads.
+
+   Next, and finally, installed =el-handy=.
+
+   As of today, our core dependencies are:
+
+   #+BEGIN_QUOTE
+   [DONE] corfu
+   [DONE] cape
+
+   [DONE] undo-tree
+   [DONE] queue
+
+   [DONE] ag.el
+   [DONE] dash.el
+   [DONE] s.el
+
+   [DONE] browse-kill-ring
+
+   [DONE] iedit (still have to run 'make')
+
+   [DONE] el-handy
+
+   ### MAGIT DEPS
+   [DONE] magit
+   [DONE] compat
+   [DONE] cond-let
+   [DONE] llama
+   [DONE] seq (built-in sincce emacs >= 29.1)
+   [DONE] transient
+   [DONE] with-editor
+   #+END_QUOTE
+
+   Which is a pretty small list of dependencies (:
