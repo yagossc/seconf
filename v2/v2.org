@@ -75,7 +75,7 @@ In the beginning...
 
   And such code contained in the =subdirs.el= file is:
 
-  #+BEGIN_SRC emacs-lisp :tangle no :exports no
+  #+BEGIN_SRC emacs-lisp :tangle no :exports none
 
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path))
@@ -1713,7 +1713,7 @@ In the beginning...
 
    We should at least put this somewhere:
 
-   #+BEGIN_SRC emacs-lisp :tangle no :exports no
+   #+BEGIN_SRC emacs-lisp :tangle no :exports none
 
    (add-hook 'window-setup-hook
              (lambda ()
@@ -1772,7 +1772,7 @@ In the beginning...
     project-compile. If I set the commint-mode to =t= it displays
     everything nicely:
 
-    #+BEGIN_SRC emacs-lisp :tangle no :exports no
+    #+BEGIN_SRC emacs-lisp :tangle no :exports none
 
     (defadvice compile (before ad-compile-smart activate)
       "Advises `compile' so it sets the argument COMINT to t."
@@ -1782,7 +1782,7 @@ In the beginning...
 
     Or do something like:
 
-    #+BEGIN_SRC emacs-lisp :tangle no :exports no
+    #+BEGIN_SRC emacs-lisp :tangle no :exports none
 
     (defun custom-compile(cmd)
       (compile cmd t))
