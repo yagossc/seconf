@@ -8,6 +8,18 @@ Note: this is a quick and dirty solution that does not make use of all
 features available when using a language's REPL, i.e., completions and
 such are yet not available.
 
+#+BEGIN_QUOTE
+Anotações de 26-02-2026:
+- usando python3.13 -m venv path/to/dir
+- tive que desinstalar o pacote "setuptools" (dado que versão 82 foi
+  descontinuada):
+  - pip uninstall setuptools
+- em seguida instalar a versão 81:
+  - pip install setuptools==81.0.0
+- por fim, ainda faltou um pacote aleatório de audio (pyaudioop):
+  - pip install audioop-lts
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
 
 (defvar manim-cli-file-path "~/work/animated-doc/manim-community-venv/bin/manim"
@@ -118,3 +130,5 @@ such are yet not available.
 ;;       (define-key manim-mode-map (kbd "C-c C-r") 'manim-send-region))))
 
 #+END_SRC
+
+
