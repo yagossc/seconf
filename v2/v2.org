@@ -1824,6 +1824,21 @@ In the beginning...
     - Tangle normally;
     - Done.
 
+** DONE LLMs
+
+   If you were forced into using LLMs by your 9 to 5 like I was, you'd
+   probably like to have a good Emacs integration.
+
+   The best package to date seems to be:
+   - https://github.com/xenodium/agent-shell
+
+   And its two dependencies:
+   - https://github.com/xenodium/acp.el
+   - https://github.com/xenodium/shell-maker
+
+   Xenodium has a really interesting blog and makes really cool
+   contributions to emacs ecosystem.
+
 ** TODO Cleanup
 
    For removing key-binds from minor modes, etc.
